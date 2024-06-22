@@ -1,4 +1,4 @@
 export type ServerResponse<Data = any> = {
-	success: boolean
-	data: Data
-}
+  success: boolean;
+  data: Data;
+};

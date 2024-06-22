@@ -1,7 +1,8 @@
-import { customAxios } from "@/lib/custom-axios"
-import { FilmDetail } from "./film.type"
-import { genQueryCrud } from "@/lib/gen-query-crud"
+import { customAxios } from '@/lib/custom-axios';
+import { genQueryCrud } from '@/lib/gen-query-crud';
 
-// const filmQueryCrud = genQueryCrud<FilmDetail>("films")
+import { FilmDetail } from './film.type';
+
+// Const filmQueryCrud = genQueryCrud<FilmDetail>("films")
 
 // export const useQueryFilm
