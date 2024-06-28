@@ -22,6 +22,7 @@
         "@typescript-eslint/ban-ts-comment": "off",
         "@next/next/no-img-element": "off",
         "react/require-default-props": "off",
+        "capitalized-comments": "off",
         "new-cap": "off",
         "prettier/prettier": [
           "error",
@@ -67,6 +68,6 @@
     }
   ],
   "plugins": ["eslint-plugin-prettier"],
-  "ignorePatterns": ["/*", "!src", "!/*.js", "!/*.cjs"],
+  "ignorePatterns": ["/*", "!src", "src/components/ui", "!/*.js", "!/*.cjs"],
   "root": true
 }
