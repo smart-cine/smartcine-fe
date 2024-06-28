@@ -1,1 +1,3 @@
-export default function FilmHome() {}
+export default function FilmHome() {
+  return 'test';
+}

@@ -1,22 +1,15 @@
-export type ListFilm = FilmDetail[];
-
-export type FilmDetail = {
+export type TFilm = {
   id: string;
   title: string;
   director: string;
-  country: string;
-  tags: Tag[];
-  duration: string;
-  release_date: string;
-  restrict_age: number;
-  // Picture_url: string;
+  description: string;
   picture_url?: string;
   trailer_url?: string;
-  // Trailer_url: string;
-  description?: string;
-};
+  release_date: Date;
+  language: string;
+  restrict_age: number;
+  duration: number;
+  country: string;
 
-export type Tag = {
-  id: string;
-  name: string;
+  tags: string[];
 };
