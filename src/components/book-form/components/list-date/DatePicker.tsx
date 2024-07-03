@@ -33,7 +33,7 @@ export function DatePicker({
       >
         {time.getDate()}
       </div>
-      <div className='p-1 text-center text-sm'>
+      <div className='p-1 text-center text-xs'>
         {index === 0
           ? 'Hôm nay'
           : ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'][time.getDate() % 7]}
