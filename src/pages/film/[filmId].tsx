@@ -47,7 +47,7 @@ export default function FilmById() {
               <p className='mb-4 text-xl font-bold'>Phim đang chiếu</p>
               {films.map((film, index) => (
                 <div key={film.id}>
-                  <FilmCard
+                  {/* <FilmCard
                     hasPlayButton={false}
                     className='flex-row gap-x-2'
                     variant='white'
@@ -56,7 +56,7 @@ export default function FilmById() {
                     index={index + 1}
                     indexClass='text-xl text-gray-100 bottom-3 left-1'
                   />
-                  {index !== films.length && <Separator className='mb-2.5' />}
+                  {index !== films.length && <Separator className='mb-2.5' />} */}
                   <FilmCard
                     hasPlayButton={false}
                     className='flex-row gap-x-2'

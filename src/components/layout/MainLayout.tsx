@@ -59,9 +59,9 @@ export const MainLayout = genericMemo<
         asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
         asdasd
       </Navbar.Item>
-      <Navbar.Item title='Change language'>
+      {/* <Navbar.Item title='Change language'>
         <LocaleSwitcher />
-      </Navbar.Item>
+      </Navbar.Item> */}
     </Navbar>
 
     {/* Breadcumb */}

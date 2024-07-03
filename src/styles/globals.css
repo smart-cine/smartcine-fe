@@ -95,6 +95,9 @@ body {
   overflow-x: hidden;
   @apply antialiased;
 }
+html {
+  overflow-x: hidden;
+}
 
 /* scrollbar setup */
 ::-webkit-scrollbar {

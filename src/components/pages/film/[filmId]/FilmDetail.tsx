@@ -40,15 +40,15 @@ export function FilmDetail({
           <p className='text-2xl font-bold text-gray-50 md:text-4xl'>
             {film.title}
           </p>
-          <div className='flex flex-row gap-x-4'>
-            <p>Despicable Me 4</p>
+          <div className='flex flex-row gap-x-4 text-gray-400'>
+            <p>{film.title}</p>
             <p>{new Date(film.release_date).getFullYear()}</p>
             <p>{film.duration} phút</p>{' '}
           </div>
         </div>
         <StarRating amount={40} rating={10} className='text-2xl font-bold' />
         <p className='italic text-gray-400'>
-          Mọi thứ trở nên đáng khinh hơn một chút.
+          Things just got a little more despicable.
         </p>
         <div className='flex flex-col'>
           <p className='font-bold'>Nội dung</p>
