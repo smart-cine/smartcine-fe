@@ -1,5 +1,8 @@
 /* eslint-disable react/no-array-index-key */
 
+import { useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,6 +18,7 @@ import { type TFilm } from '@/core/film/film.type';
 
 import { AgeTag } from '../../AgeTag';
 import { Separator } from '../../ui/separator';
+import { PickedSeats } from './PickedSeats';
 import { Seat } from './Seat';
 import { usePickSeat } from './usePickSeat';
 
@@ -27,35 +31,50 @@ export function PickSeatDialog({
   readonly children: React.ReactNode;
   readonly film_id: string;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
   const resetSeats = usePickSeat((state) => state.reset);
+
   const { data: film } = useReadFilm(film_id);
 
   if (!film) return null;
 
   return (
     <Dialog
-      onOpenChange={() => {
+      modal
+      open={isOpen}
+      onOpenChange={(open) => {
         resetSeats();
+        setIsOpen(open);
       }}
     >
       <DialogTrigger asChild>
         <button
           className={cn(
-            'rounded-sm border border-blue-500 px-4 py-1 text-blue-700 hover:border-blue-800',
+            'rounded-sm border border-sky-400 px-4 py-1 text-sky-600 hover:border-sky-700',
             className
           )}
         >
           {children}
         </button>
       </DialogTrigger>
-      <DialogContent className='max-w-4xl'>
-        <DialogHeader>
-          <DialogTitle>Mua vé xem phim</DialogTitle>
+      <DialogContent className='max-w-4xl gap-y-0 overflow-hidden border-none p-0'>
+        <DialogHeader className='relative bg-momo p-4'>
+          <DialogTitle className='text-center text-white'>
+            Mua vé xem phim
+          </DialogTitle>
+          <div className='absolute left-0 top-0 !mt-0 flex h-full w-full flex-row items-center pl-4 text-white'>
+            <ArrowLeft
+              className='h-5 w-5 cursor-pointer transition-all hover:-translate-x-1'
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            />
+          </div>
           {/* <DialogDescription>
             Make changes to your profile here. Click save when you're done.
           </DialogDescription> */}
         </DialogHeader>
-        <div className='h-[calc(100vh-340px)] w-full overflow-x-auto bg-gray-700'>
+        <div className='h-[calc(100vh-340px)] w-full overflow-x-auto bg-[#262626]'>
           {/* pick seat */}
 
           <div className='w-fit p-4'>
@@ -70,7 +89,7 @@ export function PickSeatDialog({
             ))}
           </div>
         </div>
-        <DialogFooter className='h-[200px]'>
+        <DialogFooter className='h-[204px] p-4'>
           <div className='flex w-full flex-col'>
             <div className='mb-3 flex flex-col'>
               <div className='flex flex-row items-center gap-x-2.5'>
@@ -83,16 +102,10 @@ export function PickSeatDialog({
               </p>
             </div>
             <Separator />
-            <div className='flex flex-row py-3'>
-              <p>Chỗ ngồi</p>
-              <div className='grow' />
-              <div className='self-end rounded-lg border border-gray-300 p-1'>
-                H1, H2
-              </div>
-            </div>
+            <PickedSeats />
             <Separator />
             <div className='flex h-full flex-row py-3'>
-              <p>Tạm tính</p>
+              <p className='text-sm'>Tạm tính</p>
               <div className='grow' />
               <Button type='submit' className='self-end'>
                 Save changes
