@@ -27,13 +27,16 @@ export function TrailerTrigger({
   readonly children: React.ReactNode;
   readonly film_id: string;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
   const { data: film } = useReadFilm(film_id);
 
   if (!film) return null;
 
   return (
     <Dialog
-      onOpenChange={() => {
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open);
         // send a click event to next tick
         setTimeout(() => {
           // @ts-expect-error
@@ -78,7 +81,13 @@ export function TrailerTrigger({
                 <Button variant='momo' className='h-8'>
                   Đặt vé
                 </Button>
-                <Button variant='secondary' className='h-8'>
+                <Button
+                  variant='secondary'
+                  className='h-8'
+                  onClick={() => {
+                    setIsOpen(false);
+                  }}
+                >
                   Đóng
                 </Button>
               </div>
