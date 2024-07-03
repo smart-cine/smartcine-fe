@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { films } from '@/lib/fake/films';
+import { cinemas } from '@/lib/fake/cinemas';
 
 type Data = {
   success: boolean;
@@ -14,6 +14,6 @@ export default function handler(
 ) {
   res.status(200).json({
     success: true,
-    data: films,
+    data: cinemas,
   });
 }

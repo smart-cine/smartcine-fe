@@ -12,7 +12,7 @@ export const films: TFilm[] = [
     language: 'vi',
     restrict_age: 18,
     picture_url: '/film_picture/1.jpg',
-    trailer_url: 'https://www.youtube.com/watch?v=bNp9pn0ni3I',
+    trailer_url: 'https://youtu.be/GTupBD8M3yw',
     description:
       'Tiếp nối những sự kiện trong phần ba Despicable Me 3 (2017), giờ đây Gru đã hoàn lương, hạn chế tham gia các hoạt động phi pháp. Ngoài vợ Lucy Wilde và các cô con gái nuôi Margo, Edith, Agnes, giờ đây gia đình Gru còn đón thêm thành viên mới là nhóc tì Gru Junior - con trai đầu lòng của anh. Tuy nhiên, sự an toàn của gia đình Gru nhanh chóng bị đe dọa khi kẻ thù cũ của anh là Maxime Le Mal đã trốn khỏi nhà tù, hắn lên kế hoạch trả thù và thanh toán nợ cũ với Gru. Đồng hành với Maxime còn có người yêu Valentina của gã. Do đó, Gru buộc phải đứng lên đối mặt với kẻ thù để bảo vệ gia đình và các Minions.',
   },

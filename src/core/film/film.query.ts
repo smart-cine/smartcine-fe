@@ -4,7 +4,8 @@ import { type TFilm } from './film.type';
 
 export const {
   create: useCreateFilm,
-  read: useQueryFilm,
-  update: useUpdateFilm,
+  list: useListFilm,
+  read: useReadFilm,
+  patch: usePatchFilm,
   delete: useDeleteFilm,
 } = genQueryCrud<TFilm>('films');

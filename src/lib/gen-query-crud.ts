@@ -5,36 +5,77 @@ import { queryClient } from '@/lib/query-client';
 
 import { customAxios } from './custom-axios';
 
-export type CreateCRUD<Item> = (...args: any[]) => Promise<Item>;
-export type ReadCRUD<Item> = (...args: any[]) => Promise<Item[]>;
-export type UpdateCRUD<Item> = (id: string, ...args: any[]) => Promise<Item>;
-export type DeleteCRUD<Item> = (id: string) => Promise<Item>;
+export type CreateMethod<Item> = (body?: Record<string, any>) => Promise<Item>;
+export type ListMethod<Item> = (
+  options?: Record<string, any>
+) => Promise<Item[]>;
+export type ReadMethod<Item> = (
+  id: string,
+  options?: Record<string, any>
+) => Promise<Item>;
+export type PatchMethod<Item> = (
+  id: string,
+  patch: Partial<Item>
+) => Promise<Item>;
+export type DeleteMethod<Item> = (id: string) => Promise<Item>;
 
-export function genQueryCrud<Item>(
+export function genQueryCrud<
+  Item,
+  C extends CreateMethod<Item> = CreateMethod<Item>,
+  L extends ListMethod<Item> = ListMethod<Item>,
+  R extends ReadMethod<Item> = ReadMethod<Item>,
+  P extends PatchMethod<Item> = PatchMethod<Item>,
+  D extends DeleteMethod<Item> = DeleteMethod<Item>,
+>(
   queryKey: string,
-  crud: Partial<{
-    create: CreateCRUD<Item>;
-    read: ReadCRUD<Item>;
-    update: UpdateCRUD<Item>;
-    delete: DeleteCRUD<Item>;
+  methods: Partial<{
+    create: C;
+    list: L;
+    read: R;
+    patch: P;
+    delete: D;
   }> = {}
 ) {
-  crud.create ||= async () =>
-    (await customAxios.post(`/${queryKey}`)).data.data as Item;
-
-  crud.read ||= async () =>
-    (await customAxios.get(`/${queryKey}`)).data.data as Item[];
-
-  crud.update ||= async (id: string) =>
-    (await customAxios.put(`/${queryKey}/${id}`)).data.data as Item;
-
-  crud.delete ||= async (id: string) =>
+  const defaultCreate: CreateMethod<Item> = async (body) =>
+    (await customAxios.post(`/${queryKey}`, body)).data.data as Item;
+  const defaultList: ListMethod<Item> = async (options) =>
+    (
+      await customAxios.get(
+        `/${queryKey}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
+      )
+    ).data.data as Item[];
+  const defaultRead: ReadMethod<Item> = async (id, options) =>
+    (
+      await customAxios.get(
+        `/${queryKey}/${id}${
+          options ? `?${new URLSearchParams(options).toString()}` : ''
+        }`
+      )
+    ).data.data as Item;
+  const defaultPatch: PatchMethod<Item> = async (id, patch) =>
+    (await customAxios.put(`/${queryKey}/${id}`, patch)).data.data as Item;
+  const defaultDelete: DeleteMethod<Item> = async (id) =>
     (await customAxios.delete(`/${queryKey}/${id}`)).data.data as Item;
 
+  const allMethods = {
+    create: defaultCreate as C,
+    list: defaultList as L,
+    read: defaultRead as R,
+    patch: defaultPatch as P,
+    delete: defaultDelete as D,
+    ...methods,
+  } satisfies {
+    create: C;
+    list: L;
+    read: R;
+    patch: P;
+    delete: D;
+  };
+
   return {
-    create(...args: Parameters<typeof crud.create>) {
+    create() {
       return useMutation({
-        mutationFn: async () => crud.create!(args),
+        mutationFn: allMethods.create,
         async onSuccess() {
           return queryClient.invalidateQueries({
             queryKey: [queryKey],
@@ -42,15 +83,23 @@ export function genQueryCrud<Item>(
         },
       });
     },
-    read(...args: Parameters<typeof crud.read>) {
+    list(...args: Parameters<L>) {
       return useQuery({
         queryKey: [queryKey],
-        queryFn: async () => crud.read!(args),
+        queryFn: async () => allMethods.list(...args),
       });
     },
-    update(id: string, ...args: Parameters<typeof crud.update>) {
+    read(id: string | undefined, ...args: ParametersExceptFirst<R>) {
+      return useQuery({
+        queryKey: [queryKey, id],
+        queryFn: async () => allMethods.read(id, ...args),
+        enabled: Boolean(id),
+      });
+    },
+    patch() {
       return useMutation({
-        mutationFn: async () => crud.update!(id, args),
+        // @ts-expect-error
+        mutationFn: allMethods.patch,
         async onSuccess() {
           return queryClient.invalidateQueries({
             queryKey: [queryKey],
@@ -58,9 +107,9 @@ export function genQueryCrud<Item>(
         },
       });
     },
-    delete(id: string) {
+    delete() {
       return useMutation({
-        mutationFn: async () => crud.delete!(id),
+        mutationFn: allMethods.delete,
         async onSuccess() {
           return queryClient.invalidateQueries({
             queryKey: [queryKey],
@@ -70,3 +119,7 @@ export function genQueryCrud<Item>(
     },
   };
 }
+
+type ParametersExceptFirst<F> = F extends (arg0: any, ...rest: infer R) => any
+  ? R
+  : never;

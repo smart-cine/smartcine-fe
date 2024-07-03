@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import styled, { keyframes } from 'styled-components';
 
 import { random, range } from '@/lib/utils';
@@ -20,7 +21,7 @@ const generateSparkle = (color: string) => {
   return sparkle;
 };
 
-export function Sparkles({
+export function SSR_Sparkles({
   color = DEFAULT_COLOR,
   children,
   ...delegated
@@ -60,6 +61,10 @@ export function Sparkles({
     </Wrapper>
   );
 }
+
+export const Sparkles = dynamic(async () => Promise.resolve(SSR_Sparkles), {
+  ssr: false,
+});
 
 function Sparkle({
   size,

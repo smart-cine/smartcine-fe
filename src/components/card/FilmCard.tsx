@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { NOT_FOUND_PICTURE } from '@/constant/NotFoundPicture';
 
 import { cn } from '@/lib/utils';
+import { useReadFilm } from '@/core/film/film.query';
 import { type TFilm } from '@/core/film/film.type';
 
 import { AgeTag } from '../AgeTag';
@@ -10,29 +11,50 @@ import { StarIcon } from '../icon/StarIcon';
 import { PlayButton } from '../PlayButton';
 
 export function FilmCard({
-  film,
+  film_id,
   index,
   variant = 'black',
+  className,
+  imageClass,
+  hasPlayButton,
+  indexClass,
 }: {
-  readonly film: TFilm;
+  readonly film_id: string;
   readonly index?: number;
   readonly variant?: 'black' | 'white';
+  readonly className?: string;
+  readonly imageClass?: string;
+  readonly hasPlayButton?: boolean;
+  readonly indexClass?: string;
 }) {
+  const { data: film } = useReadFilm(film_id);
+  if (!film) return null;
+
   return (
-    <div className='flex h-full select-none flex-col'>
-      <Link href={`/film/${film.id}`} className='group relative h-[200px] grow'>
+    <div className={cn('flex h-full select-none flex-col', className)}>
+      <Link
+        href={`/film/${film.id}`}
+        className={cn('group relative', imageClass)}
+      >
         <div className='h-[calc(100%-10px)]'>
-          <div className='relative h-full overflow-hidden rounded-md'>
+          <div className={cn('relative h-full overflow-hidden rounded-md')}>
             <Image
               src={film.picture_url ?? NOT_FOUND_PICTURE.FILM}
               width={1000}
               height={1000}
-              className='h-full object-cover duration-300 group-hover:scale-[105%]'
+              className={cn(
+                'h-full object-cover duration-300 group-hover:scale-[105%]'
+              )}
               alt='picture of the film'
             />
-            <div className='absolute left-0 top-0 flex h-full w-full items-center'>
-              <PlayButton className='group-hover:scale-[110%]' />
-            </div>
+            {hasPlayButton && (
+              <div className='absolute left-0 top-0 flex h-full w-full items-center'>
+                <PlayButton
+                  film_id={film.id}
+                  className='group-hover:scale-[110%]'
+                />
+              </div>
+            )}
             <AgeTag
               className='absolute left-1.5 top-1.5'
               restrictAge={film.restrict_age}
@@ -41,17 +63,21 @@ export function FilmCard({
         </div>
         {index && (
           <div
-            className={cn('absolute bottom-0 left-0.5 text-5xl font-bold', {
-              'text-gray-100': variant === 'black',
-              'text-gray-900': variant === 'white',
-            })}
+            className={cn(
+              'absolute bottom-0 left-0.5 text-5xl font-bold',
+              {
+                'text-gray-100': variant === 'black',
+                'text-gray-900': variant === 'white',
+              },
+              indexClass
+            )}
           >
             {index}
           </div>
         )}
       </Link>
 
-      <div className='flex flex-none flex-col'>
+      <div className='flex flex-col'>
         <Link href={`/film/${film.id}`}>
           <p
             className={cn('line-clamp-1 font-semibold', {
@@ -63,7 +89,7 @@ export function FilmCard({
           </p>
         </Link>
         <p
-          className={cn('line-clamp-1 text-sm', {
+          className={cn('line-clamp-1 text-[13px]', {
             'text-gray-400': variant === 'black',
             'text-gray-500': variant === 'white',
           })}

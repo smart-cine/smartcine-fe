@@ -11,12 +11,12 @@ export const ConstrainedContainer = genericMemo<
 >(({ children, className, background }) => (
   <div className='relative'>
     {background && (
-      <div className='constrain-bg absolute h-full w-full overflow-hidden brightness-[0.2] filter'>
+      <div className='absolute -z-10 h-full w-full overflow-hidden brightness-[0.2] filter'>
         <Image
           width={5000}
           height={5000}
           src={background}
-          className='w-full'
+          className='min-h-full'
           alt='film background'
         />
       </div>

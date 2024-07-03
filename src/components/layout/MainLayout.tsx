@@ -20,7 +20,7 @@ export const MainLayout = genericMemo<
   React.FC<{ readonly className?: string; readonly children: React.ReactNode }>
 >(({ className, children }) => (
   <div className={className}>
-    <Navbar className='sticky top-0 z-10'>
+    <Navbar className='sticky top-0 z-10 bg-white'>
       <Navbar.Item title='Movie schedule'>
         <div className='mx-auto flex flex-col'>
           <Link

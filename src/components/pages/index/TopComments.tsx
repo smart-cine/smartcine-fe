@@ -1,7 +1,10 @@
 import { cn } from '@/lib/utils';
 import { TopCommentCard } from '@/components/card/TopCommentCard';
+import { useListFilm } from '@/core/film/film.query';
 
 export function TopComments({ className }: { readonly className?: string }) {
+  const { data: films = [] } = useListFilm();
+  if (!films.length) return null;
   return (
     <div
       className={cn(
@@ -9,9 +12,9 @@ export function TopComments({ className }: { readonly className?: string }) {
         className
       )}
     >
-      <TopCommentCard />
-      <TopCommentCard />
-      <TopCommentCard />
+      <TopCommentCard film_id={films[0].id} />
+      <TopCommentCard film_id={films[0].id} />
+      <TopCommentCard film_id={films[0].id} />
     </div>
   );
 }

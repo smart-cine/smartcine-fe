@@ -1,6 +1,5 @@
 import { cn } from '@/lib/utils';
 import { FilmCard } from '@/components/card/FilmCard';
-import { Card, CardContent } from '@/components/ui/card';
 import {
   Carousel,
   CarouselContent,
@@ -8,19 +7,20 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { type TFilm } from '@/core/film/film.type';
+import { useListPerform } from '@/core/perform/perform.query';
 
 export function CurrentShows({
-  films,
   className,
   variant = 'black',
   hasIndex = true,
 }: {
-  readonly films: TFilm[];
   readonly className?: string;
   readonly variant?: 'black' | 'white';
   readonly hasIndex?: boolean;
 }) {
+  const { data: performs = [] } = useListPerform();
+  if (!performs.length) return null;
+
   return (
     <div
       className={cn(
@@ -38,14 +38,16 @@ export function CurrentShows({
           opts={{ loop: false, dragFree: true }}
         >
           <CarouselContent>
-            {films.map((film, index) => (
+            {performs.map((perform, index) => (
               <CarouselItem
-                key={film.id}
+                key={perform.id}
                 className='h-[380px] basis-1/2 md:basis-1/3 lg:basis-1/5'
               >
                 <div className='h-full p-1'>
                   <FilmCard
-                    film={film}
+                    hasPlayButton
+                    imageClass='h-[300px]'
+                    film_id={perform.film_id}
                     index={hasIndex ? index + 1 : undefined}
                     variant={variant}
                   />

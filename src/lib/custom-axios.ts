@@ -8,6 +8,7 @@ const headers: RawAxiosRequestHeaders = {
 
 if (process.env.NODE_ENV === 'development') {
   headers.Authorization = `Bearer ${env.NEXT_PUBLIC_TEST_TOKEN}`;
+  headers['Access-Control-Allow-Origin'] = '*';
 }
 
 export const customAxios = baseAxios.create({

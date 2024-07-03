@@ -10,10 +10,10 @@ import { CurrentShows } from '@/components/pages/index/CurrentShows';
 import { FAQSection } from '@/components/pages/index/FAQSection';
 import { TopComments } from '@/components/pages/index/TopComments';
 import { Button } from '@/components/ui/button';
-import { useQueryFilm } from '@/core/film/film.query';
+import { useListFilm } from '@/core/film/film.query';
 
 export default function Home() {
-  const { data: films } = useQueryFilm();
+  const { data: films = [] } = useListFilm();
   console.log('films', films);
 
   return (
@@ -42,7 +42,7 @@ export default function Home() {
         <p className='mx-auto mt-5 w-fit text-3xl font-bold text-white'>
           <Sparkles>Current shows</Sparkles>
         </p>
-        <CurrentShows films={films ?? []} className='bg-transparent' />
+        <CurrentShows className='bg-transparent' />
       </ConstrainedContainer>
 
       {/* Featured shows */}
@@ -50,8 +50,8 @@ export default function Home() {
         <p className='mx-auto w-fit text-3xl font-bold text-pink-600'>
           Featured movies
         </p>
+
         <CurrentShows
-          films={films ?? []}
           className='bg-transparent'
           variant='white'
           hasIndex={false}
@@ -121,7 +121,7 @@ export default function Home() {
           Your question not found? Please see more <Link href='#'>here</Link>
         </p>
       </ConstrainedContainer>
-      <div className='py-32'> </div>
+      <div className='py-32' />
     </MainLayout>
   );
 }

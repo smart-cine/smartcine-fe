@@ -15,3 +15,23 @@ export function random(min: number, max: number) {
 export function range(size: number) {
   return Array.from({ length: size }, (_, i) => i);
 }
+
+export function lerp(start: number, end: number, t: number) {
+  return start * (1 - t) + end * t;
+}
+
+export function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
+export function getScrollTop() {
+  return window.pageYOffset || document.documentElement.scrollTop;
+}
+
+export function youtube_parser(url: string) {
+  // https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
+  const regExp =
+    /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  const match = regExp.exec(url);
+  return match && match[7].length === 11 ? match[7] : '';
+}

@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import { NOT_FOUND_PICTURE } from '@/constant/NotFoundPicture';
 
-import { films } from '@/lib/fake/films';
 import { cn } from '@/lib/utils';
+import { useListFilm } from '@/core/film/film.query';
 
 import { AgeTag } from '../AgeTag';
 import { CinemaDescription } from './components/CinemaDescription';
 import { CinemaSearch } from './components/CinemaSearch';
+import { ListDate } from './components/list-date/ListDate';
 import { ListCinema } from './components/ListCinema';
-import { ListDate } from './components/ListDate';
 import { Location } from './components/Location';
 import { NearestLocation } from './components/NearestLocation';
 import { PerformTimes } from './components/PerformTimes';
@@ -18,6 +18,9 @@ export function DefaultBookForm({
 }: {
   readonly className?: string;
 }) {
+  const { data: films = [] } = useListFilm();
+  if (!films.length) return null;
+
   return (
     <div
       className={cn(
@@ -25,13 +28,13 @@ export function DefaultBookForm({
         className
       )}
     >
-      <div className='topview flex flex-col gap-y-3 border-b p-4'>
-        <div className='vitri flex flex-row items-center gap-x-3'>
+      <div className='topview flex flex-col gap-y-3 border-b'>
+        <div className='vitri flex flex-row items-center gap-x-3 px-4 pt-4'>
           <p>Vị trí</p>
           <Location />
           <NearestLocation />
         </div>
-        <ListCinema />
+        <ListCinema className='px-5 pb-2' />
       </div>
       <div className='mainview flex min-h-full w-full flex-row'>
         <div className='thanhsearch flex basis-1/3 flex-col border-r'>
@@ -39,7 +42,7 @@ export function DefaultBookForm({
         </div>
         <div className='realmainview flex max-h-full w-full basis-2/3 flex-col overflow-auto'>
           <div className='sticky top-0 bg-white'>
-            <CinemaDescription />
+            <CinemaDescription className='p-3' cinema='AMONG' />
             <ListDate />
 
             <div className='uudai border-t bg-gray-100 px-5 py-2 text-sm text-momo'>
@@ -67,7 +70,7 @@ export function DefaultBookForm({
                       {film.tags.join(', ')}
                     </div>
                   </div>
-                  <PerformTimes />
+                  <PerformTimes film_id={film.id} />
                 </div>
               </div>
             ))}

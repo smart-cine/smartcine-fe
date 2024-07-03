@@ -1,17 +1,25 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { MoveRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useReadFilm } from '@/core/film/film.query';
 
 import { CommentIcon } from '../icon/CommentIcon';
-import { PlayIcon } from '../icon/PlayIcon';
 import { StarIcon } from '../icon/StarIcon';
-import { PlayButton } from '../PlayButton';
 import { UserComment } from '../UserComment';
 import { MinimalFilmCard } from './MinimalFilmCard';
 
-export function TopCommentCard({ className }: { readonly className?: string }) {
+export function TopCommentCard({
+  className,
+  film_id,
+}: {
+  readonly className?: string;
+  readonly film_id: string;
+}) {
+  const { data: film } = useReadFilm(film_id);
+
+  if (!film) return null;
+
   return (
     <div
       className={cn(
@@ -20,10 +28,7 @@ export function TopCommentCard({ className }: { readonly className?: string }) {
       )}
     >
       <div className='relative'>
-        <MinimalFilmCard
-          pictureUrl='/film_picture/1.jpg'
-          className='h-[200px]'
-        />
+        <MinimalFilmCard film_id={film.id} className='h-[200px]' />
         <div className='absolute bottom-0 flex flex-col p-2.5 text-sm font-bold text-gray-100'>
           <div className=''>Kẻ trộm mặt trăng 4</div>
           <div className='flex flex-row gap-x-5'>

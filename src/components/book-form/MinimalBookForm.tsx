@@ -1,7 +1,3 @@
-import Image from 'next/image';
-import { NOT_FOUND_PICTURE } from '@/constant/NotFoundPicture';
-
-import { films } from '@/lib/fake/films';
 import { cn } from '@/lib/utils';
 import {
   Accordion,
@@ -9,53 +5,59 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { type TFilm } from '@/core/film/film.type';
+import { useListCinema } from '@/core/cinema/cinema.query';
+import { useReadFilm } from '@/core/film/film.query';
 
-import { AgeTag } from '../AgeTag';
 import { Separator } from '../ui/separator';
 import { CinemaDescription } from './components/CinemaDescription';
-import { CinemaSearch } from './components/CinemaSearch';
-import { cinemaList, ListCinema } from './components/ListCinema';
-import { ListDate } from './components/ListDate';
+import { ListDate } from './components/list-date/ListDate';
+import { ListCinema } from './components/ListCinema';
 import { Location } from './components/Location';
 import { NearestLocation } from './components/NearestLocation';
 import { PerformTimes } from './components/PerformTimes';
 
 export function MinimalBookForm({
   className,
-  film,
+  film_id,
 }: {
   readonly className?: string;
-  readonly film: TFilm;
+  readonly film_id: string;
 }) {
+  const { data: film } = useReadFilm(film_id);
+  const { data: cinemas = [] } = useListCinema();
+
+  if (!film) return null;
+
   return (
-    <div className={cn('flex flex-col gap-y-3', className)}>
-      <div className='vitri flex flex-row items-center gap-x-3'>
+    <div className={cn('flex grow flex-col gap-y-3', className)}>
+      <div className='vitri flex flex-row flex-wrap items-center gap-x-3 gap-y-2 md:flex-nowrap'>
         <p className='text-xl font-bold'>Lịch chiếu {film.title}</p>
-        <div className='grow' />
-        <Location />
-        <NearestLocation />
+        <div className='hidden grow lg:block' />
+        <div className='flex grow flex-row flex-wrap justify-end gap-x-3 md:flex-nowrap'>
+          <Location className='grow' />
+          <NearestLocation className='grow' />
+        </div>
       </div>
       <div className='flex min-h-[800px] flex-col rounded-md border border-gray-200 shadow-md'>
-        <div className='flex flex-col gap-y-3 border-b p-4'>
+        <div className='flex max-w-[95vw] grow-0 flex-col border-b pt-2'>
           <ListDate />
-          <Separator />
-          <ListCinema />
+          <Separator className='mb-4' />
+          <ListCinema className='px-5' />
         </div>
         <div className='p-4'>
           <Accordion type='single' className='w-full'>
-            {cinemaList.map((cinema) => (
+            {cinemas.map((cinema) => (
               <AccordionItem
-                key={cinema}
-                value={cinema}
+                key={cinema.id}
+                value={cinema.id}
                 // className='[&>[data-state=open]]:bg-gray-100' // this is called arbitrary variant
                 // https://stackoverflow.com/questions/76408807/style-children-based-on-their-data-attributes-in-tailwindcss
               >
                 <AccordionTrigger className='hover:no-underline'>
-                  <CinemaDescription variant='minimal' cinema={cinema} />
+                  <CinemaDescription variant='minimal' cinema={cinema.name} />
                 </AccordionTrigger>
                 <AccordionContent>
-                  <PerformTimes className='' />
+                  <PerformTimes film_id={film.id} className='' />
                 </AccordionContent>
               </AccordionItem>
             ))}

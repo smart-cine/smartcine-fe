@@ -13,15 +13,19 @@ export function CinemaDescription({
 }) {
   return (
     <div
-      className={cn('flex w-full flex-row items-center gap-x-2 p-2 text-left', {
-        'bg-gray-100': variant === 'default',
-        'bg-white': variant === 'minimal',
-      })}
+      className={cn(
+        'flex w-full flex-row items-center gap-x-2 text-left',
+        {
+          'bg-gray-50': variant === 'default',
+          'bg-white': variant === 'minimal',
+        },
+        className
+      )}
     >
-      <div className='h-10 w-10 rounded-sm border border-black' />
+      <div className='h-8 w-8 rounded-sm border border-black' />
       <div className='flex w-full flex-col'>
         <p className='font-semibold'>{cinema}</p>
-        <p className='text-sm text-gray-500'>
+        <p className='text-sm font-thin text-gray-500'>
           Tầng 6, The Pegasus Plaza, số 53-55 Võ Thị Sáu, P.Quyết Thắng, TP Biên
           Hòa, Đồng Nai{' '}
           <a

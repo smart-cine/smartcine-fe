@@ -4,26 +4,37 @@ import ShowMoreText from 'react-show-more-text';
 import { cn } from '@/lib/utils';
 import { AgeTag } from '@/components/AgeTag';
 import { MinimalFilmCard } from '@/components/card/MinimalFilmCard';
+import { PickSeatDialog } from '@/components/dialog/pick-seat/PickSeatDialog';
 import { StarIcon } from '@/components/icon/StarIcon';
 import { PlayButton } from '@/components/PlayButton';
 import { StarRating } from '@/components/Rating';
 import { Separator } from '@/components/ui/separator';
+import { useReadFilm } from '@/core/film/film.query';
 import { type TFilm } from '@/core/film/film.type';
 
 export function FilmDetail({
   className,
-  film,
+  film_id,
 }: {
   readonly className?: string;
-  readonly film: TFilm;
+  readonly film_id: string;
 }) {
+  const { data: film } = useReadFilm(film_id);
+
+  if (!film) return null;
+
   return (
-    <div className='flex flex-row gap-x-10 py-16 text-white'>
+    <div
+      className={cn(
+        'flex flex-row flex-wrap gap-x-10 gap-y-4 py-16 text-white sm:flex-nowrap',
+        className
+      )}
+    >
       <MinimalFilmCard
-        pictureUrl={film.picture_url ?? NOT_FOUND_PICTURE.FILM}
-        className='max-h-[400px] basis-1/4'
+        film_id={film.id}
+        className='max-h-[380px] max-w-[240px] basis-1/4'
       />
-      <div className='z-50 flex basis-3/4 flex-col gap-y-3.5'>
+      <div className='flex basis-3/4 flex-col gap-y-3.5'>
         <AgeTag restrictAge={film.restrict_age} />
         <div className='flex flex-col'>
           <p className='text-2xl font-bold text-gray-50 md:text-4xl'>
@@ -68,7 +79,7 @@ export function FilmDetail({
         <div className='flex flex-row gap-x-3 text-sm'>
           <div className='flex cursor-pointer flex-row items-center gap-x-2'>
             <div className='rounded-full border-2 border-momo p-0.5'>
-              <PlayButton className='h-4 w-4' />
+              <PlayButton film_id={film.id} className='h-4 w-4' />
             </div>
             Xem review
           </div>
