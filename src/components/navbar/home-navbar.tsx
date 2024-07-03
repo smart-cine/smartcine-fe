@@ -1,5 +1,9 @@
-import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
+import {
+  NavigationMenuIndicator,
+  NavigationMenuViewport,
+} from '@radix-ui/react-navigation-menu';
+import { DotIcon, MenuIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import {
@@ -22,15 +26,20 @@ export function Navbar({
   return (
     <div
       className={cn(
-        'mx-auto flex flex-row justify-center border-b-[2px] bg-white px-16 py-2 shadow-sm sm:px-6 lg:px-[20%]',
+        'mx-auto flex h-[56px] flex-row items-center border-b-[2px] bg-white px-16 py-2 shadow-sm sm:px-6 lg:px-[20%]',
         className
       )}
     >
-      <div className='grow' />
-      <div className='flex flex-row'>
-        <NavigationMenu>
-          <NavigationMenuList>{children}</NavigationMenuList>
-        </NavigationMenu>
+      <div className='hidden w-full flex-row lg:flex'>
+        <div className='grow' />
+        <div className='flex flex-row'>
+          <NavigationMenu>
+            <NavigationMenuList>{children}</NavigationMenuList>
+          </NavigationMenu>
+        </div>
+      </div>
+      <div className='flex w-full flex-row justify-end lg:hidden'>
+        <MenuIcon className='h-6 w-6' />
       </div>
     </div>
   );
@@ -64,18 +73,32 @@ export function NavbarItem({
   readonly className?: string;
 }) {
   const ref = useRef<HTMLButtonElement>(null);
-  const [offsetLeft, setOffsetLeft] = useState(0);
+  const parentWidth =
+    ref.current?.parentElement?.parentElement?.getBoundingClientRect().width ??
+    0;
+  const width = Math.max(parentWidth, 500);
+  const left = (width - parentWidth) / 2;
+
   useEffect(() => {
-    setInterval(() => {
-      if (ref.current) {
-        setOffsetLeft(ref.current.offsetLeft);
+    if (ref.current) {
+      const a = ref.current?.parentElement?.parentElement?.parentElement
+        ?.parentElement?.childNodes?.[1] as HTMLElement;
+      if (a) {
+        console.log(left);
+        a.style.left = `-${left}px`;
       }
-    });
-  });
+    }
+  }, [left]);
+
   return (
     <NavigationMenuItem>
       <NavigationMenuTrigger ref={ref}>{title}</NavigationMenuTrigger>
-      <NavigationMenuContent className={cn('min-w-[540px] p-4', className)}>
+      <NavigationMenuContent
+        style={{
+          width,
+        }}
+        className={cn('p-4', className)}
+      >
         {children}
       </NavigationMenuContent>
     </NavigationMenuItem>
