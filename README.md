@@ -41,7 +41,7 @@ To run the SmartCine project locally, follow these steps:
 
 3. Set up the environment variables:
    - Create a `.env.development` file in the project root directory.
-   - Add these environment variables:  **API_URL=<http://<yourserver>/api/>** **API_VERSION=v1**
+   - Add these environment variables:  **API_URL=<http://yourserverdomain.com/api/>**  **API_VERSION=v1**
 
 4. Start the development server:
 
@@ -52,7 +52,7 @@ To run the SmartCine project locally, follow these steps:
 5. Open the application in your browser:
 
    ```shell
-   http://localhost:5170
+   http://localhost:3000
    ```
 
 ## Demo
