@@ -73,13 +73,14 @@ export function NavbarItem({
   readonly className?: string;
 }) {
   const ref = useRef<HTMLButtonElement>(null);
-  const parentWidth =
-    ref.current?.parentElement?.parentElement?.getBoundingClientRect().width ??
-    0;
-  const width = Math.max(parentWidth, 500);
-  const left = (width - parentWidth) / 2;
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
+    const parentWidth =
+      ref.current?.parentElement?.parentElement?.getBoundingClientRect()
+        .width ?? 0;
+    setWidth(Math.max(parentWidth, 500));
+    const left = (width - parentWidth) / 2;
     if (ref.current) {
       const a = ref.current?.parentElement?.parentElement?.parentElement
         ?.parentElement?.childNodes?.[1] as HTMLElement;
@@ -88,7 +89,7 @@ export function NavbarItem({
         a.style.left = `-${left}px`;
       }
     }
-  }, [left]);
+  }, [width]);
 
   return (
     <NavigationMenuItem>
