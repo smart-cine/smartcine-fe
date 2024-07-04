@@ -96,7 +96,7 @@ body {
   @apply antialiased;
 }
 html {
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 /* scrollbar setup */
