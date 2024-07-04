@@ -40,8 +40,8 @@ To run the SmartCine project locally, follow these steps:
    ```
 
 3. Set up the environment variables:
-   - Create a `.env.local` file in the project root directory.
-   - Add these environment variables:  **API_URL=<http://khoakomlem-internal.ddns.net:9999/api/v1/>**
+   - Create a `.env.development` file in the project root directory.
+   - Add these environment variables:  **API_URL=<http://<yourserver>/api/>** **API_VERSION=v1**
 
 4. Start the development server:
 
