@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
-import { useListDate } from '@/hooks/useListDate';
+
+import { useBookForm } from '../../hooks/useBookForm';
 
 export function DatePicker({
   className,
@@ -10,26 +11,29 @@ export function DatePicker({
   readonly index: number;
   readonly time: Date;
 }) {
-  const setSelectedIndex = useListDate((state) => state.setSelectedIndex);
-  const isSelected = useListDate((state) => state.selectedIndex === index);
+  const setSelectedDate = useBookForm((state) => state.setSelectedDate);
+  const isSelected = useBookForm((state) => state.selectedDate === index);
 
   return (
     <div
       className={cn(
-        'flex min-w-[70px] cursor-pointer flex-col overflow-hidden rounded-sm border border-gray-300',
+        'flex min-w-[70px] cursor-pointer flex-col overflow-hidden rounded-sm border border-gray-300 transition-all',
         {
           'border-momo text-momo': isSelected,
         },
         className
       )}
       onClick={() => {
-        setSelectedIndex(index);
+        setSelectedDate(index);
       }}
     >
       <div
-        className={cn('bg-gray-100 px-6 py-2 text-center font-semibold', {
-          'bg-momo text-gray-50': isSelected,
-        })}
+        className={cn(
+          'bg-gray-100 px-6 py-2 text-center font-semibold transition-all',
+          {
+            'bg-momo text-gray-50': isSelected,
+          }
+        )}
       >
         {time.getDate()}
       </div>

@@ -20,12 +20,3 @@ export function BookForm({
     </bookFormContext.Provider>
   );
 }
-
-export function useBookForm() {
-  const context = useContext(bookFormContext);
-  if (context === undefined) {
-    throw new Error('useBookForm must be used within a BookForm!');
-  }
-
-  return context;
-}

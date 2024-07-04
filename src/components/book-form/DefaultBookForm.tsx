@@ -7,8 +7,8 @@ import { useListFilm } from '@/core/film/film.query';
 import { AgeTag } from '../AgeTag';
 import { CinemaDescription } from './components/CinemaDescription';
 import { CinemaSearch } from './components/CinemaSearch';
+import { ListCinema } from './components/list-cinema/ListCinema';
 import { ListDate } from './components/list-date/ListDate';
-import { ListCinema } from './components/ListCinema';
 import { Location } from './components/Location';
 import { NearestLocation } from './components/NearestLocation';
 import { PerformTimes } from './components/PerformTimes';
@@ -29,10 +29,10 @@ export function DefaultBookForm({
       )}
     >
       <div className='topview flex flex-col gap-y-3 border-b'>
-        <div className='flex grow flex-row flex-wrap justify-end gap-x-3 px-5 pt-4 md:flex-nowrap'>
+        <div className='flex grow flex-row flex-wrap justify-start gap-x-3 px-5 pt-4 md:flex-nowrap'>
           <p className='hidden md:block'>Vị trí</p>
-          <Location className='grow' />
-          <NearestLocation className='grow' />
+          <Location className='max-md:grow' />
+          <NearestLocation className='max-md:grow' />
         </div>
         <ListCinema className='px-5 pb-2' />
       </div>

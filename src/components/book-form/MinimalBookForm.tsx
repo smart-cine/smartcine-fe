@@ -10,8 +10,8 @@ import { useReadFilm } from '@/core/film/film.query';
 
 import { Separator } from '../ui/separator';
 import { CinemaDescription } from './components/CinemaDescription';
+import { ListCinema } from './components/list-cinema/ListCinema';
 import { ListDate } from './components/list-date/ListDate';
-import { ListCinema } from './components/ListCinema';
 import { Location } from './components/Location';
 import { NearestLocation } from './components/NearestLocation';
 import { PerformTimes } from './components/PerformTimes';
