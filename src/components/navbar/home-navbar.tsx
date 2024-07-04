@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import {
   NavigationMenuIndicator,
   NavigationMenuViewport,
@@ -31,6 +33,17 @@ export function Navbar({
       )}
     >
       <div className='hidden w-full flex-row lg:flex'>
+        <Link href='/' className='flex items-center'>
+          <div className='flex flex-row items-center gap-x-2.5'>
+            <Image
+              src='/smartcine-logo.svg'
+              alt='smartcine logo'
+              width={35}
+              height={35}
+            />
+            <p className='font-bold leading-6 text-[#825AD8]'>SmartCine</p>
+          </div>
+        </Link>
         <div className='grow' />
         <div className='flex flex-row'>
           <NavigationMenu>
