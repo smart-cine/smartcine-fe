@@ -1,3 +1,5 @@
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fsmart-cine%2Fsmartcine-website%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visitors&edge_flat=true)](https://hits.seeyoufarm.com)
+![Time-work](https://wakatime.com/badge/user/592c97c4-15ad-49cb-ac34-d607be35c524/project/afba0b32-c17f-4696-9de2-720d8ac964a1.svg)
 
 # SmartCine
 
@@ -60,8 +62,10 @@ To run the SmartCine project locally, follow these steps:
 ![demo3](https://github.com/smart-cine/smartcine-website/blob/main/public/screenshot/3.png?raw=true)
 
 ## Acknowledgment
+
 The design of this website draws inspiration from Momo Cinema
-- Design reference: https://momo.vn/cinema
+
+- Design reference: <https://momo.vn/cinema>
 
 ## Contributing
 
