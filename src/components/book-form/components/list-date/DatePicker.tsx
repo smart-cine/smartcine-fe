@@ -18,7 +18,7 @@ export function DatePicker({
       className={cn(
         'flex min-w-[70px] cursor-pointer flex-col overflow-hidden rounded-sm border border-gray-300',
         {
-          'border-momo': isSelected,
+          'border-momo text-momo': isSelected,
         },
         className
       )}
@@ -36,7 +36,9 @@ export function DatePicker({
       <div className='p-1 text-center text-xs'>
         {index === 0
           ? 'Hôm nay'
-          : ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'][time.getDate() % 7]}
+          : ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'][
+              time.getDate() % 7
+            ]}
       </div>
     </div>
   );
