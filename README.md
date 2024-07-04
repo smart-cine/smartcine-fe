@@ -59,6 +59,10 @@ To run the SmartCine project locally, follow these steps:
 ![demo2](https://github.com/smart-cine/smartcine-website/blob/main/public/screenshot/2.png?raw=true)
 ![demo3](https://github.com/smart-cine/smartcine-website/blob/main/public/screenshot/3.png?raw=true)
 
+## Acknowledgment
+The design of this website draws inspiration from Momo Cinema
+- Design reference: https://momo.vn/cinema
+
 ## Contributing
 
 Contributions to the SmartCine project are welcome. If you find any issues or have suggestions for improvements, please feel free to create a new issue or submit a pull request.
