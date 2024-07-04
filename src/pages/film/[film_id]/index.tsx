@@ -6,13 +6,13 @@ import { MinimalBookForm } from '@/components/book-form/MinimalBookForm';
 import { FilmCard } from '@/components/card/FilmCard';
 import { ConstrainedContainer } from '@/components/container/constrained-container';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { FilmDetail } from '@/components/pages/film/[filmId]/FilmDetail';
+import { FilmDetail } from '@/components/pages/film/[film_id]/FilmDetail';
 import { Separator } from '@/components/ui/separator';
 import { useListFilm, useReadFilm } from '@/core/film/film.query';
 
 export default function FilmById() {
   const router = useRouter();
-  const film_id = router.query.filmId as string | undefined;
+  const film_id = router.query.film_id as string | undefined;
 
   const { data: film } = useReadFilm(film_id);
   const { data: films = [] } = useListFilm();

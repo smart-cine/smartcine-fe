@@ -1,16 +1,16 @@
-import { NOT_FOUND_PICTURE } from '@/constant/NotFoundPicture';
+import { useRef } from 'react';
+import Link from 'next/link';
 import ShowMoreText from 'react-show-more-text';
 
 import { cn } from '@/lib/utils';
 import { AgeTag } from '@/components/AgeTag';
 import { MinimalFilmCard } from '@/components/card/MinimalFilmCard';
-import { PickSeatDialog } from '@/components/dialog/pick-seat/PickSeatDialog';
+import { TrailerTrigger } from '@/components/dialog/TrailerTrigger';
 import { StarIcon } from '@/components/icon/StarIcon';
 import { PlayButton } from '@/components/PlayButton';
 import { StarRating } from '@/components/Rating';
-import { Separator } from '@/components/ui/separator';
+import { Label } from '@/components/ui/label';
 import { useReadFilm } from '@/core/film/film.query';
-import { type TFilm } from '@/core/film/film.type';
 
 export function FilmDetail({
   className,
@@ -77,18 +77,26 @@ export function FilmDetail({
           </div>
         </div>
         <div className='flex flex-row gap-x-3 text-sm'>
-          <div className='flex cursor-pointer flex-row items-center gap-x-2'>
-            <div className='rounded-full border-2 border-momo p-0.5'>
-              <PlayButton film_id={film.id} className='h-4 w-4' />
+          <TrailerTrigger film_id={film.id}>
+            <div className='flex cursor-pointer flex-row items-center gap-x-2'>
+              <div className='rounded-full border-2 border-momo p-0.5'>
+                <PlayButton
+                  hasTrailerTrigger={false}
+                  film_id={film.id}
+                  className='h-4 w-4 border-momo'
+                />
+              </div>
+              Xem review
             </div>
-            Xem review
-          </div>
-          <div className='flex cursor-pointer flex-row items-center gap-x-2'>
-            <div className='rounded-full border-2 border-yellow-300 p-0.5'>
-              <StarIcon className='h-4 w-4' />
+          </TrailerTrigger>
+          <Link href={`/film/${film.id}/review`} target='_blank'>
+            <div className='flex cursor-pointer flex-row items-center gap-x-2'>
+              <div className='rounded-full border-2 border-yellow-300 p-0.5'>
+                <StarIcon className='h-4 w-4' />
+              </div>
+              Xem đánh giá
             </div>
-            Xem review
-          </div>
+          </Link>
         </div>
         <div />
       </div>
