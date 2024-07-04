@@ -113,12 +113,15 @@ export default function Home() {
       <ConstrainedContainer className='py-6'>
         <div className='flex flex-row flex-wrap gap-x-10 gap-y-5 lg:flex-nowrap'>
           <p className='mx-auto mt-5 w-fit text-3xl font-bold text-pink-600 lg:whitespace-nowrap'>
-            You ask, SmartCine answer
+            Frequently asked questions
           </p>
           <FAQSection />
         </div>
         <p className='mt-10'>
-          Your question not found? Please see more <Link href='#'>here</Link>
+          Not finding your question? Contact support{' '}
+          <Link className='text-sky-600' href='#'>
+            here
+          </Link>
         </p>
       </ConstrainedContainer>
       <div className='py-32' />

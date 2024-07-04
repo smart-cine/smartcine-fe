@@ -12,7 +12,6 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log('query', req.query);
   res.status(200).json({
     success: true,
     data: performs,

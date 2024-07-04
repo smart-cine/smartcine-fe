@@ -83,7 +83,7 @@ export function FilmDetail({
                 <PlayButton
                   hasTrailerTrigger={false}
                   film_id={film.id}
-                  className='h-4 w-4 border-momo'
+                  className='h-4 w-4'
                 />
               </div>
               Xem review
