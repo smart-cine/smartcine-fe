@@ -29,10 +29,10 @@ export function DefaultBookForm({
       )}
     >
       <div className='topview flex flex-col gap-y-3 border-b'>
-        <div className='vitri flex flex-row items-center gap-x-3 px-4 pt-4'>
-          <p>Vị trí</p>
-          <Location />
-          <NearestLocation />
+        <div className='flex grow flex-row flex-wrap justify-end gap-x-3 px-5 pt-4 md:flex-nowrap'>
+          <p className='hidden md:block'>Vị trí</p>
+          <Location className='grow' />
+          <NearestLocation className='grow' />
         </div>
         <ListCinema className='px-5 pb-2' />
       </div>

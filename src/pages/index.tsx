@@ -111,8 +111,8 @@ export default function Home() {
 
       {/* FAQ */}
       <ConstrainedContainer className='py-6'>
-        <div className='flex flex-row gap-x-10'>
-          <p className='mx-auto mt-5 w-fit whitespace-nowrap text-3xl font-bold text-pink-600'>
+        <div className='flex flex-row flex-wrap gap-x-10 gap-y-5 lg:flex-nowrap'>
+          <p className='mx-auto mt-5 w-fit text-3xl font-bold text-pink-600 lg:whitespace-nowrap'>
             You ask, SmartCine answer
           </p>
           <FAQSection />
