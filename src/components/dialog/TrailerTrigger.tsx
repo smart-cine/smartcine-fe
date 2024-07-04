@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { videoId } from '@gonetone/get-youtube-id-by-url';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import ReactShowMoreText from 'react-show-more-text';
 

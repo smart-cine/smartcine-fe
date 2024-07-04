@@ -92,7 +92,7 @@ export function genQueryCrud<
     read(id: string | undefined, ...args: ParametersExceptFirst<R>) {
       return useQuery({
         queryKey: [queryKey, id],
-        queryFn: async () => allMethods.read(id, ...args),
+        queryFn: async () => allMethods.read(id ?? '', ...args),
         enabled: Boolean(id),
       });
     },

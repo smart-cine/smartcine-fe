@@ -72,6 +72,7 @@ export default function FilmByIdReview() {
             </div>
             <div className='flex flex-col gap-y-5'>
               {Array.from({ length: 5 }).map((_, index) => (
+                // eslint-disable-next-line react/no-array-index-key
                 <UserComment key={index} body='phim nhu cc' />
               ))}
             </div>
