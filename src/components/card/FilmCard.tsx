@@ -50,6 +50,7 @@ export function FilmCard({
             {hasPlayButton && (
               <div className='absolute left-0 top-0 flex h-full w-full items-center'>
                 <PlayButton
+                  hasBorder
                   film_id={film.id}
                   className='group-hover:scale-[110%]'
                 />

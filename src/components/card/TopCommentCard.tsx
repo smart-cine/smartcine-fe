@@ -7,6 +7,7 @@ import { useReadFilm } from '@/core/film/film.query';
 import { CommentIcon } from '../icon/CommentIcon';
 import { StarIcon } from '../icon/StarIcon';
 import { UserComment } from '../UserComment';
+import { FilmCardReview } from './FilmCardReview';
 import { MinimalFilmCard } from './MinimalFilmCard';
 
 export function TopCommentCard({
@@ -28,20 +29,7 @@ export function TopCommentCard({
       )}
     >
       <div className='relative'>
-        <MinimalFilmCard film_id={film.id} className='h-[200px]' />
-        <div className='absolute bottom-0 flex flex-col p-2.5 text-sm font-bold text-gray-100'>
-          <div className=''>Kẻ trộm mặt trăng 4</div>
-          <div className='flex flex-row gap-x-5'>
-            <div className='flex flex-row items-center gap-x-1'>
-              <StarIcon className='h-7 w-7' />
-              <p>9.1</p>
-            </div>
-            <div className='flex flex-row items-center gap-x-1'>
-              <CommentIcon className='h-7 w-7' />
-              <p>9.1</p>
-            </div>
-          </div>
-        </div>
+        <FilmCardReview className='h-[200px]' film_id={film.id} />
       </div>
       <div className='flex h-[280px] flex-col gap-y-3 p-4'>
         {[

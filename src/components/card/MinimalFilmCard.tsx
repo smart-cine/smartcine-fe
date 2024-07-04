@@ -36,7 +36,12 @@ export function MinimalFilmCard({
       />
       <div className='absolute left-0 top-0 flex h-full w-full items-center justify-center'>
         {hasPlayButton && film && (
-          <PlayButton film_id={film.id} onClick={playClick} />
+          <PlayButton
+            hasBorder
+            className='h-14 w-14'
+            film_id={film.id}
+            onClick={playClick}
+          />
         )}
       </div>
     </div>
