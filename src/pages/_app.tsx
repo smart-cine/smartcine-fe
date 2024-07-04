@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { getMessages } from '@/messages';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { NextIntlClientProvider } from 'next-intl';
 
 import { queryClient } from '@/lib/query-client';
@@ -19,6 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
         timeZone='Asia/Ho_Chi_Minh'
       >
         <Component {...pageProps} />
+        <SpeedInsights />
       </NextIntlClientProvider>
     </QueryClientProvider>
   );
