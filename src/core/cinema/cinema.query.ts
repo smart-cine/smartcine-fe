@@ -8,4 +8,4 @@ export const {
   read: useReadCinema,
   patch: usePatchCinema,
   delete: useDeleteCinema,
-} = genQueryCrud<TCinema>('cinemas');
+} = genQueryCrud<TCinema>('cinema');
