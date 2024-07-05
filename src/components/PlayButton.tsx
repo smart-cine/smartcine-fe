@@ -7,8 +7,6 @@ type ButtonProps = {
   readonly onClick?: (e: React.MouseEvent<SVGSVGElement>) => void;
   readonly className?: string;
   readonly hasBorder?: boolean;
-  readonly outsideClass?: string;
-  readonly onClickOutside?: () => void;
 };
 
 type PlayButtonProps = ButtonProps & {
@@ -22,18 +20,14 @@ export function PlayButton(props: PlayButtonProps) {
       <Button
         hasBorder={props.hasBorder}
         className={props.className}
-        outsideClass={props.outsideClass}
         onClick={props.onClick}
-        onClickOutside={props.onClickOutside}
       />
     </TrailerTrigger>
   ) : (
     <Button
       hasBorder={props.hasBorder}
       className={props.className}
-      outsideClass={props.outsideClass}
       onClick={props.onClick}
-      onClickOutside={props.onClickOutside}
     />
   );
 }
@@ -42,15 +36,8 @@ function Button(props: ButtonProps) {
   return (
     <div
       className={cn(
-        'absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2',
-        props.outsideClass
+        'absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2'
       )}
-      onClick={(e) => {
-        if (props.onClickOutside) {
-          props.onClickOutside();
-          e.stopPropagation();
-        }
-      }}
     >
       <PlayIcon
         className={cn(

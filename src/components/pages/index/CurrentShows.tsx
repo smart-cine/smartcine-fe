@@ -12,7 +12,7 @@ import { useListPerform } from '@/core/perform/perform.query';
 export function CurrentShows({
   className,
   variant = 'black',
-  hasIndex = true,
+  hasIndex = false,
 }: {
   readonly className?: string;
   readonly variant?: 'black' | 'white';

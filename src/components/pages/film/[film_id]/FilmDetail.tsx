@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { AgeTag } from '@/components/AgeTag';
 import { MinimalFilmCard } from '@/components/card/MinimalFilmCard';
 import { TrailerTrigger } from '@/components/dialog/TrailerTrigger';
+import { PlayIcon } from '@/components/icon/PlayIcon';
 import { StarIcon } from '@/components/icon/StarIcon';
 import { PlayButton } from '@/components/PlayButton';
 import { StarRating } from '@/components/Rating';
@@ -31,6 +32,7 @@ export function FilmDetail({
       )}
     >
       <MinimalFilmCard
+        hasPlayButton
         film_id={film.id}
         className='max-h-[380px] max-w-[240px] basis-1/4'
       />
@@ -80,11 +82,7 @@ export function FilmDetail({
           <TrailerTrigger film_id={film.id}>
             <div className='flex cursor-pointer flex-row items-center gap-x-2'>
               <div className='rounded-full border-2 border-momo p-0.5'>
-                <PlayButton
-                  hasTrailerTrigger={false}
-                  film_id={film.id}
-                  className='h-4 w-4'
-                />
+                <PlayIcon className='h-4 w-4' />
               </div>
               Xem review
             </div>
