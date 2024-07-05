@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import ReactShowMoreText from 'react-show-more-text';
 
@@ -7,12 +7,9 @@ import {
   Dialog,
   DialogContent,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { useReadFilm } from '@/core/film/film.query';
-import { type TFilm } from '@/core/film/film.type';
 
 import { MinimalFilmCard } from '../card/MinimalFilmCard';
 import { Button } from '../ui/button';
@@ -44,7 +41,12 @@ export function TrailerTrigger({
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className='max-w-4xl overflow-hidden rounded-sm border-none bg-[#161617] p-0'>
+      <DialogContent
+        className={cn(
+          'max-w-4xl overflow-hidden rounded-sm border-none bg-[#161617] p-0',
+          className
+        )}
+      >
         <div className='w-full'>
           <LiteYouTubeEmbed
             id={film.trailer_url ? youtube_parser(film.trailer_url) : ''}
