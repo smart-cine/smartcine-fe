@@ -16,7 +16,7 @@ export function FilmCard({
   variant = 'black',
   className,
   imageClass,
-  hasPlayButton,
+  hasPlayButton = false,
   indexClass,
 }: {
   readonly film_id: string;
@@ -32,29 +32,27 @@ export function FilmCard({
 
   return (
     <div className={cn('flex h-full select-none flex-col', className)}>
-      <Link
-        href={`/film/${film.id}`}
-        className={cn('group relative', imageClass)}
-      >
+      <div className={cn('group relative', imageClass)}>
         <div className='h-[calc(100%-10px)]'>
           <div className={cn('relative h-full overflow-hidden rounded-md')}>
-            <Image
-              src={film.picture_url ?? NOT_FOUND_PICTURE.FILM}
-              width={1000}
-              height={1000}
-              className={cn(
-                'h-full object-cover duration-300 group-hover:scale-[105%]'
-              )}
-              alt='picture of the film'
-            />
+            <Link href={`/film/${film.id}`}>
+              <Image
+                src={film.picture_url ?? NOT_FOUND_PICTURE.FILM}
+                width={1000}
+                height={1000}
+                className={cn(
+                  'h-full object-cover duration-300 group-hover:scale-[105%]'
+                )}
+                alt='picture of the film'
+              />
+            </Link>
             {hasPlayButton && (
-              <div className='absolute left-0 top-0 flex h-full w-full items-center'>
-                <PlayButton
-                  hasBorder
-                  film_id={film.id}
-                  className='group-hover:scale-[110%]'
-                />
-              </div>
+              <PlayButton
+                hasBorder
+                hasTrailerTrigger
+                film_id={film.id}
+                className='group-hover:scale-[110%]'
+              />
             )}
             <AgeTag
               className='absolute left-1.5 top-1.5'
@@ -76,7 +74,7 @@ export function FilmCard({
             {index}
           </div>
         )}
-      </Link>
+      </div>
 
       <div className='flex flex-col'>
         <Link href={`/film/${film.id}`}>
