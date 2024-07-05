@@ -1,54 +1,67 @@
-import { useCallback } from 'react';
-
 import { cn } from '@/lib/utils';
-import { type TFilm } from '@/core/film/film.type';
 
 import { TrailerTrigger } from './dialog/TrailerTrigger';
 import { PlayIcon } from './icon/PlayIcon';
 
-export function PlayButton({
-  className,
-  onClick,
-  film_id,
-  hasTrailerTrigger = true,
-  hasBorder = false,
-}: {
-  readonly className?: string;
+type ButtonProps = {
   readonly onClick?: (e: React.MouseEvent<SVGSVGElement>) => void;
+  readonly className?: string;
+  readonly hasBorder?: boolean;
+  readonly outsideClass?: string;
+  readonly onClickOutside?: () => void;
+};
+
+type PlayButtonProps = ButtonProps & {
   readonly film_id: string;
   readonly hasTrailerTrigger?: boolean;
-  readonly hasBorder?: boolean;
-}) {
-  return hasTrailerTrigger ? (
-    <TrailerTrigger film_id={film_id}>
-      <Button hasBorder={hasBorder} className={className} onClick={onClick} />
+};
+
+export function PlayButton(props: PlayButtonProps) {
+  return props.hasTrailerTrigger ? (
+    <TrailerTrigger film_id={props.film_id}>
+      <Button
+        hasBorder={props.hasBorder}
+        className={props.className}
+        outsideClass={props.outsideClass}
+        onClick={props.onClick}
+        onClickOutside={props.onClickOutside}
+      />
     </TrailerTrigger>
   ) : (
-    <Button hasBorder={hasBorder} className={className} onClick={onClick} />
+    <Button
+      hasBorder={props.hasBorder}
+      className={props.className}
+      outsideClass={props.outsideClass}
+      onClick={props.onClick}
+      onClickOutside={props.onClickOutside}
+    />
   );
 }
 
-function Button({
-  onClick,
-  className,
-  hasBorder,
-}: {
-  readonly onClick?: (e: React.MouseEvent<SVGSVGElement>) => void;
-  readonly className?: string;
-  readonly hasBorder?: boolean;
-}) {
+function Button(props: ButtonProps) {
   return (
-    <div className={cn('w-full')}>
+    <div
+      className={cn(
+        'absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2',
+        props.outsideClass
+      )}
+      onClick={(e) => {
+        if (props.onClickOutside) {
+          props.onClickOutside();
+          e.stopPropagation();
+        }
+      }}
+    >
       <PlayIcon
         className={cn(
           'mx-auto h-10 w-10 cursor-pointer text-white duration-200 hover:scale-[110%]',
           {
             'rounded-full border-2 border-white bg-black bg-opacity-25':
-              hasBorder,
+              props.hasBorder,
           },
-          className
+          props.className
         )}
-        onClick={onClick}
+        onClick={props.onClick}
       />
     </div>
   );
