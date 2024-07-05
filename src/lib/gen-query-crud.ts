@@ -1,11 +1,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQuery } from '@tanstack/react-query';
 
+import {
+  type SuccessPaginationRes,
+  type SuccessRes,
+} from '@/types/ServerResponse';
 import { queryClient } from '@/lib/query-client';
 
 import { customAxios } from './custom-axios';
+import { customFetchJson } from './custom-fetch';
 
-export type CreateMethod<Item> = (body?: Record<string, any>) => Promise<Item>;
+export type CreateMethod<Item> = (
+  body?: Record<string, any>
+) => Promise<void | Item>;
 export type ListMethod<Item> = (
   options?: Record<string, any>
 ) => Promise<Item[]>;
@@ -16,8 +23,8 @@ export type ReadMethod<Item> = (
 export type PatchMethod<Item> = (
   id: string,
   patch: Partial<Item>
-) => Promise<Item>;
-export type DeleteMethod<Item> = (id: string) => Promise<Item>;
+) => Promise<void | Item>;
+export type DeleteMethod<Item> = (id: string) => Promise<void | Item>;
 
 export function genQueryCrud<
   Item,
@@ -34,42 +41,12 @@ export function genQueryCrud<
     read: R;
     patch: P;
     delete: D;
-  }> = {}
+  }> = {},
+  fetchType: 'axios' | 'fetch' = 'fetch'
 ) {
-  const defaultCreate: CreateMethod<Item> = async (body) =>
-    (await customAxios.post(`/${queryKey}`, body)).data.data as Item;
-  const defaultList: ListMethod<Item> = async (options) =>
-    (
-      await customAxios.get(
-        `/${queryKey}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
-      )
-    ).data.data as Item[];
-  const defaultRead: ReadMethod<Item> = async (id, options) =>
-    (
-      await customAxios.get(
-        `/${queryKey}/${id}${
-          options ? `?${new URLSearchParams(options).toString()}` : ''
-        }`
-      )
-    ).data.data as Item;
-  const defaultPatch: PatchMethod<Item> = async (id, patch) =>
-    (await customAxios.put(`/${queryKey}/${id}`, patch)).data.data as Item;
-  const defaultDelete: DeleteMethod<Item> = async (id) =>
-    (await customAxios.delete(`/${queryKey}/${id}`)).data.data as Item;
-
   const allMethods = {
-    create: defaultCreate as C,
-    list: defaultList as L,
-    read: defaultRead as R,
-    patch: defaultPatch as P,
-    delete: defaultDelete as D,
+    ...genDefaultCrudApi<Item>(queryKey, fetchType),
     ...methods,
-  } satisfies {
-    create: C;
-    list: L;
-    read: R;
-    patch: P;
-    delete: D;
   };
 
   return {
@@ -116,6 +93,93 @@ export function genQueryCrud<
           });
         },
       });
+    },
+  };
+}
+
+function genDefaultCrudApi<Item>(
+  url: string,
+  type: 'axios' | 'fetch' = 'fetch'
+): {
+  create: CreateMethod<Item>;
+  list: ListMethod<Item>;
+  read: ReadMethod<Item>;
+  patch: PatchMethod<Item>;
+  delete: DeleteMethod<Item>;
+} {
+  if (type === 'axios') {
+    return {
+      async create(body?: Record<string, any>) {
+        return (await customAxios.post<SuccessRes<Item>>(url, body)).data.data;
+      },
+      async list(options?: Record<string, any>) {
+        return (
+          await customAxios.get<SuccessPaginationRes<Item>>(
+            `${url}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
+          )
+        ).data.data;
+      },
+      async read(id: string, options?: Record<string, any>) {
+        return (
+          await customAxios.get<SuccessRes<Item>>(
+            `${url}/${id}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
+          )
+        ).data.data;
+      },
+      async patch(id: string, patch: Record<string, any>) {
+        return (
+          await customAxios.put<SuccessRes<Item | undefined>>(
+            `${url}/${id}`,
+            patch
+          )
+        ).data.data;
+      },
+      async delete(id: string) {
+        return (
+          await customAxios.delete<SuccessRes<Item | undefined>>(`${url}/${id}`)
+        ).data.data;
+      },
+    };
+  }
+
+  // Default value: fetch
+  return {
+    async create(body?: Record<string, any>) {
+      return (
+        await customFetchJson<SuccessRes<Item>>(url, {
+          method: 'POST',
+          body: JSON.stringify(body),
+        })
+      ).data;
+    },
+    async list(options?: Record<string, any>) {
+      return (
+        await customFetchJson<SuccessPaginationRes<Item>>(
+          `${url}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
+        )
+      ).data;
+    },
+    async read(id: string, options?: Record<string, any>) {
+      return (
+        await customFetchJson<SuccessRes<Item>>(
+          `${url}/${id}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
+        )
+      ).data;
+    },
+    async patch(id: string, patch: Record<string, any>) {
+      return (
+        await customFetchJson<SuccessRes<Item | undefined>>(`${url}/${id}`, {
+          method: 'PATCH',
+          body: JSON.stringify(patch),
+        })
+      ).data;
+    },
+    async delete(id: string) {
+      return (
+        await customFetchJson<SuccessRes<Item | undefined>>(`${url}/${id}`, {
+          method: 'DELETE',
+        })
+      ).data;
     },
   };
 }
