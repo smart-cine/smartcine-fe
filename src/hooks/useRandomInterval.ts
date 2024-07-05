@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 // Utility helper for random number generation
 const random = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min)) + min;
+
 export const useRandomInterval = (
   callback: () => void,
   minDelay: unknown,

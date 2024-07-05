@@ -42,7 +42,7 @@ export default function Home() {
         <p className='mx-auto mt-5 w-fit text-3xl font-bold text-white'>
           <Sparkles>Current shows</Sparkles>
         </p>
-        <CurrentShows className='bg-transparent' />
+        <CurrentShows hasIndex className='bg-transparent' />
       </ConstrainedContainer>
 
       {/* Featured shows */}

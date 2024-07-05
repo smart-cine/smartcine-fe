@@ -1,7 +1,7 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 
 function handleUnAuthorized(error: any) {
-  console.log(error);
+  console.error(error);
   // If (window.location.pathname.split('/')[1] === 'share') return;
   // If (isServerError(error, 'ErrWrongAuthHeader')) {
   //   location.href = '/login';

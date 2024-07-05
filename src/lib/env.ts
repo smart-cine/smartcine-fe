@@ -16,7 +16,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_NODE_ENV: z.enum(['development', 'production']),
     NEXT_PUBLIC_API_URL: z.string().url(),
-    NEXT_PUBLIC_API_VERSION: z.string(),
+    NEXT_PUBLIC_API_VERSION: z.string().optional().default(''),
     NEXT_PUBLIC_TEST_TOKEN: z.string().optional(),
   },
   /*
