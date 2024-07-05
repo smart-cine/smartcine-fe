@@ -8,4 +8,4 @@ export const {
   read: useReadPerform,
   patch: usePatchPerform,
   delete: useDeletePerform,
-} = genQueryCrud<TPerform>('performs');
+} = genQueryCrud<TPerform>('perform');

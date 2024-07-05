@@ -8,4 +8,4 @@ export const {
   read: useReadFilm,
   patch: usePatchFilm,
   delete: useDeleteFilm,
-} = genQueryCrud<TFilm>('films');
+} = genQueryCrud<TFilm>('film');
