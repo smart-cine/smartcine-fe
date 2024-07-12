@@ -2,6 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useListCinema } from '@/core/cinema/cinema.query';
 
+import { ListCinema } from './list-cinema/ListCinema';
+
 export function CinemaSearch() {
   const { data: cinemas = [] } = useListCinema();
 
@@ -10,7 +12,8 @@ export function CinemaSearch() {
       <div className='bg-gray-50 px-3 py-2'>
         <Input placeholder='Tìm theo tên rạp ...' className='h-10 w-full p-2' />
       </div>
-      <div className='flex flex-col overflow-y-auto'>
+      <ListCinema />
+      {/* <div className='flex flex-col overflow-y-auto'>
         {cinemas.map((cinema) => (
           <Button
             key={cinema.id}
@@ -21,7 +24,7 @@ export function CinemaSearch() {
             <p className='font-normal'>{cinema.name}</p>
           </Button>
         ))}
-      </div>
+      </div> */}
     </>
   );
 }

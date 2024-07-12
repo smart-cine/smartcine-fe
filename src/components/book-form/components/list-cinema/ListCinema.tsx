@@ -7,12 +7,7 @@ export function ListCinema({ className }: { readonly className?: string }) {
   const { data: cinemas = [] } = useListCinema();
 
   return (
-    <div
-      className={cn(
-        'flex max-w-[100%] flex-row gap-x-5 overflow-auto py-2',
-        className
-      )}
-    >
+    <div className={cn('flex flex-col overflow-y-auto', className)}>
       {cinemas.map((cinema) => (
         <CinemaPicker key={cinema.id} cinema_id={cinema.id} />
       ))}
