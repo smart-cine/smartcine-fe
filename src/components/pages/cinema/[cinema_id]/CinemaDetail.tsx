@@ -42,7 +42,7 @@ export function CinemaDetail({
           height={100}
           className='min-h-full w-auto self-end rounded-sm'
         />
-        <div className='flex flex-col'>
+        <div className='flex flex-col gap-y-0.5'>
           <p className='text-4xl font-bold'>{cinema.name}</p>
           <p>Rạp chiếu phim cinema</p>
           <StarRating amount={40} rating={10} className='text-2xl font-bold' />

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { NOT_FOUND_PICTURE } from '@/constant/NotFoundPicture';
+import { NextSeo } from 'next-seo';
 
 import { useScrollableSidebar } from '@/hooks/useScrollableSidebar';
 import { MinimalBookForm } from '@/components/book-form/MinimalBookForm';
@@ -25,40 +26,42 @@ export default function FilmById() {
   }
 
   return (
-    <MainLayout
-      routes={[
-        {
-          label: 'Film',
-          route: '/film',
-        },
-        {
-          label: film.title,
-          route: `/film/${film.id}`,
-        },
-      ]}
-    >
-      <ConstrainedContainer
-        background={film.picture_url ?? NOT_FOUND_PICTURE.FILM}
+    <>
+      <NextSeo title={`SmartCine - ${film.title}`} />
+      <MainLayout
+        routes={[
+          {
+            label: 'Film',
+            route: '/film',
+          },
+          {
+            label: film.title,
+            route: `/film/${film.id}`,
+          },
+        ]}
       >
-        <FilmDetail film_id={film.id} />
-      </ConstrainedContainer>
-      <ConstrainedContainer>
-        <div className='flex flex-row flex-wrap justify-center gap-x-10 lg:flex-nowrap'>
-          <MinimalBookForm
-            className='my-16 max-w-[80%] lg:max-w-[66%]'
-            film_id={film.id}
-          />
+        <ConstrainedContainer
+          background={film.picture_url ?? NOT_FOUND_PICTURE.FILM}
+        >
+          <FilmDetail film_id={film.id} />
+        </ConstrainedContainer>
+        <ConstrainedContainer>
+          <div className='flex flex-row flex-wrap justify-center gap-x-10 lg:flex-nowrap'>
+            <MinimalBookForm
+              className='my-16 max-w-[80%] lg:max-w-[66%]'
+              film_id={film.id}
+            />
 
-          {/* Current shows */}
-          <div
-            ref={refParentSidebar}
-            className='my-16 w-full max-w-[80%] gap-y-2 lg:max-w-[30%]'
-          >
-            <div ref={refSidebar} className='relative flex flex-col'>
-              <p className='mb-4 text-xl font-bold'>Phim đang chiếu</p>
-              {films.map((film, index) => (
-                <div key={film.id}>
-                  {/* <FilmCard
+            {/* Current shows */}
+            <div
+              ref={refParentSidebar}
+              className='my-16 w-full max-w-[80%] gap-y-2 lg:max-w-[30%]'
+            >
+              <div ref={refSidebar} className='relative flex flex-col'>
+                <p className='mb-4 text-xl font-bold'>Phim đang chiếu</p>
+                {films.map((film, index) => (
+                  <div key={film.id}>
+                    {/* <FilmCard
                     hasPlayButton={false}
                     className='flex-row gap-x-2'
                     variant='white'
@@ -68,24 +71,25 @@ export default function FilmById() {
                     indexClass='text-xl text-gray-100 bottom-3 left-1'
                   />
                   {index !== films.length && <Separator className='mb-2.5' />} */}
-                  <FilmCard
-                    hasPlayButton={false}
-                    className='flex-row gap-x-2'
-                    variant='white'
-                    film_id={film.id}
-                    imageClass='max-w-[70px] aspect-[6.5/10]'
-                    index={index + 1}
-                    indexClass='text-xl text-gray-100 bottom-3 left-1'
-                  />
-                  {index !== films.length - 1 && (
-                    <Separator className='mb-2.5' />
-                  )}
-                </div>
-              ))}
+                    <FilmCard
+                      hasPlayButton={false}
+                      className='flex-row gap-x-2'
+                      variant='white'
+                      film_id={film.id}
+                      imageClass='max-w-[70px] aspect-[6.5/10]'
+                      index={index + 1}
+                      indexClass='text-xl text-gray-100 bottom-3 left-1'
+                    />
+                    {index !== films.length - 1 && (
+                      <Separator className='mb-2.5' />
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </ConstrainedContainer>
-    </MainLayout>
+        </ConstrainedContainer>
+      </MainLayout>
+    </>
   );
 }
