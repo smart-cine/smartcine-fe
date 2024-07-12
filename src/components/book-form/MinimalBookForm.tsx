@@ -10,7 +10,7 @@ import { useReadFilm } from '@/core/film/film.query';
 
 import { Separator } from '../ui/separator';
 import { CinemaDescription } from './components/CinemaDescription';
-import { ListCinema } from './components/list-cinema/ListCinema';
+import { ListCinemaFilter } from './components/list-cinema-filter/ListCinemaFilter';
 import { ListDate } from './components/list-date/ListDate';
 import { Location } from './components/Location';
 import { NearestLocation } from './components/NearestLocation';
@@ -42,7 +42,7 @@ export function MinimalBookForm({
         <div className='flex max-w-[95vw] grow-0 flex-col border-b pt-2'>
           <ListDate />
           <Separator className='mb-4' />
-          <ListCinema className='px-5' />
+          <ListCinemaFilter className='px-5' />
         </div>
         <div className='p-4'>
           <Accordion type='single' className='w-full'>
