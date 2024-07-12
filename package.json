@@ -55,6 +55,7 @@
     "@types/react-show-more-text": "^1.4.5",
     "babel-plugin-react-component-data-attribute": "^0.6.0",
     "eslint": "^8",
+    "eslint-config-next": "^14.2.5",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-xo": "^0.45.0",
     "eslint-config-xo-react": "^0.27.0",
