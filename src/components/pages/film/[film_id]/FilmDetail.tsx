@@ -27,14 +27,15 @@ export function FilmDetail({
   return (
     <div
       className={cn(
-        'flex flex-row flex-wrap gap-x-10 gap-y-4 py-16 text-white sm:flex-nowrap',
+        'flex flex-row flex-wrap gap-x-10 gap-y-4 py-16 text-white md:flex-nowrap',
         className
       )}
     >
       <MinimalFilmCard
         hasPlayButton
         film_id={film.id}
-        className='max-h-[380px] max-w-[240px] basis-1/4'
+        className='w-full md:w-auto'
+        imageClass='max-h-[170px] w-auto md:max-w-[240px] md:max-h-full md:w-full'
       />
       <div className='flex basis-3/4 flex-col gap-y-3.5'>
         <AgeTag restrictAge={film.restrict_age} />
