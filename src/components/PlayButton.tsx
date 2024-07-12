@@ -19,7 +19,7 @@ type PlayButtonProps = ButtonProps & {
 const Button = forwardRef<HTMLDivElement, ButtonProps>((props, ref) => (
   <div
     className={cn(
-      'absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2'
+      'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
     )}
   >
     <PlayIcon

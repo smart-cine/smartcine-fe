@@ -1,19 +1,10 @@
-import Link from 'next/link';
-
-import { DefaultBookForm } from '@/components/book-form/DefaultBookForm';
 import { ConstrainedContainer } from '@/components/container/constrained-container';
-import { SelectDropdown } from '@/components/dropdown/SelectDropdown';
 import { DefaultFilmSearchForm } from '@/components/form/film-search-form/DefaultFilmSearchForm';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { Sparkles } from '@/components/other/Sparkles';
 import { CheckList } from '@/components/pages/index/CheckList';
-import { CinemaSystem } from '@/components/pages/index/CinemaSystem';
 import { CurrentShows } from '@/components/pages/index/CurrentShows';
-import { FAQSection } from '@/components/pages/index/FAQSection';
-import { TopComments } from '@/components/pages/index/TopComments';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useListFilm } from '@/core/film/film.query';
 
 export default function FilmHome() {
   return (

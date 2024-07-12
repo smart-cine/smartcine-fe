@@ -36,11 +36,7 @@ export const FilmCard = memo<{
         <div className={cn('group relative', imageClass)}>
           <div className='h-[calc(100%-10px)]'>
             <Link href={`/film/${film.id}`}>
-              <div
-                className={cn(
-                  'relative h-full overflow-hidden rounded-md border-blend'
-                )}
-              >
+              <div className='border-blend relative h-full overflow-hidden rounded-md'>
                 <Image
                   src={film.picture_url ?? NOT_FOUND_PICTURE.FILM}
                   width={1000}

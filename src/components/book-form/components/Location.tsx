@@ -1,7 +1,6 @@
-import { ArrowDownWideNarrowIcon } from 'lucide-react';
-
 import { cn } from '@/lib/utils';
 import { ListAreaModal } from '@/components/drawer-dialog/ListAreaModal';
+import { ArrowDownIcon } from '@/components/icon/ArrowDownIcon';
 import { MapPointIcon } from '@/components/icon/MapPointIcon';
 import { Button } from '@/components/ui/button';
 
@@ -18,9 +17,9 @@ export function Location({ className }: { readonly className?: string }) {
       )}
     >
       <MapPointIcon className='h-4 w-4' />
-      <p className='text-momo'>{selectedArea}</p>
+      <p className='ml-1 text-sm font-semibold text-momo'>{selectedArea}</p>
       <div className='flex grow justify-end'>
-        <ArrowDownWideNarrowIcon />
+        <ArrowDownIcon className='h-4 w-4' />
       </div>
     </ListAreaModal>
   );
