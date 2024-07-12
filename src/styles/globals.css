@@ -99,6 +99,24 @@ html {
   /* overflow-x: hidden; */
 }
 
+.border-blend::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  -webkit-border-radius: inherit;
+  -moz-border-radius: inherit;
+  border-radius: inherit;
+  border: 1px solid white;
+  background-color: transparent;
+  content: "";
+  opacity: 0.2;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
 /* scrollbar setup */
 ::-webkit-scrollbar {
   width: 5px;
