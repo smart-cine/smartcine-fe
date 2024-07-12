@@ -23,6 +23,7 @@
         "@next/next/no-img-element": "off",
         "react/require-default-props": "off",
         "capitalized-comments": "off",
+        "react/boolean-prop-naming": "off",
         "new-cap": "off",
         "prettier/prettier": [
           "error",
