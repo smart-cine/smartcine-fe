@@ -14,11 +14,21 @@ import {
 } from '@/components/ui/breadcrumb';
 import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 
+import { ScrollToTop } from '../button/ScrollToTop';
 import { ConstrainedContainer } from '../container/constrained-container';
+import {
+  CustomBreadcrumb,
+  type TBreadcrumbRoute,
+} from '../other/CustomBreadcrumb';
+import { Footer } from '../pages/index/Footer';
 
 export const MainLayout = genericMemo<
-  React.FC<{ readonly className?: string; readonly children: React.ReactNode }>
->(({ className, children }) => (
+  React.FC<{
+    readonly className?: string;
+    readonly children: React.ReactNode;
+    routes?: TBreadcrumbRoute[];
+  }>
+>(({ className, children, routes = [] }) => (
   <div className={className}>
     <Navbar className='sticky top-0 z-10 bg-white'>
       <Navbar.Item title='Movie schedule'>
@@ -65,27 +75,15 @@ export const MainLayout = genericMemo<
     </Navbar>
 
     {/* Breadcumb */}
-    <ConstrainedContainer className='ml-2 p-2'>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href='/'>
-              <HomeIcon className='h-4 w-4' />
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href='/components'>Cinema</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Movie schedule</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <ConstrainedContainer className='ml-2'>
+      <CustomBreadcrumb routes={routes} />
     </ConstrainedContainer>
 
     {children}
+
+    <Footer />
+
+    <ScrollToTop />
   </div>
 ));
 MainLayout.displayName = 'MainLayout';
