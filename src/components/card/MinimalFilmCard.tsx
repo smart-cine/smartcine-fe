@@ -8,12 +8,14 @@ import { PlayButton } from '../PlayButton';
 
 export function MinimalFilmCard({
   className,
+  imageClass,
   film_id,
   hasPlayButton = false,
 }: {
   readonly className?: string;
   readonly film_id: string;
   readonly hasPlayButton?: boolean;
+  readonly imageClass?: string;
 }) {
   const { data: film } = useReadFilm(film_id);
 
@@ -24,7 +26,10 @@ export function MinimalFilmCard({
         width={5000}
         height={5000}
         alt='film background'
-        className='w-full object-cover object-top'
+        className={cn(
+          'aspect-[7/10] w-full object-cover object-top',
+          imageClass
+        )}
       />
       {hasPlayButton && film && (
         <PlayButton
