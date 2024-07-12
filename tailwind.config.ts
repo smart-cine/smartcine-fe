@@ -77,6 +77,9 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      borderColor: {
+        "blend": "hsla(var(--border), 0.1)",
+      }
     },
   },
   plugins: [require("tailwindcss-animate"), tailwindScrollbar({
