@@ -14,7 +14,7 @@ export function CinemaCard({
   return (
     <div
       className={cn(
-        'flex h-[150px] cursor-pointer flex-row items-center gap-x-5 rounded-md border border-gray-200 p-3 shadow-sm duration-100 hover:shadow-md',
+        'flex min-h-[150px] cursor-pointer flex-row flex-wrap items-center gap-x-5 rounded-md border border-gray-200 p-3 shadow-sm duration-100 hover:shadow-md',
         className
       )}
     >
