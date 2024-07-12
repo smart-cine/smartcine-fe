@@ -25,7 +25,18 @@ export default function FilmById() {
   }
 
   return (
-    <MainLayout>
+    <MainLayout
+      routes={[
+        {
+          label: 'Film',
+          route: '/film',
+        },
+        {
+          label: film.title,
+          route: `/film/${film.id}`,
+        },
+      ]}
+    >
       <ConstrainedContainer
         background={film.picture_url ?? NOT_FOUND_PICTURE.FILM}
       >
@@ -62,7 +73,7 @@ export default function FilmById() {
                     className='flex-row gap-x-2'
                     variant='white'
                     film_id={film.id}
-                    imageClass='max-w-[250px] h-[350px] lg:max-w-[70px] lg:max-h-[110px]'
+                    imageClass='max-w-[70px] aspect-[6.5/10]'
                     index={index + 1}
                     indexClass='text-xl text-gray-100 bottom-3 left-1'
                   />

@@ -28,11 +28,11 @@ export function Navbar({
   return (
     <div
       className={cn(
-        'mx-auto flex h-[56px] flex-row items-center border-b-[2px] bg-white px-16 py-2 shadow-sm sm:px-6 lg:px-[20%]',
+        'mx-auto flex h-[56px] flex-row items-center border-b-[2px] bg-white px-4 py-2 shadow-sm lg:px-24',
         className
       )}
     >
-      <div className='hidden w-full flex-row lg:flex'>
+      <div className='flex w-full flex-row'>
         <Link href='/' className='flex items-center'>
           <div className='flex flex-row items-center gap-x-2.5'>
             <Image
@@ -45,7 +45,7 @@ export function Navbar({
           </div>
         </Link>
         <div className='grow' />
-        <div className='flex flex-row'>
+        <div className='hidden flex-row lg:flex'>
           <NavigationMenu>
             <NavigationMenuList>{children}</NavigationMenuList>
           </NavigationMenu>

@@ -13,12 +13,8 @@ import { Button } from '@/components/ui/button';
 import { useListFilm } from '@/core/film/film.query';
 
 export default function Home() {
-  const { data: films = [] } = useListFilm();
-  console.log('films', films);
-
   return (
     <MainLayout>
-      {/* Movie schedule */}
       <ConstrainedContainer className='bg-[#FDF2F8] py-6'>
         <CheckList>
           <CheckList.Item>
@@ -124,7 +120,6 @@ export default function Home() {
           </Link>
         </p>
       </ConstrainedContainer>
-      <div className='py-32' />
     </MainLayout>
   );
 }

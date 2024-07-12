@@ -24,7 +24,22 @@ export default function FilmByIdReview() {
   }
 
   return (
-    <MainLayout>
+    <MainLayout
+      routes={[
+        {
+          label: 'Film',
+          route: '/film',
+        },
+        {
+          label: film.title,
+          route: `/film/${film.id}`,
+        },
+        {
+          label: 'Review',
+          route: `/film/${film.id}/review`,
+        },
+      ]}
+    >
       <ConstrainedContainer>
         <div className='flex flex-row gap-x-5 pt-6'>
           <div

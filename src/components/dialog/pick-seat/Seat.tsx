@@ -27,7 +27,7 @@ export function Seat({
   return (
     <div
       className={cn(
-        'm-2 flex min-h-12 min-w-12 cursor-pointer items-center justify-center rounded-sm bg-red-400 hover:bg-red-600',
+        'm-2 flex min-h-12 min-w-12 cursor-pointer select-none items-center justify-center rounded-sm bg-red-400 hover:bg-red-600',
         {
           'bg-yellow-400': isActive,
         },
