@@ -25,8 +25,7 @@ export function CinemaPicker({
       className={cn(
         'flex h-[50px] w-full flex-row justify-start gap-x-3 rounded-none transition-colors',
         {
-          'bg-[rgb(255_240_246/var(--tw-bg-opacity))] hover:bg-[rgb(255_240_246/var(--tw-bg-opacity))]':
-            isSelected,
+          'bg-[rgb(255_240_246)] hover:bg-[rgb(255_240_246)]': isSelected,
         }
       )}
       variant='ghost'

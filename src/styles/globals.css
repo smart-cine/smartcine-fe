@@ -99,6 +99,11 @@ html {
   /* overflow-x: hidden; */
 }
 
+.drop-shadow {
+  -webkit-filter: drop-shadow(2px 0px 2px #000);
+  filter: drop-shadow(2px 0px 2px #000);
+}
+
 .border-blend::after {
   position: absolute;
   top: 0;

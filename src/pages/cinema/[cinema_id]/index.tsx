@@ -24,7 +24,12 @@ export default function CinemaById() {
   return (
     <>
       <NextSeo title={`SmartCine - ${cinema.name}`} />
-      <MainLayout>
+      <MainLayout
+        routes={[
+          { label: 'Cinema', route: '/cinema' },
+          { label: cinema.name, route: `/cinema/${cinema.id}` },
+        ]}
+      >
         <ConstrainedContainer
           background='/cinema/beta-bg.jpg'
           className='h-[320px]'

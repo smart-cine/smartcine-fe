@@ -17,15 +17,12 @@ export function CheckList({
         height={350}
         className='h-full grow rounded-md'
       />
-      <div className='flex grow flex-col justify-center gap-y-2'>
-        <p className='mb-2 text-2xl font-bold text-[#b12572]'>
+      <div className='flex grow flex-col justify-center gap-y-3'>
+        <p className='mb-2 text-2xl font-bold text-[#b12572] md:text-3xl lg:text-4xl'>
           Movie schedule on SmartCine
         </p>
         {children}
-        <Button
-          variant='momo'
-          className='mx-auto mt-5 w-fit font-bold uppercase'
-        >
+        <Button variant='momo' className='mt-5 w-fit font-bold uppercase'>
           Book tickets now
         </Button>
       </div>

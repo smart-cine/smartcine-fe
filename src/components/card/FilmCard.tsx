@@ -64,7 +64,7 @@ export const FilmCard = memo<{
           {index && (
             <div
               className={cn(
-                'absolute bottom-0 left-0.5 text-5xl font-bold',
+                'absolute bottom-0 left-0.5 text-5xl font-bold drop-shadow',
                 {
                   'text-gray-100': variant === 'black',
                   'text-gray-900': variant === 'white',
