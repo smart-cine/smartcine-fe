@@ -1,6 +1,7 @@
 import { countries } from '@/lib/fake/countries';
 import { tags } from '@/lib/fake/tags';
 import { FilmCard } from '@/components/card/FilmCard';
+import { SearchInput } from '@/components/input/SearchInput';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -14,6 +15,7 @@ import {
 } from '@/components/ui/pagination';
 import { useListFilm } from '@/core/film/film.query';
 
+import { ClearAllButton } from './components/ClearAllButton';
 import { SelectDropdown } from './components/SelectDropdown';
 
 export function DefaultFilmSearchForm() {
@@ -26,6 +28,7 @@ export function DefaultFilmSearchForm() {
           Find films on SmartCine
         </p>
         <div className='flex flex-row gap-x-4'>
+          <ClearAllButton />
           <SelectDropdown type='tag' title='Thể loại' items={tags} />
           <SelectDropdown type='country' title='Quốc gia' items={countries} />
           <SelectDropdown
