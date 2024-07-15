@@ -47,10 +47,12 @@ export const Navbar = forwardRef<
       <div className='grow' />
       <div className='hidden flex-row lg:flex'>
         <NavigationMenu>
-          <NavigationMenuList ref={ref}>{children}</NavigationMenuList>
+          <NavigationMenuList ref={ref}>
+            {children}
+            <ModeToggle className='ml-1' />
+          </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <ModeToggle className='ml-1' />
     </div>
     <div className='flex w-full flex-row justify-end lg:hidden'>
       <MenuIcon className='h-6 w-6' />

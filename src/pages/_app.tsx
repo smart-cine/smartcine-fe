@@ -24,7 +24,9 @@ export default function App({ Component, pageProps }: AppProps) {
           enableSystem
           disableTransitionOnChange
           attribute='class'
-          defaultTheme='system'
+          // defaultTheme='system'
+          // TODO: change to system
+          defaultTheme='white'
         >
           <Component {...pageProps} />
         </ThemeProvider>
