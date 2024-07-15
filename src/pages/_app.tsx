@@ -9,6 +9,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { NextIntlClientProvider } from 'next-intl';
 
 import { queryClient } from '@/lib/query-client';
+import { ThemeProvider } from '@/components/theme-provider';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -19,7 +20,14 @@ export default function App({ Component, pageProps }: AppProps) {
         messages={getMessages(router.locale)}
         timeZone='Asia/Ho_Chi_Minh'
       >
-        <Component {...pageProps} />
+        <ThemeProvider
+          enableSystem
+          disableTransitionOnChange
+          attribute='class'
+          defaultTheme='system'
+        >
+          <Component {...pageProps} />
+        </ThemeProvider>
         <SpeedInsights />
       </NextIntlClientProvider>
     </QueryClientProvider>
