@@ -35,7 +35,7 @@ export function DefaultFilmSearchForm() {
               String(new Date().getFullYear() - i)
             )}
           />
-          <Input className='h-9' placeholder='Search film' />
+          <SearchInput className='h-9' placeholder='Search film' />
         </div>
       </div>
 

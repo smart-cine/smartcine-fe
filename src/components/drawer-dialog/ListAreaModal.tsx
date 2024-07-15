@@ -12,6 +12,8 @@ import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 
+import { SearchInput } from '../input/SearchInput';
+
 Content.displayName = 'ListAreaModalContent';
 export function Content({
   className,
@@ -24,7 +26,7 @@ export function Content({
     <div className={cn('flex h-full flex-col', className)}>
       <div className='flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2 px-6 py-4 sm:justify-between md:flex-nowrap md:px-10'>
         <p className='text-xl font-bold'>Chọn địa điểm</p>
-        <Input className='h-8 max-w-64' placeholder='Tìm địa điểm ...' />
+        <SearchInput className='h-8 max-w-64' placeholder='Tìm địa điểm ...' />
       </div>
       <Separator orientation='horizontal' />
       <div className='flex flex-col overflow-auto p-4'>
