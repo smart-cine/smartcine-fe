@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useReadCinema } from '@/core/cinema/cinema.query';
@@ -33,7 +35,15 @@ export function CinemaPicker({
         setSelectedCinema(cinema.id);
       }}
     >
-      <div className='h-9 w-9 rounded-md border border-gray-200 p-2' />
+      <div className='h-9 w-9 rounded-md border border-gray-200 p-2'>
+        <Image
+          alt='cinema-logo'
+          src={cinema.logo_url}
+          width={36}
+          height={36}
+          className='rounded-md'
+        />
+      </div>
       <p className='font-normal'>{cinema.name}</p>
     </Button>
   );

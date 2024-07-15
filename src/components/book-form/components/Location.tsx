@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { cn } from '@/lib/utils';
 import { ListAreaModal } from '@/components/drawer-dialog/ListAreaModal';
 import { ArrowDownIcon } from '@/components/icon/ArrowDownIcon';
@@ -8,6 +10,11 @@ import { useBookForm } from '../hooks/useBookForm';
 
 export function Location({ className }: { readonly className?: string }) {
   const selectedArea = useBookForm((state) => state.selectedArea);
+  const setSelectedArea = useBookForm((state) => state.setSelectedArea);
+
+  useEffect(() => {
+    setSelectedArea('Hồ Chí Minh');
+  }, []);
 
   return (
     <ListAreaModal

@@ -46,15 +46,18 @@ export function MinimalBookForm({
         </div>
         <div className='p-4'>
           <Accordion type='single' className='w-full'>
-            {cinemas.map((cinema) => (
+            {cinemas.map((cinema, index) => (
               <AccordionItem
                 key={cinema.id}
+                className={cn({
+                  'border-none': index === cinemas.length - 1,
+                })}
                 value={cinema.id}
                 // className='[&>[data-state=open]]:bg-gray-100' // this is called arbitrary variant
                 // https://stackoverflow.com/questions/76408807/style-children-based-on-their-data-attributes-in-tailwindcss
               >
                 <AccordionTrigger className='hover:no-underline'>
-                  <CinemaDescription variant='minimal' cinema={cinema.name} />
+                  <CinemaDescription variant='minimal' cinema_id={cinema.id} />
                 </AccordionTrigger>
                 <AccordionContent>
                   <PerformTimes film_id={film.id} className='' />

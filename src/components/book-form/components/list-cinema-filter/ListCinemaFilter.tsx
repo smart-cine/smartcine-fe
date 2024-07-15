@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { cn } from '@/lib/utils';
 import { useListCinema } from '@/core/cinema/cinema.query';
 
@@ -9,6 +11,10 @@ export function ListCinemaFilter({
   readonly className?: string;
 }) {
   const { data: cinemas = [] } = useListCinema();
+  const cinemaProviders = useMemo(
+    () => Object.groupBy(cinemas, (cinema) => cinema.variant),
+    [cinemas]
+  );
 
   return (
     <div
@@ -17,8 +23,8 @@ export function ListCinemaFilter({
         className
       )}
     >
-      {cinemas.map((cinema) => (
-        <CinemaFilterPicker key={cinema.id} value={cinema.name} />
+      {Object.keys(cinemaProviders).map((providerName) => (
+        <CinemaFilterPicker key={providerName} value={providerName} />
       ))}
     </div>
   );

@@ -13,6 +13,7 @@ import { ListDate } from './components/list-date/ListDate';
 import { Location } from './components/Location';
 import { NearestLocation } from './components/NearestLocation';
 import { PerformTimes } from './components/PerformTimes';
+import { useBookForm } from './hooks/useBookForm';
 
 export function DefaultBookForm({
   className,
@@ -20,6 +21,7 @@ export function DefaultBookForm({
   readonly className?: string;
 }) {
   const { data: films = [] } = useListFilm();
+  const cinema_id = useBookForm((state) => state.selectedCinema);
   if (!films.length) return null;
 
   return (
@@ -43,7 +45,7 @@ export function DefaultBookForm({
         </div>
         <div className='realmainview flex max-h-full w-full basis-2/3 flex-col overflow-auto'>
           <div className='sticky top-0 z-10 bg-white'>
-            <CinemaDescription className='p-3' cinema='AMONG' />
+            <CinemaDescription className='p-3' cinema_id={cinema_id} />
             <ListDate />
 
             <div className='uudai border-t bg-gray-100 px-5 py-2 text-sm text-momo'>

@@ -1,7 +1,6 @@
 import { cn } from '@/lib/utils';
 import { PickSeatDialog } from '@/components/dialog/pick-seat/PickSeatDialog';
 import { useReadFilm } from '@/core/film/film.query';
-import { type TFilm } from '@/core/film/film.type';
 
 export function PerformTimes({
   className,

@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { cn } from '@/lib/utils';
 import { useReadCinema } from '@/core/cinema/cinema.query';
 
@@ -29,12 +31,21 @@ export function CinemaFilterPicker({
     >
       <div
         className={cn(
-          'h-12 w-12 rounded-md border border-gray-200 p-2 transition-all',
+          'flex h-12 w-12 items-center justify-center rounded-md border border-gray-200 transition-all',
           {
             'border-momo': isSelected,
           }
         )}
-      />
+      >
+        <Image
+          src={`/cinema/logo/${value.toLowerCase()}.png`}
+          alt='cinema-logo'
+          width={40}
+          height={40}
+          className='rounded-md'
+        />
+      </div>
+
       <p
         className={cn('line-clamp-1 text-sm text-gray-500 transition-all', {
           'text-momo': isSelected,
