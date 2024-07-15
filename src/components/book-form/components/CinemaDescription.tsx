@@ -1,16 +1,22 @@
+import Image from 'next/image';
 import { ArrowDownNarrowWide } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { ArrowDownIcon } from '@/components/icon/ArrowDownIcon';
+import { useReadCinema } from '@/core/cinema/cinema.query';
 
 export function CinemaDescription({
-  cinema,
+  cinema_id,
   className,
   variant = 'default',
 }: {
-  readonly cinema: string;
+  readonly cinema_id: string;
   readonly className?: string;
   readonly variant?: 'default' | 'minimal';
 }) {
+  const { data: cinema } = useReadCinema(cinema_id);
+  if (!cinema) return null;
+
   return (
     <div
       className={cn(
@@ -22,9 +28,16 @@ export function CinemaDescription({
         className
       )}
     >
-      <div className='h-8 w-8 rounded-sm border border-black' />
+      <div className='h-9 w-9 rounded-sm border border-gray-200'>
+        <Image
+          src={`/cinema/logo/${cinema.variant.toLowerCase()}.png`}
+          alt='cinema-logo'
+          width={36}
+          height={36}
+        />
+      </div>
       <div className='flex w-full flex-col'>
-        <p className='font-semibold'>{cinema}</p>
+        <p className='font-semibold'>{cinema.name}</p>
         <p className='text-sm font-thin text-gray-500'>
           Tầng 6, The Pegasus Plaza, số 53-55 Võ Thị Sáu, P.Quyết Thắng, TP Biên
           Hòa, Đồng Nai{' '}
@@ -40,7 +53,6 @@ export function CinemaDescription({
           </a>
         </p>
       </div>
-      {variant === 'minimal' && <ArrowDownNarrowWide className='h-5 w-5' />}
     </div>
   );
 }
