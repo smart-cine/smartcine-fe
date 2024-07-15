@@ -41,6 +41,7 @@ export default function Home() {
             <Sparkles>Current shows</Sparkles>
           </p>
           <CurrentShows hasIndex className='bg-transparent' />
+          <div id='current-shows' className='absolute -top-16' />
         </ConstrainedContainer>
 
         {/* Featured shows */}
@@ -56,11 +57,14 @@ export default function Home() {
           />
           <div className='w-full'>
             <div className='mx-auto w-fit'>
-              <Button variant='momo' className='text-md font-md'>
-                Find cinema film
-              </Button>
+              <Link href='/film'>
+                <Button variant='momo' className='text-md font-md'>
+                  Find cinema film
+                </Button>
+              </Link>
             </div>
           </div>
+          <div id='featured-movies' className='absolute -top-16' />
         </ConstrainedContainer>
 
         {/* Movie schedule */}

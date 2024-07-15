@@ -37,18 +37,24 @@ export const MainLayout = genericMemo<
           title='Movie schedule'
           className='flex flex-col gap-y-2 p-4'
         >
-          <Link href='#' className={cn(navbarItemStyle, 'indicator')}>
+          <Link
+            href='#current-shows'
+            className={cn(navbarItemStyle, 'indicator')}
+          >
             Currently showing movies
           </Link>
-          <Link href='#' className={cn(navbarItemStyle, 'indicator')}>
+          <Link
+            href='#featured-movies'
+            className={cn(navbarItemStyle, 'indicator')}
+          >
             Upcoming movies
           </Link>
         </NavbarItem>
         <NavbarItem title='Cinema' className='flex flex-col gap-y-2 p-4'>
-          {cinemaProviders.map((cinema) => (
+          {cinemaProviders.map((cinema, index) => (
             <Link
               key={cinema}
-              href={`/cinema/${cinema}`}
+              href={`/cinema/${index + 1}`}
               className={cn(navbarItemStyle, 'indicator')}
             >
               {cinema}
