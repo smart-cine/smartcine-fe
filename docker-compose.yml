@@ -1,0 +1,15 @@
+version: "3"
+services:
+  nextjs-app:
+    container_name: smartcine-nextjs-app
+    restart: on-failure:3
+    networks:
+      - smartcine-network
+    build:
+      context: . # use the current directory as the build contexts
+      dockerfile: Dockerfile
+    ports:
+      - 9995:3000
+networks:
+  smartcine-network:
+    external: true
