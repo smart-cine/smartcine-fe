@@ -4,11 +4,8 @@ import { MoveRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useReadFilm } from '@/core/film/film.query';
 
-import { CommentIcon } from '../icon/CommentIcon';
-import { StarIcon } from '../icon/StarIcon';
 import { UserComment } from '../UserComment';
 import { FilmCardReview } from './FilmCardReview';
-import { MinimalFilmCard } from './MinimalFilmCard';
 
 export function TopCommentCard({
   className,
@@ -41,7 +38,7 @@ export function TopCommentCard({
           <UserComment key={cmt} body={cmt} />
         ))}
         <Link
-          href='#'
+          href={`/film/${film.id}/review`}
           className='flex flex-row items-center justify-end gap-x-1 text-xs font-bold'
         >
           Xem Thêm <MoveRight />
