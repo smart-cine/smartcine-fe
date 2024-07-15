@@ -1,19 +1,15 @@
 import Link from 'next/link';
-import { HomeIcon } from 'lucide-react';
 
+import { cinemaProviders } from '@/lib/fake/cinema-providers';
 import { cn, genericMemo } from '@/lib/utils';
-import { Navbar } from '@/components/navbar/home-navbar';
-import LocaleSwitcher from '@/components/other/LocaleSwitcher';
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
+  Navbar,
+  NavbarItem,
+  NavBarLink,
+} from '@/components/navbar/home-navbar';
 
+import { useIndicator } from '../animation/indicator/hooks/useIndicator';
+import { Indicator } from '../animation/indicator/Indicator';
 import { ScrollToTop } from '../button/ScrollToTop';
 import { ConstrainedContainer } from '../container/constrained-container';
 import {
@@ -22,68 +18,65 @@ import {
 } from '../other/CustomBreadcrumb';
 import { Footer } from '../pages/index/Footer';
 
+const navbarItemStyle =
+  'flex min-h-10 w-full items-center justify-start rounded-sm px-4 text-gray-600 transition-all hover:bg-pink-100 hover:bg-opacity-50 hover:text-pink-700';
+
 export const MainLayout = genericMemo<
   React.FC<{
     readonly className?: string;
     readonly children: React.ReactNode;
     routes?: TBreadcrumbRoute[];
   }>
->(({ className, children, routes = [] }) => (
-  <div className={className}>
-    <Navbar className='sticky top-0 z-10 bg-white'>
-      <Navbar.Item title='Movie schedule'>
-        <div className='mx-auto flex flex-col'>
-          <Link
-            href='#'
-            className={cn(navigationMenuTriggerStyle(), 'w-full justify-start')}
-          >
+>(({ className, children, routes = [] }) => {
+  const { parentRef, indicatorRef } = useIndicator<HTMLUListElement>(true);
+  return (
+    <div className={cn(className, 'relative')}>
+      <Navbar ref={parentRef} className='sticky top-0 z-50 bg-white'>
+        <Indicator ref={indicatorRef} />
+        <NavbarItem
+          title='Movie schedule'
+          className='flex flex-col gap-y-2 p-4'
+        >
+          <Link href='#' className={cn(navbarItemStyle, 'indicator')}>
             Currently showing movies
           </Link>
-          <Link
-            href='#'
-            className={cn(navigationMenuTriggerStyle(), 'w-full justify-start')}
-          >
+          <Link href='#' className={cn(navbarItemStyle, 'indicator')}>
             Upcoming movies
           </Link>
-        </div>
-      </Navbar.Item>
-      <Navbar.Item title='Cinema'>
-        <div className='mx-auto flex flex-col'>
-          {['CGV', 'BHD', 'Galaxy', 'Lotte', 'MegaGS'].map((cinema) => (
+        </NavbarItem>
+        <NavbarItem title='Cinema' className='flex flex-col gap-y-2 p-4'>
+          {cinemaProviders.map((cinema) => (
             <Link
               key={cinema}
-              href='#'
-              className={cn(
-                navigationMenuTriggerStyle(),
-                'w-full justify-start'
-              )}
+              href={`/cinema/${cinema}`}
+              className={cn(navbarItemStyle, 'indicator')}
             >
               {cinema}
             </Link>
           ))}
-        </div>
-      </Navbar.Item>
-      {/* <Navbar.Link href="#"></Navbar.Link> */}
-      <Navbar.Link href='#'>Top film</Navbar.Link>
-      <Navbar.Item title='Blog'>
-        asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-        asdasd
-      </Navbar.Item>
-      {/* <Navbar.Item title='Change language'>
+        </NavbarItem>
+        {/* <Navbar.Link href="#"></Navbar.Link> */}
+        <NavBarLink href='#'>Top film</NavBarLink>
+        <NavbarItem title='Blog'>
+          asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
+          asdasd
+        </NavbarItem>
+        {/* <Navbar.Item title='Change language'>
         <LocaleSwitcher />
       </Navbar.Item> */}
-    </Navbar>
+      </Navbar>
 
-    {/* Breadcumb */}
-    <ConstrainedContainer className='ml-2'>
-      <CustomBreadcrumb routes={routes} />
-    </ConstrainedContainer>
+      {/* Breadcumb */}
+      <ConstrainedContainer className='ml-2'>
+        <CustomBreadcrumb routes={routes} />
+      </ConstrainedContainer>
 
-    {children}
+      {children}
 
-    <Footer />
+      <Footer />
 
-    <ScrollToTop />
-  </div>
-));
+      <ScrollToTop />
+    </div>
+  );
+});
 MainLayout.displayName = 'MainLayout';
