@@ -6,7 +6,7 @@ import { ConstrainedContainer } from '@/components/container/constrained-contain
 import { MainLayout } from '@/components/layout/MainLayout';
 import { Sparkles } from '@/components/other/Sparkles';
 import { CheckList } from '@/components/pages/index/CheckList';
-import { CinemaSystem } from '@/components/pages/index/CinemaSystem';
+import { CinemaProviderSystem } from '@/components/pages/index/CinemaProviderSystem';
 import { CurrentShows } from '@/components/pages/index/CurrentShows';
 import { FAQSection } from '@/components/pages/index/FAQSection';
 import { TopComments } from '@/components/pages/index/TopComments';
@@ -104,7 +104,7 @@ export default function Home() {
               List of major cinema systems present throughout the country
             </p>
           </div>
-          <CinemaSystem />
+          <CinemaProviderSystem />
         </ConstrainedContainer>
 
         {/* FAQ */}

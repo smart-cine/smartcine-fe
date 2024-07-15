@@ -13,8 +13,8 @@ export function TopComments({ className }: { readonly className?: string }) {
       )}
     >
       <TopCommentCard film_id={films[0].id} />
-      <TopCommentCard film_id={films[0].id} />
-      <TopCommentCard film_id={films[0].id} />
+      <TopCommentCard film_id={films[1].id} />
+      <TopCommentCard film_id={films[2].id} />
     </div>
   );
 }

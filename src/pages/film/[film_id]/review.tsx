@@ -95,6 +95,7 @@ export default function FilmByIdReview() {
                 ))}
               </div>
               <MinimalBookForm className='' film_id={film.id} />
+              <div className='py-12' />
             </div>
           </div>
         </ConstrainedContainer>
