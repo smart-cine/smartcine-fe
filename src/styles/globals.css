@@ -80,7 +80,7 @@ img {
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border font-sans antialiased;
   }
   body {
     @apply bg-background text-foreground;
@@ -224,4 +224,9 @@ html {
 .yt-lite.lyt-activated > .lty-playbtn {
   opacity: 0;
   pointer-events: none;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
 }
