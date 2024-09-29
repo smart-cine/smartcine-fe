@@ -1,12 +1,16 @@
-import { SearchInput } from '@/components/input/SearchInput';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useListCinema } from '@/core/cinema/cinema.query';
+import moment from 'moment';
 
+import { SearchInput } from '@/components/input/SearchInput';
+
+import { useBookForm } from '../hooks/useBookForm';
 import { ListCinema } from './list-cinema/ListCinema';
 
 export function CinemaSearch() {
-  const { data: cinemas = [] } = useListCinema();
+  const searchCinema = useBookForm((state) => state.searchCinema);
+  const selectedArea = useBookForm((state) => state.selectedArea);
+  const selectedCinemaProviderId = useBookForm(
+    (state) => state.selectedCinemaProviderId
+  );
 
   return (
     <>
@@ -16,7 +20,11 @@ export function CinemaSearch() {
           className='h-9 w-full'
         />
       </div>
-      <ListCinema />
+      <ListCinema
+        searchCinema={searchCinema}
+        area={selectedArea}
+        cinema_provider_id={selectedCinemaProviderId}
+      />
     </>
   );
 }

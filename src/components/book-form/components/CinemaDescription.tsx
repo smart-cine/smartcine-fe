@@ -1,8 +1,7 @@
 import Image from 'next/image';
-import { ArrowDownNarrowWide } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { ArrowDownIcon } from '@/components/icon/ArrowDownIcon';
+import { useReadCinemaProvider } from '@/core/cinema-provider/cinema-provider';
 import { useReadCinema } from '@/core/cinema/cinema.query';
 
 export function CinemaDescription({
@@ -15,7 +14,8 @@ export function CinemaDescription({
   readonly variant?: 'default' | 'minimal';
 }) {
   const { data: cinema } = useReadCinema(cinema_id);
-  if (!cinema) return null;
+  const { data: cinema_provider } = useReadCinemaProvider(cinema?.provider_id);
+  if (!cinema || !cinema_provider) return null;
 
   return (
     <div
@@ -28,21 +28,21 @@ export function CinemaDescription({
         className
       )}
     >
-      <div className='h-9 w-9 rounded-sm border border-gray-200'>
+      <div className='flex h-9 w-9 items-center justify-center rounded-sm border border-gray-200'>
         <Image
-          src={`/cinema/logo/${cinema.variant.toLowerCase()}.png`}
+          src={cinema_provider.logo_url ?? '/cinema/logo/unknown.png'}
           alt='cinema-logo'
           width={36}
           height={36}
+          className='h-6 w-6 rounded-sm object-cover'
         />
       </div>
       <div className='flex w-full flex-col'>
         <p className='font-semibold'>{cinema.name}</p>
-        <p className='text-sm font-thin text-gray-500'>
-          Tầng 6, The Pegasus Plaza, số 53-55 Võ Thị Sáu, P.Quyết Thắng, TP Biên
-          Hòa, Đồng Nai{' '}
+        <p className='flex items-center justify-between gap-x-1 text-sm font-thin text-gray-500'>
+          {cinema.address}
           <a
-            className='text-blue-500'
+            className='h-full whitespace-nowrap text-blue-500'
             href='#'
             onClick={(e) => {
               // must stop propagation bcuz of Accordion trigger component

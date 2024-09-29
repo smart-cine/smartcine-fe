@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { useReadCinemaProvider } from '@/core/cinema-provider/cinema-provider';
 import { useReadCinema } from '@/core/cinema/cinema.query';
 
 import { useBookForm } from '../../hooks/useBookForm';
@@ -13,9 +14,12 @@ export function CinemaPicker({
   readonly className?: string;
   readonly cinema_id: string;
 }) {
-  const isSelected = useBookForm((state) => state.selectedCinema === cinema_id);
-  const setSelectedCinema = useBookForm((state) => state.setSelectedCinema);
+  const isSelected = useBookForm(
+    (state) => state.selectedCinemaId === cinema_id
+  );
+  const setCinema = useBookForm((state) => state.setCinema);
   const { data: cinema } = useReadCinema(cinema_id);
+  const { data: provider } = useReadCinemaProvider(cinema?.provider_id);
 
   if (!cinema) {
     return null;
@@ -32,16 +36,16 @@ export function CinemaPicker({
       )}
       variant='ghost'
       onClick={() => {
-        setSelectedCinema(cinema.id);
+        setCinema(cinema.id);
       }}
     >
-      <div className='h-9 w-9 rounded-md border border-gray-200 p-2'>
+      <div className='flex h-9 w-9 items-center justify-center rounded-md border border-gray-200 p-1'>
         <Image
           alt='cinema-logo'
-          src={cinema.logo_url}
+          src={provider?.logo_url ?? '/cinema/logo/unknown.png'}
           width={36}
           height={36}
-          className='rounded-md'
+          className='h-6 w-6 rounded-sm object-cover'
         />
       </div>
       <p className='font-normal'>{cinema.name}</p>

@@ -4,16 +4,15 @@ import { cn } from '@/lib/utils';
 import { ListAreaModal } from '@/components/drawer-dialog/ListAreaModal';
 import { ArrowDownIcon } from '@/components/icon/ArrowDownIcon';
 import { MapPointIcon } from '@/components/icon/MapPointIcon';
-import { Button } from '@/components/ui/button';
 
 import { useBookForm } from '../hooks/useBookForm';
 
 export function Location({ className }: { readonly className?: string }) {
   const selectedArea = useBookForm((state) => state.selectedArea);
-  const setSelectedArea = useBookForm((state) => state.setSelectedArea);
+  const setArea = useBookForm((state) => state.setArea);
 
   useEffect(() => {
-    setSelectedArea('Hồ Chí Minh');
+    setArea('Hồ Chí Minh');
   }, []);
 
   return (

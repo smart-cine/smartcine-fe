@@ -1,23 +1,26 @@
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
-import { useReadCinema } from '@/core/cinema/cinema.query';
+import { useReadCinemaProvider } from '@/core/cinema-provider/cinema-provider';
 
 import { useBookForm } from '../../hooks/useBookForm';
 
-export function CinemaFilterPicker({
+export function CinemaProviderPicker({
   className,
-  value,
+  cinema_provider_id,
 }: {
   readonly className?: string;
-  readonly value: string;
+  readonly cinema_provider_id: string;
 }) {
+  const { data: cinema_provider } = useReadCinemaProvider(cinema_provider_id);
   const isSelected = useBookForm(
-    (state) => state.selectedCinemaFilter === value
+    (state) => state.selectedCinemaProviderId === cinema_provider_id
   );
-  const setSelectedCinemaFilter = useBookForm(
-    (state) => state.setSelectedCinemaFilter
-  );
+  const setCinemaProvider = useBookForm((state) => state.setCinemaProvider);
+
+  if (!cinema_provider) {
+    return null;
+  }
 
   return (
     <div
@@ -26,7 +29,7 @@ export function CinemaFilterPicker({
         className
       )}
       onClick={() => {
-        setSelectedCinemaFilter(value);
+        setCinemaProvider(cinema_provider.id);
       }}
     >
       <div
@@ -38,11 +41,11 @@ export function CinemaFilterPicker({
         )}
       >
         <Image
-          src={`/cinema/logo/${value.toLowerCase()}.png`}
+          src={cinema_provider.logo_url ?? '/cinema-provider/logo/unknown.png'}
           alt='cinema-logo'
           width={40}
           height={40}
-          className='rounded-md'
+          className='h-9 w-9 rounded-sm object-cover'
         />
       </div>
 
@@ -51,7 +54,7 @@ export function CinemaFilterPicker({
           'text-momo': isSelected,
         })}
       >
-        {value}
+        {cinema_provider.name}
       </p>
     </div>
   );

@@ -11,7 +11,7 @@ export function DatePicker({
   readonly index: number;
   readonly time: Date;
 }) {
-  const setSelectedDate = useBookForm((state) => state.setSelectedDate);
+  const setDate = useBookForm((state) => state.setDate);
   const isSelected = useBookForm((state) => state.selectedDate === index);
 
   return (
@@ -24,7 +24,7 @@ export function DatePicker({
         className
       )}
       onClick={() => {
-        setSelectedDate(index);
+        setDate(index);
       }}
     >
       <div

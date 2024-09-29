@@ -4,14 +4,16 @@ import { immer } from 'zustand/middleware/immer';
 
 export type BookFormState = {
   selectedArea: string;
+  searchCinema: string;
+  selectedCinemaProviderId: string;
   selectedDate: number;
-  selectedCinemaFilter: string;
-  selectedCinema: string;
+  selectedCinemaId: string;
 
-  setSelectedArea: (area: string) => void;
-  setSelectedDate: (date: number) => void;
-  setSelectedCinemaFilter: (cinema: string) => void;
-  setSelectedCinema: (cinema: string) => void;
+  setArea: (area: string) => void;
+  setSearchCinema: (search: string) => void;
+  setCinemaProvider: (cinema_provider_id: string) => void;
+  setDate: (date: number) => void;
+  setCinema: (cinema_id: string) => void;
 };
 
 export const useBookForm = create<BookFormState>()(
@@ -19,27 +21,33 @@ export const useBookForm = create<BookFormState>()(
     immer((set) => ({
       selectedArea: '',
       selectedDate: 0,
-      selectedCinemaFilter: '',
-      selectedCinema: '',
+      selectedCinemaProviderId: '',
+      selectedCinemaId: '',
+      searchCinema: '',
 
-      setSelectedArea(area) {
+      setArea(area) {
         set((state) => {
           state.selectedArea = area;
         });
       },
-      setSelectedDate(date) {
+      setDate(date) {
         set((state) => {
           state.selectedDate = date;
         });
       },
-      setSelectedCinemaFilter(cinema) {
+      setCinemaProvider(cinema_provider_id) {
         set((state) => {
-          state.selectedCinemaFilter = cinema;
+          state.selectedCinemaProviderId = cinema_provider_id;
         });
       },
-      setSelectedCinema(cinema) {
+      setCinema(cinema_id) {
         set((state) => {
-          state.selectedCinema = cinema;
+          state.selectedCinemaId = cinema_id;
+        });
+      },
+      setSearchCinema(search) {
+        set((state) => {
+          state.searchCinema = search;
         });
       },
     }))
