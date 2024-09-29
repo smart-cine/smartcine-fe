@@ -19,13 +19,13 @@ export function ScrollToTop({
   return (
     <div
       className={cn(
-        'fixed bottom-10 right-10 z-50 h-10 w-10 rounded-full border border-gray-300 bg-white shadow-sm',
+        'fixed bottom-10 right-10 z-50 h-10 w-10 cursor-pointer rounded-full border border-gray-300 bg-white shadow-sm',
         className
       )}
       onClick={handleClick}
     >
       <div className='flex h-full w-full items-center justify-center'>
-        <ArrowUp className='h-5 w-5 cursor-pointer' />
+        <ArrowUp className='h-5 w-5' />
       </div>
     </div>
   );
