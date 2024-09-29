@@ -62,7 +62,7 @@ function Box({
   readonly setOpen: (open: boolean) => void;
 }) {
   const isSelected = useBookForm((state) => state.selectedArea === value);
-  const setSelectedArea = useBookForm((state) => state.setSelectedArea);
+  const setArea = useBookForm((state) => state.setArea);
 
   return (
     <div
@@ -73,7 +73,7 @@ function Box({
         }
       )}
       onClick={() => {
-        setSelectedArea(value);
+        setArea(value);
         setOpen(false);
       }}
     >

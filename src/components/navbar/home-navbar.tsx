@@ -105,7 +105,7 @@ export function NavbarItem({
       const a = ref.current?.parentElement?.parentElement?.parentElement
         ?.parentElement?.childNodes?.[1] as HTMLElement;
       if (a) {
-        console.log(left);
+        // console.log(left);
         a.style.left = `-${left}px`;
       }
     }

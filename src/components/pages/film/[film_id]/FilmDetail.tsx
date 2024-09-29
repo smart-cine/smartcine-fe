@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import Link from 'next/link';
+import moment from 'moment';
 import ShowMoreText from 'react-show-more-text';
 
 import { cn } from '@/lib/utils';
@@ -9,7 +10,7 @@ import { TrailerTrigger } from '@/components/dialog/TrailerTrigger';
 import { PlayIcon } from '@/components/icon/PlayIcon';
 import { StarIcon } from '@/components/icon/StarIcon';
 import { PlayButton } from '@/components/PlayButton';
-import { StarRating } from '@/components/Rating';
+import { StarRating } from '@/components/StarRating';
 import { Label } from '@/components/ui/label';
 import { useReadFilm } from '@/core/film/film.query';
 
@@ -49,7 +50,11 @@ export function FilmDetail({
             <p>{film.duration} phút</p>{' '}
           </div>
         </div>
-        <StarRating amount={40} rating={10} className='text-2xl font-bold' />
+        <StarRating
+          count={film.rating.count}
+          rating={film.rating.score}
+          className='text-2xl font-bold'
+        />
         <p className='italic text-gray-400'>
           Things just got a little more despicable.
         </p>
@@ -67,8 +72,10 @@ export function FilmDetail({
         </div>
         <div className='flex flex-row gap-x-4 text-sm'>
           <div className='flex flex-col'>
-            <p className='text-gray-400'>Ngày chiếu</p>
-            <p className='font-semibold text-gray-50'>05/07/2024</p>
+            <p className='text-gray-400'>Ngày ra mắt</p>
+            <p className='font-semibold text-gray-50'>
+              {moment(film.release_date).format('DD/MM/YYYY')}
+            </p>
           </div>
           <div className='flex flex-col'>
             <p className='text-gray-400'>Thể loại</p>
@@ -76,7 +83,7 @@ export function FilmDetail({
           </div>
           <div className='flex flex-col'>
             <p className='text-gray-400'>Quốc gia</p>
-            <p className='font-semibold text-gray-50'>Mỹ</p>
+            <p className='font-semibold text-gray-50'>{film.country}</p>
           </div>
         </div>
         <div className='flex flex-row gap-x-3 text-sm'>

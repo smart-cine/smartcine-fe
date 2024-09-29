@@ -19,6 +19,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         momo: 'bg-momo/80 text-white hover:bg-momo',
+        'momo-outline': 'border border-momo text-momo hover:bg-pink-100',
       },
       size: {
         default: 'h-10 px-4 py-2',

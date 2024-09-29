@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
-import { cinemaProviders } from '@/lib/fake/cinema-providers';
 import { cn, genericMemo } from '@/lib/utils';
 import {
   Navbar,
   NavbarItem,
   NavBarLink,
 } from '@/components/navbar/home-navbar';
+import { useListCinemaProvider } from '@/core/cinema-provider/cinema-provider';
 
 import { useIndicator } from '../animation/indicator/hooks/useIndicator';
 import { Indicator } from '../animation/indicator/Indicator';
@@ -29,6 +29,9 @@ export const MainLayout = genericMemo<
   }>
 >(({ className, children, routes = [] }) => {
   const { parentRef, indicatorRef } = useIndicator<HTMLUListElement>(true);
+  const { data: top_cinema_providers = [] } = useListCinemaProvider({
+    limit: 8,
+  });
   return (
     <div className={cn(className, 'relative')}>
       <Navbar ref={parentRef} className='sticky top-0 z-50 bg-white'>
@@ -51,13 +54,13 @@ export const MainLayout = genericMemo<
           </Link>
         </NavbarItem>
         <NavbarItem title='Cinema' className='flex flex-col gap-y-2 p-4'>
-          {cinemaProviders.map((cinema, index) => (
+          {top_cinema_providers.map((cinema_provider, index) => (
             <Link
-              key={cinema}
+              key={cinema_provider.id}
               href={`/cinema/${index + 1}`}
               className={cn(navbarItemStyle, 'indicator')}
             >
-              {cinema}
+              {cinema_provider.name}
             </Link>
           ))}
         </NavbarItem>
