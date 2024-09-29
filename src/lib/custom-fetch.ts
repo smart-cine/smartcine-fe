@@ -14,7 +14,8 @@ const headers: HeadersInit = {
 };
 
 if (process.env.NODE_ENV === 'development') {
-  headers.Authorization = `Bearer ${env.NEXT_PUBLIC_TEST_TOKEN}`;
+  // headers.Authorization = `Bearer ${env.NEXT_PUBLIC_API_TEST_TOKEN}`;
+  headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZjMmRkYWFlLTg3MmUtNGE4Mi05YmQxLWFiNzBhYjg5OTMzYSIsInJvbGUiOiJCVVNJTkVTUyIsImlhdCI6MTcyNzYzMzY5OSwiZXhwIjoxNzMwMjI1Njk5fQ.OoG46XXfSw3_zdxT1wkf0Mx37bpWZ0f9jCJIhXk7dE4`;
 }
 
 export async function customFetch(

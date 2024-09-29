@@ -7,8 +7,8 @@ const headers: RawAxiosRequestHeaders = {
 };
 
 if (process.env.NODE_ENV === 'development') {
-  headers.Authorization = `Bearer ${env.NEXT_PUBLIC_TEST_TOKEN}`;
-  // headers['Access-Control-Allow-Origin'] = '*';
+  // headers.Authorization = `Bearer ${env.NEXT_PUBLIC_API_TEST_TOKEN}`;
+  headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE2NmZiZjMzLTk2NjctNDhiMC05MjQ3LTgzYmYxZTRkYTUxZCIsInJvbGUiOiJCVVNJTkVTUyIsImlhdCI6MTcyNzQ1NjcyNywiZXhwIjoxNzMwMDQ4NzI3fQ.BMCagMnixRwMmb9VSF1dRwEKkRx-0mOK0600SU7SXzU`;
 }
 
 export const customAxios = baseAxios.create({

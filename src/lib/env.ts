@@ -17,7 +17,7 @@ export const env = createEnv({
     NEXT_PUBLIC_NODE_ENV: z.enum(['development', 'production']),
     NEXT_PUBLIC_API_URL: z.string().url(),
     NEXT_PUBLIC_API_VERSION: z.string().optional().default(''),
-    NEXT_PUBLIC_TEST_TOKEN: z.string().optional(),
+    NEXT_PUBLIC_API_TEST_TOKEN: z.string().optional(),
   },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
@@ -29,6 +29,6 @@ export const env = createEnv({
     NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_API_URL: process.env.API_URL,
     NEXT_PUBLIC_API_VERSION: process.env.API_VERSION,
-    NEXT_PUBLIC_TEST_TOKEN: process.env.TEST_TOKEN,
+    NEXT_PUBLIC_API_TEST_TOKEN: process.env.API_TEST_TOKEN,
   },
 });
