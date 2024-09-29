@@ -7,9 +7,11 @@ import { usePickSeat } from './usePickSeat';
 
 export function Seat({
   id,
+  code,
   className,
 }: {
   readonly id: string;
+  readonly code: string;
   readonly className?: string;
 }) {
   const { isActive, setSeat } = usePickSeat(
@@ -27,15 +29,16 @@ export function Seat({
   return (
     <div
       className={cn(
-        'm-2 flex min-h-12 min-w-12 cursor-pointer select-none items-center justify-center rounded-sm bg-red-400 hover:bg-red-600',
+        'm-2 flex min-h-12 min-w-12 cursor-pointer select-none items-center justify-center rounded-sm bg-red-400 transition-all duration-100',
         {
           'bg-yellow-400': isActive,
+          'hover:bg-red-600': !isActive,
         },
         className
       )}
       onClick={handleClick}
     >
-      {id}
+      {code}
     </div>
   );
 }
