@@ -14,6 +14,8 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
+      staleTime:
+        process.env.NODE_ENV === 'development' ? undefined : 1000 * 60 * 5,
       refetchOnWindowFocus: process.env.NODE_ENV !== 'development',
     },
   },
