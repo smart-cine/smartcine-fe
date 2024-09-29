@@ -1,16 +1,21 @@
 import { useRouter } from 'next/router';
 import { DotIcon } from 'lucide-react';
+import moment from 'moment';
 import { NextSeo } from 'next-seo';
 
+import { roundScore } from '@/lib/utils';
 import { useScrollableSidebar } from '@/hooks/useScrollableSidebar';
 import { MinimalBookForm } from '@/components/book-form/MinimalBookForm';
 import { FilmCardReview } from '@/components/card/FilmCardReview';
 import { MinimalFilmCard } from '@/components/card/MinimalFilmCard';
+import { Comment } from '@/components/comment/Comment';
+import { MinimalComment } from '@/components/comment/MinimalComment';
 import { ConstrainedContainer } from '@/components/container/constrained-container';
 import { StarIcon } from '@/components/icon/StarIcon';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
-import { UserComment } from '@/components/UserComment';
+import { useListComment } from '@/core/comment/comment.query';
+import { CommentType } from '@/core/comment/comment.type';
 import { useReadFilm } from '@/core/film/film.query';
 
 export default function FilmByIdReview() {
@@ -18,6 +23,10 @@ export default function FilmByIdReview() {
   const film_id = router.query.film_id as string | undefined;
 
   const { data: film } = useReadFilm(film_id);
+  const { data: comments = [] } = useListComment({
+    dest_id: film_id,
+    type: CommentType.FILM,
+  });
   const { ref, refParent } = useScrollableSidebar({ marginTop: 80 });
 
   if (!film) {
@@ -44,29 +53,43 @@ export default function FilmByIdReview() {
         ]}
       >
         <ConstrainedContainer>
-          <div className='flex flex-row gap-x-5 pt-6'>
+          <div className='flex flex-col gap-x-5 gap-y-5 pt-6 md:flex-row'>
             <div
               ref={ref}
-              className='sticky top-20 flex h-fit min-w-[25%] max-w-[25%] basis-1/4 flex-col gap-y-2'
+              className='top-20 mb-28 flex h-fit basis-1/4 gap-x-5 md:sticky md:flex-col'
             >
               <MinimalFilmCard
-                className='mx-auto max-w-[200px]'
+                className='mx-auto max-w-[150px]'
                 film_id={film.id}
               />
-              <p className='text-center font-bold text-black'>{film.title}</p>
-              <div className='mx-auto w-fit text-sm text-gray-800'>
-                <p>Thể loại: {film.tags.join(', ')}</p>
-                <p>
-                  Ngày ra mắt:{' '}
-                  {new Date(film.release_date).toLocaleString().split(',')[0]}
+              <div className='flex grow flex-col gap-y-2'>
+                <p className='text-left font-bold text-black md:text-center'>
+                  {film.title}
                 </p>
-                <p>Quốc gia: {film.country}</p>
+                <div className='w-[60%] text-sm text-gray-800 md:mx-auto'>
+                  <p className='line-clamp-1'>
+                    Thể loại: {film.tags.join(', ') || 'None'}
+                  </p>
+                  <p>
+                    Ngày ra mắt:{' '}
+                    {moment(film.release_date).format('DD/MM/YYYY')}
+                  </p>
+                  <p>Quốc gia: {film.country}</p>
+                </div>
+                <Button
+                  className='h-8 w-fit md:mx-auto'
+                  variant='momo-outline'
+                  onClick={() => {
+                    document.querySelector('#MinimalBookForm')?.scrollIntoView({
+                      behavior: 'smooth',
+                    });
+                  }}
+                >
+                  Đặt vé ngay
+                </Button>
               </div>
-              <Button className='mx-auto h-8' variant='momo'>
-                Đặt vé ngay
-              </Button>
             </div>
-            <div className='flex max-w-[60%] flex-col justify-center gap-y-5'>
+            <div className='flex flex-col justify-center gap-y-5 md:max-w-[60%]'>
               <FilmCardReview
                 film_id={film.id}
                 className='h-[220px] rounded-xl'
@@ -79,19 +102,24 @@ export default function FilmByIdReview() {
                 <div className='flex flex-row items-center gap-x-1'>
                   <StarIcon className='h-10 w-10' />
                   <div className='flex flex-row text-gray-600'>
-                    <p className='text-4xl font-semibold'>9.3</p>
+                    <p className='text-4xl font-semibold'>
+                      {roundScore(film.rating.score)}
+                    </p>
                     <div className='relative top-2 flex min-h-full flex-row items-center gap-x-1 text-sm'>
                       <p className=''>/10</p>
                       <DotIcon className='h-2 w-2' />
-                      <p>1.9K đánh giá</p>
+                      <p>{film.rating.count} đánh giá</p>
                     </div>
                   </div>
                 </div>
               </div>
               <div className='flex flex-col gap-y-5'>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <UserComment key={index} body='phim nhu cc' />
+                {comments.map((comment) => (
+                  // eslint-disable-next-line react/jsx-key
+                  <>
+                    <Comment key={comment.id} id={comment.id} />
+                    <hr />
+                  </>
                 ))}
               </div>
               <MinimalBookForm className='' film_id={film.id} />
