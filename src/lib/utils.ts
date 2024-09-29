@@ -35,3 +35,7 @@ export function youtube_parser(url: string) {
   const match = regExp.exec(url);
   return match && match[7].length === 11 ? match[7] : '';
 }
+
+export function roundScore(score: number, fixed = 1) {
+  return Math.round(score * 10).toFixed(fixed);
+}
