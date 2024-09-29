@@ -6,45 +6,50 @@ import { DefaultBookForm } from '@/components/book-form/DefaultBookForm';
 import { ConstrainedContainer } from '@/components/container/constrained-container';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { Sparkles } from '@/components/other/Sparkles';
-import { CinemaDetail } from '@/components/pages/cinema/[cinema_id]/CinemaDetail';
+import { CinemaProviderDetail } from '@/components/pages/cinema-provider/[cinema_provider_id]/CinemaProviderDetail';
 import { CurrentShows } from '@/components/pages/index/CurrentShows';
 import { FAQSection } from '@/components/pages/index/FAQSection';
-import { useReadCinema } from '@/core/cinema/cinema.query';
+import { useReadCinemaProvider } from '@/core/cinema-provider/cinema-provider';
 
-export default function CinemaById() {
+export default function CinemaProviderById() {
   const router = useRouter();
-  const cinema_id = router.query.cinema_id as string | undefined;
+  const cinema_provider_id = router.query.cinema_provider_id as
+    | string
+    | undefined;
 
-  const { data: cinema } = useReadCinema(cinema_id);
+  const { data: cinema_provider } = useReadCinemaProvider(cinema_provider_id);
 
-  if (!cinema) {
+  if (!cinema_provider) {
     return;
   }
 
   return (
     <>
-      <NextSeo title={`SmartCine - ${cinema.name}`} />
+      <NextSeo title={`SmartCine - ${cinema_provider.name}`} />
       <MainLayout
         routes={[
           { label: 'Cinema', route: '/cinema' },
-          { label: cinema.name, route: `/cinema/${cinema.id}` },
+          {
+            label: cinema_provider.name,
+            route: `/cinema-provider/${cinema_provider.id}`,
+          },
         ]}
       >
         <ConstrainedContainer
-          background='/cinema/beta-bg.jpg'
+          background={cinema_provider.background_url}
           className='h-[320px]'
           contentClass='h-full'
         >
-          <CinemaDetail cinema_id={cinema.id} />
+          <CinemaProviderDetail cinema_provider_id={cinema_provider.id} />
         </ConstrainedContainer>
         <ConstrainedContainer
           className='mt-16'
           contentClass='gap-y-8 flex flex-col'
         >
           <p className='text-center text-3xl font-bold text-momo'>
-            Lịch chiếu phim {cinema.name}
+            Lịch chiếu phim rạp {cinema_provider.name}
           </p>
-          <DefaultBookForm />
+          <DefaultBookForm cinema_provider_id={cinema_provider_id} />
         </ConstrainedContainer>
         {/* Current shows */}
         <ConstrainedContainer className="mt-16 bg-black bg-[url('/momo-showingmovies-bg.jpg')] bg-contain bg-center bg-no-repeat py-6">

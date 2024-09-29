@@ -84,7 +84,7 @@ export default function Home() {
           </div>
         </ConstrainedContainer>
 
-        {/* Cinema system */}
+        {/* Top comments */}
         <ConstrainedContainer className='py-6'>
           <p className='mx-auto w-fit text-3xl font-bold text-pink-600'>
             Top comments
