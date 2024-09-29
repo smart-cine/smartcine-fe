@@ -62,7 +62,7 @@ export function genQueryCrud<
     },
     list(...args: Parameters<L>) {
       return useQuery({
-        queryKey: [queryKey],
+        queryKey: [queryKey, ...args],
         queryFn: async () => allMethods.list(...args),
       });
     },
@@ -109,24 +109,28 @@ function genDefaultCrudApi<Item>(
 } {
   if (type === 'axios') {
     return {
-      async create(body?: Record<string, any>) {
+      async create(body: Record<string, any> = {}) {
+        sweepUndefined(body);
         return (await customAxios.post<SuccessRes<Item>>(url, body)).data.data;
       },
-      async list(options?: Record<string, any>) {
+      async list(options: Record<string, any> = {}) {
+        sweepUndefined(options);
         return (
           await customAxios.get<SuccessPaginationRes<Item>>(
             `${url}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
           )
         ).data.data;
       },
-      async read(id: string, options?: Record<string, any>) {
+      async read(id: string, options: Record<string, any> = {}) {
+        sweepUndefined(options);
         return (
           await customAxios.get<SuccessRes<Item>>(
             `${url}/${id}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
           )
         ).data.data;
       },
-      async patch(id: string, patch: Record<string, any>) {
+      async patch(id: string, patch: Record<string, any> = {}) {
+        sweepUndefined(patch);
         return (
           await customAxios.put<SuccessRes<Item | undefined>>(
             `${url}/${id}`,
@@ -144,7 +148,8 @@ function genDefaultCrudApi<Item>(
 
   // Default value: fetch
   return {
-    async create(body?: Record<string, any>) {
+    async create(body: Record<string, any> = {}) {
+      sweepUndefined(body);
       return (
         await customFetchJson<SuccessRes<Item>>(url, {
           method: 'POST',
@@ -152,21 +157,25 @@ function genDefaultCrudApi<Item>(
         })
       ).data;
     },
-    async list(options?: Record<string, any>) {
+    async list(options: Record<string, any> = {}) {
+      sweepUndefined(options);
+
       return (
         await customFetchJson<SuccessPaginationRes<Item>>(
           `${url}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
         )
       ).data;
     },
-    async read(id: string, options?: Record<string, any>) {
+    async read(id: string, options: Record<string, any> = {}) {
+      sweepUndefined(options);
       return (
         await customFetchJson<SuccessRes<Item>>(
           `${url}/${id}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
         )
       ).data;
     },
-    async patch(id: string, patch: Record<string, any>) {
+    async patch(id: string, patch: Record<string, any> = {}) {
+      sweepUndefined(patch);
       return (
         await customFetchJson<SuccessRes<Item | undefined>>(`${url}/${id}`, {
           method: 'PATCH',
@@ -182,6 +191,15 @@ function genDefaultCrudApi<Item>(
       ).data;
     },
   };
+}
+
+function sweepUndefined(obj: Record<string, any>) {
+  for (const key in obj) {
+    if (obj[key] === undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete obj[key];
+    }
+  }
 }
 
 type ParametersExceptFirst<F> = F extends (arg0: any, ...rest: infer R) => any
