@@ -1,8 +1,8 @@
 export type TItem = {
   id: string;
 
-  item_name: string;
-  amount: number;
+  name: string;
+  price: string;
   discount: number;
   items: TItem[];
 };

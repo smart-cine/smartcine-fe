@@ -1,7 +1,6 @@
 export type TCinema = {
   id: string;
-  variant: string;
+  provider_id: string;
   name: string;
-
-  logo_url: string;
+  address: string;
 };

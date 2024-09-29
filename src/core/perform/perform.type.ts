@@ -1,12 +1,12 @@
 export type TPerform = {
   id: string;
   film_id: string;
-  dest_id: string;
-  price: number;
-  translate_type: ETranslate;
-  view_type: EView;
+  cinema_room_id: string;
   start_time: Date;
   end_time: Date;
+  translate_type: ETranslate;
+  view_type: EView;
+  price: string;
 };
 
 export enum ETranslate {
