@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { cn } from '@/lib/utils';
+import { cn, roundScore } from '@/lib/utils';
 import { useReadFilm } from '@/core/film/film.query';
 
 import { CommentIcon } from '../icon/CommentIcon';
@@ -34,7 +34,7 @@ export function FilmCardReview({
         <div className='flex flex-row gap-x-5'>
           <div className='group flex cursor-pointer flex-row items-center gap-x-1 transition-all hover:-translate-y-0.5'>
             <StarIcon className='h-7 w-7' />
-            <p>9.1</p>
+            <p>{roundScore(film.rating.score)}</p>
           </div>
           <Link href={`/film/${film.id}/review`}>
             <div className='flex flex-row items-center gap-x-1 transition-all hover:-translate-y-0.5'>

@@ -94,7 +94,7 @@ export const FilmCard = memo<{
               'text-gray-500': variant === 'white',
             })}
           >
-            {film.tags.join(', ')}
+            {film.tags.join(', ') || 'None'}
           </p>
           <div className='mt-1 flex flex-row items-center gap-x-1'>
             <StarIcon className='h-4 w-4' />

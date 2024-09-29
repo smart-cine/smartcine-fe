@@ -2,9 +2,10 @@ import Link from 'next/link';
 import { MoveRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useListComment } from '@/core/comment/comment.query';
 import { useReadFilm } from '@/core/film/film.query';
 
-import { UserComment } from '../UserComment';
+import { MinimalComment } from '../comment/MinimalComment';
 import { FilmCardReview } from './FilmCardReview';
 
 export function TopCommentCard({
@@ -15,6 +16,10 @@ export function TopCommentCard({
   readonly film_id: string;
 }) {
   const { data: film } = useReadFilm(film_id);
+  const { data: comments = [] } = useListComment({
+    type: 'FILM',
+    dest_id: film_id,
+  });
 
   if (!film) return null;
 
@@ -29,13 +34,8 @@ export function TopCommentCard({
         <FilmCardReview className='h-[200px]' film_id={film.id} />
       </div>
       <div className='flex h-[280px] flex-col gap-y-3 p-4'>
-        {[
-          'Bao giờ có thế',
-          'Phim dỡ lắm nha',
-          'phim rat sigma',
-          'sigma vl',
-        ].map((cmt) => (
-          <UserComment key={cmt} body={cmt} />
+        {comments.map((cmt) => (
+          <MinimalComment key={cmt.id} id={cmt.id} />
         ))}
         <Link
           href={`/film/${film.id}/review`}
