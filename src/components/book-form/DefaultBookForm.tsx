@@ -44,7 +44,7 @@ export function DefaultBookForm({
         <ListCinemaProvider className='px-5 pb-2' />
       </div>
       <div className='mainview flex min-h-full w-full flex-row'>
-        <div className='thanhsearch flex basis-1/3 flex-col border-r'>
+        <div className='thanhsearch flex min-w-[33%] max-w-[33%] flex-col border-r'>
           <CinemaSearch />
         </div>
         <div className='realmainview flex max-h-full w-full basis-2/3 flex-col overflow-auto'>

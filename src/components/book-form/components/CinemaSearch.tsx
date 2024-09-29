@@ -1,8 +1,7 @@
 import moment from 'moment';
 
-import { SearchInput } from '@/components/input/SearchInput';
-
 import { useBookForm } from '../hooks/useBookForm';
+import { SearchInput } from './input/SearchInput';
 import { ListCinema } from './list-cinema/ListCinema';
 
 export function CinemaSearch() {
