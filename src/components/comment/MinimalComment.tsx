@@ -2,18 +2,24 @@ import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useReadComment } from '@/core/comment/comment.query';
+import { useReadUser } from '@/core/user/user.query';
 
-export function UserComment({
+export function MinimalComment({
   className,
-  body,
+  id,
 }: {
   readonly className?: string;
-  readonly body: React.ReactNode;
+  readonly id: string;
 }) {
+  const { data: comment } = useReadComment(id);
+  const { data: user } = useReadUser(comment?.account_id);
+  if (!comment || !user) return null;
+
   return (
     <div className={cn('flex flex-row gap-x-2', className)}>
       <Avatar className='h-9 w-9'>
-        <AvatarImage src='https://githusb.com/shadcn.png' />
+        <AvatarImage src={user.avatar_url} />
         <AvatarFallback>
           <Image
             src='/avatar.png'
@@ -25,10 +31,10 @@ export function UserComment({
       </Avatar>
       <div className='flex flex-col gap-y-1'>
         <div className='flex flex-row gap-x-1 text-sm'>
-          <div className='font-semibold'>Nguyễn Văn Đam</div>
+          <div className='font-semibold'>{user.name}</div>
           <div className='text-gray-400'>hôm qua</div>
         </div>
-        <div className='text-sm'>{body}</div>
+        <div className='text-sm'>{comment.body}</div>
       </div>
     </div>
   );
