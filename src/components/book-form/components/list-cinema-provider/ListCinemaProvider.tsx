@@ -12,7 +12,7 @@ export function ListCinemaProvider({
 }: {
   readonly className?: string;
 }) {
-  const { data: cinema_providers } = useListCinemaProvider();
+  const { data: cinema_providers = [] } = useListCinemaProvider();
 
   return (
     <div
@@ -22,7 +22,7 @@ export function ListCinemaProvider({
       )}
     >
       <CinemaProviderPickerAll />
-      {cinema_providers?.map((cinema_provider) => (
+      {cinema_providers.map((cinema_provider) => (
         <CinemaProviderPicker
           key={cinema_provider.id}
           cinema_provider_id={cinema_provider.id}

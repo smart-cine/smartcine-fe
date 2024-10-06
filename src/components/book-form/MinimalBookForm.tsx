@@ -41,7 +41,7 @@ export function MinimalBookForm({
           <Separator className='mb-4' />
           <ListCinemaProvider className='px-5' />
         </div>
-        <div className='p-4'>
+        <div className='p-0'>
           <WrapListCinemaMinimal film_id={film_id} />
         </div>
       </div>

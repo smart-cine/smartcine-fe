@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import moment from 'moment';
 
 import { cn } from '@/lib/utils';
 import {
@@ -8,7 +9,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { useListCinema } from '@/core/cinema/cinema.query';
-import { useListPerform } from '@/core/perform/perform.query';
+import { useListPerformByCinema } from '@/core/perform/perform.query';
 
 import { useBookForm } from '../../hooks/useBookForm';
 import { CinemaDescription } from '../CinemaDescription';
@@ -31,10 +32,6 @@ export function ListCinemaMinimal({
   const { data: cinemas = [] } = useListCinema({
     provider_id: cinema_provider_id ? cinema_provider_id : undefined,
   });
-  // const { data: performs } = useListPerform({
-  //   cinema_id
-  //   limit: 5,
-  // });
   const filteredCinemas = useMemo(
     () =>
       cinemas.filter((cinema) =>
@@ -47,9 +44,12 @@ export function ListCinemaMinimal({
       .map((cinema, index) => (
         <Item
           key={cinema.id}
-          className={cn({
-            'border-none': index === filteredCinemas.length - 1,
-          })}
+          className={cn(
+            {
+              'border-none': index === filteredCinemas.length - 1,
+            },
+            'px-4'
+          )}
           cinema_id={cinema.id}
           film_id={film_id}
         />
@@ -83,12 +83,24 @@ function Item({
   readonly cinema_id: string;
   readonly film_id: string;
 }) {
-  const { data: performs = [] } = useListPerform({
-    cinema_id,
-    limit: 5,
+  const date = useBookForm((state) => state.selectedDate);
+  const cinema_provider_id = useBookForm(
+    (state) => state.selectedCinemaProviderId
+  );
+  const { data: performByCinema = [] } = useListPerformByCinema({
+    film_id,
+    cinema_provider_id: cinema_provider_id ? cinema_provider_id : undefined,
+    start_time: moment().add(date, 'days').startOf('day').toISOString(),
+    area: 'Ho Chi Minh',
   });
-  if (performs.findIndex((perform) => perform.film_id === film_id) === -1)
-    return null;
+  const performs = useMemo(
+    () =>
+      performByCinema
+        .filter((item) => item.cinema_id === cinema_id)
+        .map((item) => item.performs)
+        .flat(),
+    [performByCinema, cinema_id]
+  );
 
   return (
     <AccordionItem
@@ -102,7 +114,7 @@ function Item({
         <CinemaDescription variant='minimal' cinema_id={cinema_id} />
       </AccordionTrigger>
       <AccordionContent>
-        <PerformTimes film_id={film_id} cinema_id={cinema_id} className='' />
+        <PerformTimes performs={performs} />
       </AccordionContent>
     </AccordionItem>
   );

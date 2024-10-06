@@ -45,7 +45,7 @@ export function CinemaPicker({
           src={provider?.logo_url ?? '/cinema/logo/unknown.png'}
           width={36}
           height={36}
-          className='h-6 w-6 rounded-sm object-cover'
+          className='min-h-6 min-w-6 rounded-sm object-cover'
         />
       </div>
       <p className='font-normal'>{cinema.name}</p>

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import Image from 'next/image';
 import moment from 'moment';
 
-import { useListPerform } from '@/core/perform/perform.query';
+import { useListPerformByFilm } from '@/core/perform/perform.query';
 
 import { FilmPerformCard } from './FilmPerformCard';
 
@@ -13,28 +13,23 @@ export function ListFilmPerform({
   readonly cinema_id: string;
   readonly date: number;
 }) {
-  const { data: performs } = useListPerform({
+  const start_time = useMemo(
+    () => moment().add(date, 'days').startOf('day').toISOString(),
+    [date]
+  );
+  const { data: performByFilm = [] } = useListPerformByFilm({
     cinema_id,
+    start_time,
   });
-  const filmIds = useMemo(() => {
-    const set = new Set<string>();
-    performs?.forEach((perform) => {
-      // TODO: bỏ comment này ra để hiển thị tất cả các phim trong ngày
-      // if (moment(perform.start_time).isSame(date, 'day')) {
-      set.add(perform.film_id);
-      // }
-    });
-    return Array.from(set);
-  }, [date, performs]);
 
   return (
     <div className='flex flex-col gap-y-3 divide-y'>
-      {filmIds.length ? (
-        filmIds.map((film_id, index) => (
+      {performByFilm.length ? (
+        performByFilm.map((item, index) => (
           <FilmPerformCard
-            key={film_id}
-            film_id={film_id}
-            cinema_id={cinema_id}
+            key={item.film_id}
+            film_id={item.film_id}
+            performs={item.performs}
           />
         ))
       ) : (
