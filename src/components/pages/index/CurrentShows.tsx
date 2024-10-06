@@ -7,7 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { useListPerform } from '@/core/perform/perform.query';
+import { useListTopFilm } from '@/core/film/film.query';
 
 export function CurrentShows({
   className,
@@ -18,8 +18,8 @@ export function CurrentShows({
   readonly variant?: 'black' | 'white';
   readonly hasIndex?: boolean;
 }) {
-  const { data: performs = [] } = useListPerform();
-  if (!performs.length) return null;
+  const { data: filmIds = [] } = useListTopFilm();
+  if (!filmIds.length) return null;
 
   return (
     <div
@@ -38,16 +38,16 @@ export function CurrentShows({
           opts={{ loop: false, dragFree: true }}
         >
           <CarouselContent>
-            {performs.map((perform, index) => (
+            {filmIds.map((film_id, index) => (
               <CarouselItem
-                key={perform.id}
+                key={film_id}
                 className='h-[380px] basis-1/2 md:basis-1/3 lg:basis-1/5'
               >
                 <div className='h-full p-1'>
                   <FilmCard
                     hasPlayButton
                     imageClass='h-[300px]'
-                    film_id={perform.film_id}
+                    film_id={film_id}
                     index={hasIndex ? index + 1 : undefined}
                     variant={variant}
                   />
