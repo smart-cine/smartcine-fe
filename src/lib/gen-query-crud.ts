@@ -10,9 +10,7 @@ import { queryClient } from '@/lib/query-client';
 import { customAxios } from './custom-axios';
 import { customFetchJson } from './custom-fetch';
 
-export type CreateMethod<Item> = (
-  body?: Record<string, any>
-) => Promise<void | Item>;
+export type CreateMethod<Item> = (body?: Record<string, any>) => Promise<Item>;
 export type ListMethod<Item> = (
   options?: Record<string, any>
 ) => Promise<Item[]>;
