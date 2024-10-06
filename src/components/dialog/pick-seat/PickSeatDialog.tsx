@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import { cn } from '@/lib/utils';
 import { useShake } from '@/hooks/useShake';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -17,16 +17,12 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { useReadCinemaRoom } from '@/core/cinema-room/cinema-room.query';
-import {
-  TCinemaRoom,
-  type TCinemaRoomSeat,
-} from '@/core/cinema-room/cinema-room.type';
 import { useReadFilm } from '@/core/film/film.query';
-import { type TFilm } from '@/core/film/film.type';
-import { useReadPerform } from '@/core/perform/perform.query';
+import { type TPerform } from '@/core/perform/perform.type';
 
 import { AgeTag } from '../../AgeTag';
 import { Separator } from '../../ui/separator';
+import { PickItemDialog } from '../pick-item/PickItemDialog';
 import { PickedSeats } from './PickedSeats';
 import { Seat } from './Seat';
 import { usePickSeat } from './usePickSeat';
@@ -34,20 +30,19 @@ import { usePickSeat } from './usePickSeat';
 export function PickSeatDialog({
   className,
   children,
-  perform_id,
+  perform,
 }: {
   readonly className?: string;
   readonly children: React.ReactNode;
-  readonly perform_id: string;
+  readonly perform: TPerform;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const resetSeats = usePickSeat((state) => state.reset);
-  const isDirty = usePickSeat((state) => state.picked > 0);
-  const seats = usePickSeat((state) => state.seats);
 
   const { ref: refShake, shake } = useShake();
 
-  const { data: perform } = useReadPerform(perform_id);
+  // console.log('perform', perform);
+  // const { data: perform } = useReadPerform(perform_id);
   const { data: film } = useReadFilm(perform?.film_id);
   const { data: cinema_room } = useReadCinemaRoom(perform?.cinema_room_id);
 
@@ -72,26 +67,6 @@ export function PickSeatDialog({
     return result;
   }, [cinema_room]);
 
-  const totalAmountMoney = useMemo(() => {
-    const layoutSeats = cinema_room?.layout?.seats ?? [];
-    const layoutGroups = cinema_room?.layout?.groups ?? [];
-    const groupMap = Object.fromEntries(
-      layoutGroups.map((group) => [group.id, group])
-    );
-    const seatMap = Object.fromEntries(
-      layoutSeats.map((seat) => [seat.id, seat])
-    );
-
-    return Object.keys(seats)
-      .filter((seatId) => seatMap[seatId] && seats[seatId])
-      .reduce((acc, seatId) => {
-        const seat = seatMap[seatId];
-        const group = groupMap[seat.group_id];
-        const price = new Decimal(group.price);
-        return acc + price.toNumber();
-      }, 0);
-  }, [cinema_room, seats]);
-
   if (!perform || !film || !cinema_room) return null;
 
   return (
@@ -106,7 +81,7 @@ export function PickSeatDialog({
       <DialogTrigger asChild>
         <button
           className={cn(
-            'rounded-sm border border-sky-400 px-4 py-1 text-sky-600 hover:border-sky-700',
+            'whitespace-nowrap rounded-sm border border-sky-400 px-4 py-1 text-sky-600 hover:border-sky-700',
             className
           )}
         >
@@ -117,7 +92,7 @@ export function PickSeatDialog({
         ref={refShake}
         className='max-w-4xl gap-y-0 overflow-hidden border-none p-0'
         onInteractOutside={(e) => {
-          if (isDirty) {
+          if (usePickSeat.getState().picked > 0) {
             e.preventDefault();
             shake(5);
           }
@@ -191,21 +166,72 @@ export function PickSeatDialog({
             <PickedSeats cinema_room_id={perform.cinema_room_id} />
             <Separator />
             <div className='flex h-full flex-row py-3'>
-              <div className='flex flex-col'>
-                <p className='text-sm'>Tạm tính</p>
-                <p className='text-lg font-semibold'>
-                  {vndFormat(Math.ceil(totalAmountMoney))}đ
-                </p>
-              </div>
+              <TotalMoney perform={perform} />
               <div className='grow' />
-              <Button type='submit' className='self-end'>
+              <PickItemDialog
+                perform_id={perform.id}
+                cinema_id={cinema_room.cinema_id}
+                className={cn(
+                  buttonVariants({
+                    variant: 'momo',
+                    size: 'default',
+                  }),
+                  'self-end'
+                )}
+              >
                 Đặt vé
-              </Button>
+              </PickItemDialog>
             </div>
           </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function TotalMoney({
+  children,
+  perform,
+}: {
+  readonly children?: React.ReactNode;
+  readonly perform: TPerform;
+}) {
+  const seats = usePickSeat((state) => state.seats);
+  const { data: cinema_room } = useReadCinemaRoom(perform.cinema_room_id);
+
+  const totalAmountMoney = useMemo(() => {
+    const layoutSeats = cinema_room?.layout?.seats ?? [];
+    const layoutGroups = cinema_room?.layout?.groups ?? [];
+    const groupMap = Object.fromEntries(
+      layoutGroups.map((group) => [group.id, group])
+    );
+    const seatMap = Object.fromEntries(
+      layoutSeats.map((seat) => [seat.id, seat])
+    );
+    const performPrice = new Decimal(perform.price);
+
+    return Object.keys(seats)
+      .filter((seatId) => seatMap[seatId] && seats[seatId])
+      .reduce((acc, seatId) => {
+        const seat = seatMap[seatId];
+        const group = groupMap[seat.group_id];
+        const seatPrice = new Decimal(group.price);
+        return acc + seatPrice.toNumber() + performPrice.toNumber();
+      }, 0);
+  }, [
+    cinema_room?.layout?.groups,
+    cinema_room?.layout?.seats,
+    perform.price,
+    seats,
+  ]);
+
+  return (
+    <div className='flex flex-col'>
+      <p className='text-sm'>Tạm tính</p>
+      <p className='text-lg font-semibold'>
+        {vndFormat(Math.ceil(totalAmountMoney))}đ
+      </p>
+    </div>
   );
 }
 
