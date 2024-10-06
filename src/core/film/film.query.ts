@@ -9,3 +9,5 @@ export const {
   patch: usePatchFilm,
   delete: useDeleteFilm,
 } = genQueryCrud<TFilm>('film');
+
+export const useListTopFilm = genQueryCrud<string>('film/top').list;
