@@ -4,10 +4,11 @@ export type TPayment = {
   item_id: string;
   date_created: Date;
   date_expired: Date;
-  status: EPaymentStatus;
+  // status: EPaymentStatus;
 };
 
-export enum EPaymentStatus {
-  PENDING,
-  RESOLVED,
+export enum TWalletType {
+  VNPAY = 'VNPAY',
+  MOMO = 'MOMO',
+  ZALOPAY = 'ZALOPAY',
 }
