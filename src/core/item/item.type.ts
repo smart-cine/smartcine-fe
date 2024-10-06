@@ -4,5 +4,6 @@ export type TItem = {
   name: string;
   price: string;
   discount: number;
+  image_url: string;
   items: TItem[];
 };
