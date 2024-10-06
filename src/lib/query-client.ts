@@ -1,5 +1,7 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 
+import { env } from './env';
+
 function handleUnAuthorized(error: any) {
   console.error(error);
   // If (window.location.pathname.split('/')[1] === 'share') return;
@@ -10,13 +12,17 @@ function handleUnAuthorized(error: any) {
   // }
 }
 
+console.log('env', env);
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
       staleTime:
-        process.env.NODE_ENV === 'development' ? undefined : 1000 * 60 * 5,
-      refetchOnWindowFocus: process.env.NODE_ENV !== 'development',
+        env.NEXT_PUBLIC_NODE_ENV === 'development'
+          ? 1000 * 60 * 5
+          : 1000 * 60 * 5,
+      refetchOnWindowFocus: env.NEXT_PUBLIC_NODE_ENV !== 'development',
     },
   },
   queryCache: new QueryCache({
