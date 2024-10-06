@@ -12,8 +12,6 @@ function handleUnAuthorized(error: any) {
   // }
 }
 
-console.log('env', env);
-
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
