@@ -1,5 +1,7 @@
 import { resolve } from 'url';
 
+import { type TErrorResponse } from '@/core/error/error.type';
+
 import { env } from './env';
 
 const baseUrl = addTrailingSlash(
@@ -15,7 +17,7 @@ const headers: HeadersInit = {
 
 if (process.env.NODE_ENV === 'development') {
   // headers.Authorization = `Bearer ${env.NEXT_PUBLIC_API_TEST_TOKEN}`;
-  headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZjMmRkYWFlLTg3MmUtNGE4Mi05YmQxLWFiNzBhYjg5OTMzYSIsInJvbGUiOiJCVVNJTkVTUyIsImlhdCI6MTcyNzYzMzY5OSwiZXhwIjoxNzMwMjI1Njk5fQ.OoG46XXfSw3_zdxT1wkf0Mx37bpWZ0f9jCJIhXk7dE4`;
+  headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ0YTU4NGM3LTE0OTMtNDBlZS1hOWFlLWM3OTJiOTZhYTM0NyIsInJvbGUiOiJCVVNJTkVTUyIsImlhdCI6MTcyNzk2OTEyMSwiZXhwIjoxNzMwNTYxMTIxfQ.zhMvSwDUSXBE4K4JLBjqVktX0qTQRPodYct3juqx-44`;
 }
 
 export async function customFetch(
@@ -23,13 +25,25 @@ export async function customFetch(
   options: RequestInit = {}
 ): Promise<Response> {
   // console.log('fetching', resolve(baseUrl, url));
-  return fetch(resolve(baseUrl, url), {
+  const response = await fetch(resolve(baseUrl, url), {
     ...options,
     headers: {
       ...headers,
       ...options.headers,
     },
   });
+  if (!response.ok) {
+    if (response.status === 500) {
+      const res = (await response.json()) as TErrorResponse;
+      throw new Error(res.message);
+    }
+
+    throw new Error(
+      `HTTP error! Status: ${response.status}, Status Text: ${response.statusText}`
+    );
+  }
+
+  return response;
 }
 
 export async function customFetchJson<SuccessResponse = any>(
