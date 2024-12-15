@@ -18,8 +18,8 @@ export function CurrentShows({
   readonly variant?: 'black' | 'white';
   readonly hasIndex?: boolean;
 }) {
-  const { data: filmIds = [] } = useListTopFilm();
-  if (!filmIds.length) return null;
+  const { data: films = [] } = useListTopFilm();
+  if (!films.length) return null;
 
   return (
     <div
@@ -38,16 +38,16 @@ export function CurrentShows({
           opts={{ loop: false, dragFree: true }}
         >
           <CarouselContent>
-            {filmIds.map((film_id, index) => (
+            {films.map((film, index) => (
               <CarouselItem
-                key={film_id}
+                key={film.id}
                 className='h-[380px] basis-1/2 md:basis-1/3 lg:basis-1/5'
               >
                 <div className='h-full p-1'>
                   <FilmCard
                     hasPlayButton
                     imageClass='h-[300px]'
-                    film_id={film_id}
+                    film={film}
                     index={hasIndex ? index + 1 : undefined}
                     variant={variant}
                   />

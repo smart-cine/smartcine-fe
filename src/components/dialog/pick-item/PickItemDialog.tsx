@@ -55,7 +55,9 @@ export function PickItemDialog({
   const { mutateAsync: mutateCreatePayment } = useCreatePayment();
   const addToCart = usePickItem((state) => state.addToCart);
   const removeFromCart = usePickItem((state) => state.removeFromCart);
+  const getTotalMoney = usePickItem((state) => state.getTotalMoney);
   const cart = usePickItem((state) => state.cart);
+  const totalMoney = useMemo(() => getTotalMoney(), [getTotalMoney, cart]);
 
   return (
     <Dialog
@@ -106,18 +108,22 @@ export function PickItemDialog({
           {items.map((item) => (
             <div key={item.id} className='flex flex-col gap-y-8 px-5 py-4'>
               <div className='flex flex-col justify-between'>
-                <div className='flex flex-row items-center gap-x-4'>
+                <div className='flex flex-row gap-x-4'>
                   <Image
                     src={item.image_url}
                     alt={item.name}
                     width={96}
                     height={96}
-                    className='h-24 w-24 rounded-md object-cover'
+                    className='h-24 w-24 items-center justify-center rounded-md object-cover'
                   />
                   <div className='flex flex-col'>
                     <div className='flex flex-col gap-y-1'>
-                      <div className='text-lg font-bold'>
+                      <div className='text-base font-bold'>
                         {item.name} - {vndFormat(Number(item.price))}đ
+                      </div>
+                      <div className='text-sm text-gray-600'>
+                        TIẾT KIỆM 46K!!! Gồm: 1 Bắp (69oz) + 2 Nước có gaz
+                        (22oz)
                       </div>
                       <div className='text-sm'>
                         {item.items.map((subItem) => (
@@ -137,20 +143,20 @@ export function PickItemDialog({
                         variant='momo-outline'
                         onClick={() => {
                           setIsDirty(true);
-                          removeFromCart(item.id);
+                          removeFromCart(item);
                         }}
                       >
                         -
                       </Button>
                       <div className='rounded-sm border border-gray-300 px-2 py-0.5 text-sm font-bold'>
-                        {cart[item.id] ?? 0}
+                        {cart[item.id]?.quantity ?? 0}
                       </div>
                       <Button
                         className='h-5 w-5 rounded-full p-3'
                         variant='momo'
                         onClick={() => {
                           setIsDirty(true);
-                          addToCart(item.id);
+                          addToCart(item);
                         }}
                       >
                         +
@@ -167,20 +173,7 @@ export function PickItemDialog({
           <div className='flex w-full flex-col gap-y-3'>
             <div className='flex flex-row justify-between'>
               Tổng cộng
-              <div className='text-lg font-bold'>
-                {vndFormat(
-                  Object.keys(cart)
-                    .reduce(
-                      (acc, id) =>
-                        new Decimal(cart[id])
-                          .mul(items.find((item) => item.id === id)?.price ?? 0)
-                          .add(acc),
-                      new Decimal(0)
-                    )
-                    .toNumber()
-                )}
-                đ
-              </div>
+              <div className='text-lg font-bold'>{vndFormat(totalMoney)}đ</div>
             </div>
 
             <BillDialog perform_id={perform_id}>Tiếp tục</BillDialog>

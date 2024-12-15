@@ -21,8 +21,8 @@ export type ReadMethod<Item> = (
 export type PatchMethod<Item> = (
   id: string,
   patch: Partial<Item>
-) => Promise<void | Item>;
-export type DeleteMethod<Item> = (id: string) => Promise<void | Item>;
+) => Promise<Item>;
+export type DeleteMethod<Item> = (id: string, ...args: any[]) => Promise<Item>;
 
 export function genQueryCrud<
   Item,
@@ -129,17 +129,12 @@ function genDefaultCrudApi<Item>(
       },
       async patch(id: string, patch: Record<string, any> = {}) {
         sweepUndefined(patch);
-        return (
-          await customAxios.put<SuccessRes<Item | undefined>>(
-            `${url}/${id}`,
-            patch
-          )
-        ).data.data;
+        return (await customAxios.put<SuccessRes<Item>>(`${url}/${id}`, patch))
+          .data.data;
       },
       async delete(id: string) {
-        return (
-          await customAxios.delete<SuccessRes<Item | undefined>>(`${url}/${id}`)
-        ).data.data;
+        return (await customAxios.delete<SuccessRes<Item>>(`${url}/${id}`)).data
+          .data;
       },
     };
   }
@@ -175,7 +170,7 @@ function genDefaultCrudApi<Item>(
     async patch(id: string, patch: Record<string, any> = {}) {
       sweepUndefined(patch);
       return (
-        await customFetchJson<SuccessRes<Item | undefined>>(`${url}/${id}`, {
+        await customFetchJson<SuccessRes<Item>>(`${url}/${id}`, {
           method: 'PATCH',
           body: JSON.stringify(patch),
         })
@@ -183,7 +178,7 @@ function genDefaultCrudApi<Item>(
     },
     async delete(id: string) {
       return (
-        await customFetchJson<SuccessRes<Item | undefined>>(`${url}/${id}`, {
+        await customFetchJson<SuccessRes<Item>>(`${url}/${id}`, {
           method: 'DELETE',
         })
       ).data;

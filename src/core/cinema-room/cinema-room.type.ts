@@ -2,12 +2,14 @@ export type TCinemaRoom = {
   id: string;
   cinema_id: string;
   name: string;
-  layout?: {
-    rows: number;
-    columns: number;
-    seats: TCinemaRoomSeat[];
-    groups: TCinemaRoomGroup[];
-  };
+  layout?: TCinemaRoomLayout;
+};
+
+export type TCinemaRoomLayout = {
+  rows: number;
+  columns: number;
+  seats: TCinemaRoomSeat[];
+  groups: TCinemaRoomGroup[];
 };
 
 export type TCinemaRoomSeat = {

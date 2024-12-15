@@ -1,31 +1,60 @@
+import Decimal from 'decimal.js';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
-export type PickItemState = {
-  cart: Record<string, number>;
+import { type TItem } from '@/core/item/item.type';
 
-  addToCart(id: string): void;
-  removeFromCart(id: string): void;
+type CartItem = {
+  item: TItem;
+  quantity: number;
+};
+
+export type PickItemState = {
+  cart: Record<string, CartItem>;
+
+  addToCart(item: TItem): void;
+  removeFromCart(item: TItem): void;
+  getItems(): CartItem[];
+  getTotalMoney(): number;
 };
 
 export const usePickItem = create<PickItemState>()(
   devtools(
-    immer((set) => ({
+    immer((set, get) => ({
       cart: {},
 
-      addToCart(id: string) {
+      addToCart(item) {
         set((state) => {
-          state.cart[id] = (state.cart[id] ?? 0) + 1;
+          state.cart[item.id] = {
+            item,
+            quantity: state.cart[item.id]
+              ? state.cart[item.id].quantity + 1
+              : 1,
+          };
         });
       },
 
-      removeFromCart(id: string) {
+      removeFromCart(item) {
         set((state) => {
-          if (state.cart[id] > 0) {
-            state.cart[id] -= 1;
+          if (state.cart[item.id].quantity > 0) {
+            state.cart[item.id].quantity -= 1;
           }
         });
+      },
+
+      getItems() {
+        return Object.values(get().cart).filter((item) => item.quantity > 0);
+      },
+
+      getTotalMoney() {
+        return get()
+          .getItems()
+          .reduce(
+            (acc, item) =>
+              acc + new Decimal(item.item.price).toNumber() * item.quantity,
+            0
+          );
       },
     }))
   )

@@ -127,6 +127,7 @@ export function PickSeatDialog({
                         {coordToSeatId.get(`${index1}-${index2}`) ? (
                           <Seat
                             id={coordToSeatId.get(`${index1}-${index2}`)!}
+                            perform_id={perform.id}
                             code={
                               layoutSeatMap[
                                 coordToSeatId.get(`${index1}-${index2}`)!
@@ -198,38 +199,25 @@ function TotalMoney({
 }) {
   const seats = usePickSeat((state) => state.seats);
   const { data: cinema_room } = useReadCinemaRoom(perform.cinema_room_id);
+  const getTotalMoney = usePickSeat((state) => state.getTotalMoney);
+  const totalMoney = useMemo(
+    () =>
+      cinema_room?.layout
+        ? getTotalMoney(
+            new Decimal(perform.price).toNumber(),
+            cinema_room.layout
+          )
+        : 0,
+    [cinema_room?.layout, getTotalMoney, seats]
+  );
 
-  const totalAmountMoney = useMemo(() => {
-    const layoutSeats = cinema_room?.layout?.seats ?? [];
-    const layoutGroups = cinema_room?.layout?.groups ?? [];
-    const groupMap = Object.fromEntries(
-      layoutGroups.map((group) => [group.id, group])
-    );
-    const seatMap = Object.fromEntries(
-      layoutSeats.map((seat) => [seat.id, seat])
-    );
-    const performPrice = new Decimal(perform.price);
-
-    return Object.keys(seats)
-      .filter((seatId) => seatMap[seatId] && seats[seatId])
-      .reduce((acc, seatId) => {
-        const seat = seatMap[seatId];
-        const group = groupMap[seat.group_id];
-        const seatPrice = new Decimal(group.price);
-        return acc + seatPrice.toNumber() + performPrice.toNumber();
-      }, 0);
-  }, [
-    cinema_room?.layout?.groups,
-    cinema_room?.layout?.seats,
-    perform.price,
-    seats,
-  ]);
+  if (!cinema_room?.layout) return null;
 
   return (
     <div className='flex flex-col'>
       <p className='text-sm'>Tạm tính</p>
       <p className='text-lg font-semibold'>
-        {vndFormat(Math.ceil(totalAmountMoney))}đ
+        {vndFormat(Math.ceil(totalMoney))}đ
       </p>
     </div>
   );

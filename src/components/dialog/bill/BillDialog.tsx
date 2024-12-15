@@ -24,6 +24,7 @@ import {
   TCinemaRoom,
   type TCinemaRoomSeat,
 } from '@/core/cinema-room/cinema-room.type';
+import { useReadCinema } from '@/core/cinema/cinema.query';
 import { useReadFilm } from '@/core/film/film.query';
 import { type TFilm } from '@/core/film/film.type';
 import { useListItem } from '@/core/item/item.query';
@@ -49,15 +50,41 @@ export function BillDialog({
   const [isDirty, setIsDirty] = useState(false);
   const { ref: refShake, shake } = useShake();
   const { mutateAsync: mutateCreatePayment } = useCreatePayment();
+  const { data: perform } = useReadPerform(perform_id);
+  const { data: film } = useReadFilm(perform?.film_id);
+  const { data: cinema } = useReadCinema(perform?.cinema_id);
+  const { data: cinema_room } = useReadCinemaRoom(perform?.cinema_room_id);
+  const getSeatCodes = usePickSeat((state) => state.getSeatCodes);
+  const getTotalMoneySeats = usePickSeat((state) => state.getTotalMoney);
+  const getTotalMoneyItems = usePickItem((state) => state.getTotalMoney);
+  const getItems = usePickItem((state) => state.getItems);
+
+  const items = useMemo(() => getItems(), [getItems, isOpen]);
+
+  const totalMoneySeats = useMemo(
+    () =>
+      cinema_room?.layout
+        ? getTotalMoneySeats(
+            new Decimal(perform?.price ?? '0').toNumber(),
+            cinema_room.layout
+          )
+        : 0,
+    [cinema_room?.layout, getTotalMoneySeats, isOpen, perform?.price]
+  );
+
+  const totalMoneyItems = useMemo(
+    () => getTotalMoneyItems(),
+    [getTotalMoneyItems, isOpen]
+  );
 
   const handlePayment = useCallback(async () => {
     const { cart } = usePickItem.getState();
     try {
       const url = await mutateCreatePayment({
         perform_id,
-        items: Object.keys(cart).map((id) => ({
-          id,
-          quantity: cart[id],
+        items: items.map((item) => ({
+          id: item.item.id,
+          quantity: item.quantity,
         })),
         type: TWalletType.VNPAY,
       });
@@ -66,6 +93,10 @@ export function BillDialog({
       shake(5);
     }
   }, [mutateCreatePayment, perform_id, router, shake]);
+
+  if (!perform || !film || !cinema || !cinema_room?.layout) {
+    return null;
+  }
 
   return (
     <Dialog
@@ -82,7 +113,7 @@ export function BillDialog({
       </DialogTrigger>
       <DialogContent
         ref={refShake}
-        className='max-w-3xl gap-y-0 overflow-hidden border-none p-0'
+        className='max-w-[830px] gap-y-0 overflow-hidden border-none p-0'
         onInteractOutside={(e) => {
           if (isDirty) {
             e.preventDefault();
@@ -90,83 +121,85 @@ export function BillDialog({
           }
         }}
       >
-        {/* <DialogHeader className='relative bg-momo p-4'>
-          <DialogTitle className='text-center text-white'>
-            Combo bắp - nước
-          </DialogTitle>
-          <div className='absolute left-0 top-0 !mt-0 flex h-full w-full flex-row items-center pl-4 text-white'>
-            <ArrowLeft
-              className='h-5 w-5 cursor-pointer transition-all hover:-translate-x-1'
-              onClick={() => {
-                setIsOpen(false);
-              }}
-            />
-          </div>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
-        {/* </DialogHeader> */}
-        <div className='flex max-h-[calc(100vh-100px)] min-h-[calc(470px)] w-full flex-row flex-wrap-reverse overflow-x-auto md:flex-nowrap'>
-          <div className='flex min-w-[420px] flex-col gap-y-2 p-6'>
-            <div className='flex flex-row gap-x-2'>
-              <AgeTag restrictAge={18} />
-              Joker: Folie à Deux - Điên Có Đôi
+        <div className='flex max-h-[calc(100vh-100px)] min-h-[calc(550px)] w-full flex-row flex-wrap-reverse overflow-x-auto md:flex-nowrap'>
+          <div className='flex min-w-[420px] flex-col gap-y-4 p-6'>
+            <div className='flex flex-row items-center gap-x-2'>
+              <AgeTag restrictAge={film.restrict_age} />
+              <p className='font-bold md:text-lg'>{film.title}</p>
             </div>
-            <Separator className='my-1' />
-            <div className='flex flex-row justify-between'>
+            <div className='grid grid-cols-2 justify-between gap-x-10 gap-y-4 border-t border-dashed border-gray-200 pt-4'>
               <div className='flex flex-col gap-y-1'>
-                <p>Thoi gian</p>
-                <p className='font-bold'>19:00 ~ 20:51</p>
+                <p className='text-gray-500'>Thời gian</p>
+                <p className='font-bold'>
+                  {moment(perform.start_time).format('HH:mm')} ~{' '}
+                  {moment(perform.end_time).format('HH:mm')}
+                </p>
               </div>
               <div className='flex flex-col gap-y-1'>
-                <p>Ngay chieu</p>
-                <p className='font-bold'>Thứ 7, 12 Tháng 3</p>
+                <p className='text-gray-500'>Ngày chiếu</p>
+                {/* <p className='font-bold'>Thứ 7, 12 Tháng 3</p> */}
+                <p className='font-bold text-gray-800'>
+                  {moment(perform.start_time).format('dddd, DD [Tháng] MM')}
+                </p>
+              </div>
+              <div className='col-span-2 flex flex-col'>
+                <p className='text-gray-500'>Rạp</p>
+                <p className='font-bold text-gray-800'>{cinema.name}</p>
+                <p className='text-sm text-gray-500'>{cinema.address}</p>
+              </div>
+
+              <div className='flex flex-col'>
+                <p className='text-gray-500'>Phòng chiếu</p>
+                <p className='font-bold text-gray-800'>{cinema_room.name}</p>
+              </div>
+              <div className='flex flex-col'>
+                <p className='text-gray-500'>Định dạng</p>
+                <p className='font-bold text-gray-800'>{perform.view_type}</p>
+              </div>
+            </div>
+
+            <div className='flex flex-row justify-between border-t border-dashed border-gray-200 pt-4'>
+              <div className='flex flex-col'>
+                <p className='text-gray-500'>Ghế</p>
+                <p className='font-bold text-gray-800'>
+                  {getSeatCodes(cinema_room.layout).join(', ')}
+                </p>
+              </div>
+              <div className='flex flex-col items-center font-bold text-gray-800'>
+                {vndFormat(totalMoneySeats)}
               </div>
             </div>
             <div className='flex flex-col'>
-              <p> Rap</p>
-              <p className='font-bold'>Beta Quang Trung</p>
-              <p>
-                Số 645 Quang Trung, Phường 11, Quận Gò Vấp, Thành phố Hồ Chí
-                Minh
-              </p>
+              <p className='text-gray-500'>Đồ ăn</p>
+              {/* <p className='font-bold text-gray-800'>1 x Sweet Combo 69oz</p> */}
+              {items.map((item) => (
+                <div
+                  key={item.item.id}
+                  className='flex flex-row justify-between gap-x-4'
+                >
+                  <p className='line-clamp-1 font-bold text-gray-800'>
+                    {item.quantity} x {item.item.name}
+                  </p>
+                  <p className='whitespace-nowrap font-bold text-gray-800'>
+                    {vndFormat(
+                      new Decimal(item.item.price)
+                        .times(item.quantity)
+                        .toNumber()
+                    )}
+                  </p>
+                </div>
+              ))}
             </div>
-            <div className='flex flex-row justify-between'>
-              <div className='flex flex-col'>
-                <p>Phong chieu</p>
-                <p className='font-bold'>P5</p>
-              </div>
-              <div className='flex flex-col'>
-                <p>Phong chieu</p>
-                <p className='font-bold'>P5</p>
-              </div>
-            </div>
-            <Separator className='my-1' />
-            <div className='flex flex-row justify-between'>
-              <div className='flex flex-col'>
-                <p>Ghe</p>
-                <p className='font-bold'>E2</p>
-              </div>
-              <div className='flex flex-col items-center font-bold'>80000d</div>
-            </div>
-            <div className='flex flex-row justify-between'>
-              <div className='flex flex-col'>
-                <p>Bap - Nuoc</p>
-                <p className='font-bold'>1 x Sweet Combo 69oz</p>
-              </div>
-              <div className='flex flex-col items-center font-bold'>
-                808000d
+            <div className='grow' />
+
+            <div className='flex flex-row justify-between border-t border-dashed border-gray-200 pt-4'>
+              <div className='font-bold text-gray-800'>Tạm tính</div>
+              <div className='font-bold text-gray-800'>
+                {vndFormat(totalMoneySeats + totalMoneyItems)}
               </div>
             </div>
 
-            <Separator className='my-1' />
-
-            <div className='flex flex-row justify-between'>
-              <div className='font-bold'>Tạm tính</div>
-              <div className='font-bold'>168000đ</div>
-            </div>
-
-            <div className='text-xs'>
+            <div className='text-xs text-gray-500'>
               Ưu đãi (nếu có) sẽ được áp dụng ở bước thanh toán.
             </div>
           </div>
@@ -217,11 +250,13 @@ export function BillDialog({
   );
 }
 
-function vndFormat(value: number) {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-  })
-    .format(value)
-    .slice(0, -2);
+function vndFormat(value: number, prefix = 'đ') {
+  return (
+    new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    })
+      .format(value)
+      .slice(0, -2) + prefix
+  );
 }

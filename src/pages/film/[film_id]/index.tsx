@@ -75,7 +75,7 @@ export default function FilmById() {
                       hasPlayButton={false}
                       className='flex-row gap-x-2'
                       variant='white'
-                      film_id={film.id}
+                      film={film}
                       imageClass='max-w-[70px] aspect-[6.5/10]'
                       index={index + 1}
                       indexClass='text-xl text-gray-100 bottom-3 left-1'

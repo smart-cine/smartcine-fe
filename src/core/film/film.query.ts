@@ -10,4 +10,4 @@ export const {
   delete: useDeleteFilm,
 } = genQueryCrud<TFilm>('film');
 
-export const useListTopFilm = genQueryCrud<string>('film/top').list;
+export const useListTopFilm = genQueryCrud<TFilm>('film/top').list;
