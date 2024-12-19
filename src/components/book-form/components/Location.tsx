@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn, genericMemo } from '@/lib/utils';
 import { ListAreaModal } from '@/components/drawer-dialog/ListAreaModal';
 import { ArrowDownIcon } from '@/components/icon/ArrowDownIcon';
 import { MapPointIcon } from '@/components/icon/MapPointIcon';
 
 import { useBookForm } from '../hooks/useBookForm';
 
-export function Location({ className }: { readonly className?: string }) {
+function Location({ className }: { readonly className?: string }) {
   const selectedArea = useBookForm((state) => state.selectedArea);
   const setArea = useBookForm((state) => state.setArea);
 
@@ -30,3 +30,5 @@ export function Location({ className }: { readonly className?: string }) {
     </ListAreaModal>
   );
 }
+
+export const MemoLocation = genericMemo(Location);

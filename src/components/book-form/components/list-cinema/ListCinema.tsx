@@ -9,16 +9,16 @@ import { CinemaPicker } from './CinemaPicker';
 export function ListCinema({
   className,
   searchCinema = '',
-  area = '',
-  cinema_provider_id = '',
+  searchProvider = '',
+  searchArea = '',
 }: {
   readonly className?: string;
   readonly searchCinema?: string;
-  readonly area?: string;
-  readonly cinema_provider_id?: string;
+  readonly searchProvider?: string;
+  readonly searchArea?: string;
 }) {
   const { data: cinemas = [] } = useListCinema({
-    provider_id: cinema_provider_id ? cinema_provider_id : undefined,
+    provider_id: searchProvider ?? undefined,
   });
   const filteredCinemas = useMemo(
     () =>
@@ -38,7 +38,7 @@ export function ListCinema({
   return (
     <div className={cn('flex flex-col overflow-y-auto', className)}>
       {filteredCinemas.map((cinema) => (
-        <CinemaPicker key={cinema.id} cinema_id={cinema.id} />
+        <CinemaPicker key={cinema.id} cinema={cinema} />
       ))}
     </div>
   );

@@ -24,6 +24,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "@vercel/speed-insights": "^1.0.12",
     "axios": "^1.7.2",
+    "caniuse-lite": "^1.0.30001689",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "decimal.js": "^10.4.3",
@@ -74,5 +75,8 @@
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
-  }
+  },
+  "trustedDependencies": [
+    "@vercel/speed-insights"
+  ]
 }

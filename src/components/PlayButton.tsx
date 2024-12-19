@@ -12,7 +12,13 @@ type ButtonProps = {
 };
 
 type PlayButtonProps = ButtonProps & {
-  readonly film_id: string;
+  readonly film: {
+    title: string;
+    description: string;
+    picture_url?: string;
+    trailer_url?: string;
+    tags: string[];
+  };
   readonly hasTrailerTrigger?: boolean;
 };
 
@@ -39,7 +45,7 @@ Button.displayName = 'Button';
 
 export function PlayButton(props: PlayButtonProps) {
   return props.hasTrailerTrigger ? (
-    <TrailerTrigger film_id={props.film_id}>
+    <TrailerTrigger film={props.film}>
       <Button
         hasBorder={props.hasBorder}
         className={props.className}

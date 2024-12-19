@@ -3,24 +3,27 @@ import Link from 'next/link';
 import { TagIcon } from 'lucide-react';
 
 import { cn, roundScore } from '@/lib/utils';
-import { useReadCinemaProvider } from '@/core/cinema-provider/cinema-provider';
 
 import { MapPointIcon } from '../icon/MapPointIcon';
 
 export function CinemaProviderCard({
   className,
-  id,
+  cinema_provider,
 }: {
   readonly className?: string;
-  readonly id: string;
+  readonly cinema_provider: {
+    id: string;
+    name: string;
+    logo_url: string;
+    country: string;
+    cinema_count: number;
+    rating: {
+      score: number;
+    };
+  };
 }) {
-  const { data: cinema_provider } = useReadCinemaProvider(id);
-  if (!cinema_provider) {
-    return null;
-  }
-
   return (
-    <Link href={`/cinema-provider/${id}`}>
+    <Link href={`/cinema-provider/${cinema_provider.id}`}>
       <div
         className={cn(
           'flex min-h-[150px] cursor-pointer flex-row flex-wrap items-center gap-x-5 rounded-md border border-gray-200 p-3 shadow-sm duration-100 hover:shadow-md',
@@ -30,7 +33,6 @@ export function CinemaProviderCard({
         <div className='flex h-[60px] w-[100px] items-center justify-center'>
           <Image
             src={
-              // TODO: đổi thành constant unknown logo
               cinema_provider.logo_url ?? '/cinema-provider/logo/unknown.png'
             }
             alt='cinema-logo'
@@ -51,7 +53,7 @@ export function CinemaProviderCard({
           </div>
           <div className='flex flex-row gap-x-1'>
             <span className='font-semibold'>
-              {roundScore(cinema_provider.rating.score)}
+              {roundScore(cinema_provider.rating.score * 10)}
             </span>
             ⭐️
           </div>

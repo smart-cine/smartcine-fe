@@ -48,7 +48,7 @@ export function DefaultFilmSearchForm() {
             key={film.id}
             hasPlayButton
             variant='white'
-            film_id={film.id}
+            film={film}
             className='w-[200px]'
           />
         ))}

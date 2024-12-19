@@ -3,13 +3,15 @@
 import { useEffect } from 'react';
 
 import { cn } from '@/lib/utils';
+import { useReadCinemaProvider } from '@/core/cinema-provider/cinema-provider';
+import { useReadCinema } from '@/core/cinema/cinema.query';
 
 import { CinemaDescription } from './components/CinemaDescription';
-import { CinemaSearch } from './components/CinemaSearch';
-import { ListCinemaProvider } from './components/list-cinema-provider/ListCinemaProvider';
-import { ListDate } from './components/list-date/ListDate';
-import { ListFilmPerform } from './components/list-film-perform/ListFilmPerform';
-import { Location } from './components/Location';
+import { MemoCinemaSearch } from './components/CinemaSearch';
+import { MemoListCinemaProvider } from './components/list-cinema-provider/ListCinemaProvider';
+import { MemoListDate } from './components/list-date/ListDate';
+import { MemoListFilmPerform } from './components/list-film-perform/ListFilmPerform';
+import { MemoLocation } from './components/Location';
 import { NearestLocation } from './components/NearestLocation';
 import { useBookForm } from './hooks/useBookForm';
 
@@ -23,6 +25,9 @@ export function DefaultBookForm({
   const selectedCinemaId = useBookForm((state) => state.selectedCinemaId);
   const selectedDate = useBookForm((state) => state.selectedDate);
   const setCinemaProvider = useBookForm((state) => state.setCinemaProvider);
+
+  const { data: cinema } = useReadCinema(selectedCinemaId);
+  const { data: cinema_provider } = useReadCinemaProvider(cinema_provider_id);
 
   useEffect(() => {
     setCinemaProvider(cinema_provider_id ?? '');
@@ -38,26 +43,31 @@ export function DefaultBookForm({
       <div className='topview flex flex-col gap-y-3 border-b'>
         <div className='flex grow flex-row flex-wrap items-center justify-start gap-x-3 px-5 pt-4 md:flex-nowrap'>
           <p className='hidden md:block'>Vị trí</p>
-          <Location className='max-md:grow' />
+          <MemoLocation className='max-md:grow' />
           <NearestLocation className='max-md:grow' />
         </div>
-        <ListCinemaProvider className='px-5 pb-2' />
+        <MemoListCinemaProvider className='px-5 pb-2' />
       </div>
       <div className='mainview flex min-h-full w-full flex-row'>
         <div className='thanhsearch flex min-w-[33%] max-w-[33%] flex-col border-r'>
-          <CinemaSearch />
+          <MemoCinemaSearch />
         </div>
         <div className='realmainview flex max-h-full w-full basis-2/3 flex-col overflow-auto'>
           <div className='sticky top-0 z-10 bg-white'>
-            <CinemaDescription className='p-3' cinema_id={selectedCinemaId} />
-            <ListDate />
+            {cinema && cinema_provider && (
+              <CinemaDescription className='p-3' cinema={cinema} />
+            )}
+            <MemoListDate />
 
             <div className='uudai border-t bg-gray-100 px-5 py-2 text-sm text-momo'>
               Đồng giá 79K/vé 2D khi thanh toán bằng Ví Trả Sau, áp dụng 1 vé/1
               khách hàng/1 tháng
             </div>
           </div>
-          <ListFilmPerform cinema_id={selectedCinemaId} date={selectedDate} />
+          <MemoListFilmPerform
+            cinema_id={selectedCinemaId}
+            date={selectedDate}
+          />
         </div>
       </div>
     </div>

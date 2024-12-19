@@ -40,7 +40,7 @@ export default function CinemaProviderById() {
           className='h-[320px]'
           contentClass='h-full'
         >
-          <CinemaProviderDetail cinema_provider_id={cinema_provider.id} />
+          <CinemaProviderDetail cinema_provider={cinema_provider} />
         </ConstrainedContainer>
         <ConstrainedContainer
           className='mt-16'

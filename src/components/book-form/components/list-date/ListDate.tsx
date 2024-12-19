@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 
+import { genericMemo } from '@/lib/utils';
+
 import { DatePicker } from './DatePicker';
 
 export function ListDate() {
@@ -18,3 +20,5 @@ export function ListDate() {
     </div>
   );
 }
+
+export const MemoListDate = genericMemo(ListDate);

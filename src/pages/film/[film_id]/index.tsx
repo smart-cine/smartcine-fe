@@ -43,13 +43,13 @@ export default function FilmById() {
         <ConstrainedContainer
           background={film.picture_url ?? NOT_FOUND_PICTURE.FILM}
         >
-          <FilmDetail film_id={film.id} />
+          <FilmDetail film={film} />
         </ConstrainedContainer>
         <ConstrainedContainer>
           <div className='flex flex-row flex-wrap justify-center gap-x-10 lg:flex-nowrap'>
             <MinimalBookForm
               className='my-16 max-w-[80%] lg:max-w-[66%]'
-              film_id={film.id}
+              film={film}
             />
 
             {/* Current shows */}

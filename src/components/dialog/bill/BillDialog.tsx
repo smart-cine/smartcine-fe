@@ -1,59 +1,54 @@
 import { useCallback, useMemo, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Decimal } from 'decimal.js';
-import { ArrowLeft } from 'lucide-react';
 import moment from 'moment';
 
 import { cn } from '@/lib/utils';
 import { useShake } from '@/hooks/useShake';
 import { AgeTag } from '@/components/AgeTag';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { useReadCinemaRoom } from '@/core/cinema-room/cinema-room.query';
-import {
-  TCinemaRoom,
-  type TCinemaRoomSeat,
-} from '@/core/cinema-room/cinema-room.type';
 import { useReadCinema } from '@/core/cinema/cinema.query';
-import { useReadFilm } from '@/core/film/film.query';
-import { type TFilm } from '@/core/film/film.type';
-import { useListItem } from '@/core/item/item.query';
 import { useCreatePayment } from '@/core/payment/payment.query';
 import { TWalletType } from '@/core/payment/payment.type';
-import { useReadPerform } from '@/core/perform/perform.query';
-import { type TPerform } from '@/core/perform/perform.type';
 
 import { usePickItem } from '../pick-item/hooks/usePickItem';
 import { usePickSeat } from '../pick-seat/usePickSeat';
 
 export function BillDialog({
-  perform_id,
   className,
   children,
+  perform,
+  film,
 }: {
   readonly className?: string;
   readonly children: React.ReactNode;
-  readonly perform_id: string;
+  readonly perform: {
+    id: string;
+    cinema_id: string;
+    cinema_room_id: string;
+    start_time: string;
+    end_time: string;
+    price: string;
+    view_type: string;
+  };
+  readonly film: {
+    title: string;
+    restrict_age: number;
+    description: string;
+    tags: string[];
+  };
 }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const { ref: refShake, shake } = useShake();
+
   const { mutateAsync: mutateCreatePayment } = useCreatePayment();
-  const { data: perform } = useReadPerform(perform_id);
-  const { data: film } = useReadFilm(perform?.film_id);
   const { data: cinema } = useReadCinema(perform?.cinema_id);
   const { data: cinema_room } = useReadCinemaRoom(perform?.cinema_room_id);
+
   const getSeatCodes = usePickSeat((state) => state.getSeatCodes);
   const getTotalMoneySeats = usePickSeat((state) => state.getTotalMoney);
   const getTotalMoneyItems = usePickItem((state) => state.getTotalMoney);
@@ -81,7 +76,7 @@ export function BillDialog({
     const { cart } = usePickItem.getState();
     try {
       const url = await mutateCreatePayment({
-        perform_id,
+        perform_id: perform.id,
         items: items.map((item) => ({
           id: item.item.id,
           quantity: item.quantity,
@@ -92,7 +87,7 @@ export function BillDialog({
     } catch (error) {
       shake(5);
     }
-  }, [mutateCreatePayment, perform_id, router, shake]);
+  }, [mutateCreatePayment, perform.id, router, shake]);
 
   if (!perform || !film || !cinema || !cinema_room?.layout) {
     return null;
@@ -113,7 +108,10 @@ export function BillDialog({
       </DialogTrigger>
       <DialogContent
         ref={refShake}
-        className='max-w-[830px] gap-y-0 overflow-hidden border-none p-0'
+        className={cn(
+          'max-w-[830px] gap-y-0 overflow-hidden border-none p-0',
+          className
+        )}
         onInteractOutside={(e) => {
           if (isDirty) {
             e.preventDefault();

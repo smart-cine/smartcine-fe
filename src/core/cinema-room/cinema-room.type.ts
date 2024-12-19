@@ -23,6 +23,6 @@ export type TCinemaRoomSeat = {
 export type TCinemaRoomGroup = {
   id: string;
   name: string;
-  color: string;
+  color_code: string;
   price: string;
 };

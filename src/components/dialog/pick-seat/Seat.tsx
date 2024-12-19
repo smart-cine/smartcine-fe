@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import { cn } from '@/lib/utils';
+import { cn, genericMemo } from '@/lib/utils';
 import {
   useCreatePickseat,
   useDeletePickseat,
@@ -13,11 +13,13 @@ export function Seat({
   id,
   perform_id,
   code,
+  color_code,
   className,
 }: {
   readonly id: string;
   readonly perform_id: string;
   readonly code: string;
+  readonly color_code: string;
   readonly className?: string;
 }) {
   const { mutateAsync: mutateDeleteSeat } = useDeletePickseat();
@@ -48,16 +50,19 @@ export function Seat({
   return (
     <div
       className={cn(
-        'm-2 flex min-h-12 min-w-12 cursor-pointer select-none items-center justify-center rounded-sm bg-red-400 transition-all duration-100',
+        'm-2 flex min-h-12 min-w-12 cursor-pointer select-none items-center justify-center rounded-md border-gray-100 transition-all duration-200',
         {
-          'bg-yellow-400': isActive,
+          'border-2': isActive,
           'hover:bg-red-600': !isActive,
         },
         className
       )}
+      style={{ backgroundColor: color_code }}
       onClick={handleClick}
     >
       {code}
     </div>
   );
 }
+
+export const MemoSeat = genericMemo(Seat);

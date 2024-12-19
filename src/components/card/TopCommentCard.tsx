@@ -31,11 +31,11 @@ export function TopCommentCard({
       )}
     >
       <div className='relative'>
-        <FilmCardReview className='h-[200px]' film_id={film.id} />
+        <FilmCardReview className='h-[200px]' film={film} />
       </div>
       <div className='flex h-[280px] flex-col gap-y-3 p-4'>
-        {comments.map((cmt) => (
-          <MinimalComment key={cmt.id} id={cmt.id} />
+        {comments.map((comment) => (
+          <MinimalComment key={comment.id} comment={comment} />
         ))}
         <Link
           href={`/film/${film.id}/review`}

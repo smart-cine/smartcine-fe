@@ -1,6 +1,10 @@
 export type TComment = {
   id: string;
-  account_id: string;
+  account: {
+    id: string;
+    name: string;
+    avatar_url: string;
+  };
   body: string;
   rating: {
     score: number;

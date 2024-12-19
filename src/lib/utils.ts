@@ -36,6 +36,7 @@ export function youtube_parser(url: string) {
   return match && match[7].length === 11 ? match[7] : '';
 }
 
-export function roundScore(score: number, fixed = 1) {
-  return Math.round(score * 10).toFixed(fixed);
+export function roundScore(score: number, fixed = 1, cleanZero = true) {
+  const rounded = score.toFixed(fixed);
+  return cleanZero ? parseFloat(rounded).toString() : rounded;
 }

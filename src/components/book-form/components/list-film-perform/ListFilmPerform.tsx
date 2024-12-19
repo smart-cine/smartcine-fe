@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import Image from 'next/image';
 import moment from 'moment';
 
+import { genericMemo } from '@/lib/utils';
 import { useListPerformByFilm } from '@/core/perform/perform.query';
 
 import { FilmPerformCard } from './FilmPerformCard';
@@ -28,8 +29,8 @@ export function ListFilmPerform({
         performByFilm.map((item, index) => (
           <FilmPerformCard
             key={item.film_id}
-            film_id={item.film_id}
             performs={item.performs}
+            film_id={item.film_id}
           />
         ))
       ) : (
@@ -51,3 +52,5 @@ export function ListFilmPerform({
     </div>
   );
 }
+
+export const MemoListFilmPerform = genericMemo(ListFilmPerform);

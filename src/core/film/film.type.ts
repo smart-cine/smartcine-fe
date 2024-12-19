@@ -5,7 +5,7 @@ export type TFilm = {
   title: string;
   director: string;
   description: string;
-  release_date: Date;
+  release_date: string;
   country: string;
   restrict_age: number;
   duration: number;

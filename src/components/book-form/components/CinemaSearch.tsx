@@ -1,10 +1,12 @@
 import moment from 'moment';
 
+import { genericMemo } from '@/lib/utils';
+
 import { useBookForm } from '../hooks/useBookForm';
 import { SearchInput } from './input/SearchInput';
 import { ListCinema } from './list-cinema/ListCinema';
 
-export function CinemaSearch() {
+function CinemaSearch() {
   const searchCinema = useBookForm((state) => state.searchCinema);
   const selectedArea = useBookForm((state) => state.selectedArea);
   const selectedCinemaProviderId = useBookForm(
@@ -21,9 +23,11 @@ export function CinemaSearch() {
       </div>
       <ListCinema
         searchCinema={searchCinema}
-        area={selectedArea}
-        cinema_provider_id={selectedCinemaProviderId}
+        searchArea={selectedArea}
+        searchProvider={selectedCinemaProviderId}
       />
     </>
   );
 }
+
+export const MemoCinemaSearch = genericMemo(CinemaSearch);

@@ -3,19 +3,22 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { MapPointIcon } from '@/components/icon/MapPointIcon';
 import { StarRating } from '@/components/StarRating';
-import { useReadCinemaProvider } from '@/core/cinema-provider/cinema-provider';
 
 export function CinemaProviderDetail({
   className,
-  cinema_provider_id,
+  cinema_provider,
 }: {
   readonly className?: string;
-  readonly cinema_provider_id: string;
+  readonly cinema_provider: {
+    id: string;
+    name: string;
+    logo_url: string;
+    rating: {
+      score: number;
+      count: number;
+    };
+  };
 }) {
-  const { data: cinema_provider } = useReadCinemaProvider(cinema_provider_id);
-
-  if (!cinema_provider) return null;
-
   return (
     <div className='flex h-full w-full flex-col justify-end'>
       <div

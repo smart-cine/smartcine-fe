@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss"
 import tailwindScrollbar from "tailwind-scrollbar";
+import tailwindAnimate from "tailwindcss-animate";
 
 
 const config = {
@@ -79,7 +80,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), tailwindScrollbar({
+  plugins: [tailwindAnimate, tailwindScrollbar({
     nocompatible: true
   })],
 } satisfies Config

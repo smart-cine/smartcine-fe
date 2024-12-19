@@ -9,22 +9,25 @@ import { MinimalFilmCard } from '@/components/card/MinimalFilmCard';
 import { TrailerTrigger } from '@/components/dialog/TrailerTrigger';
 import { PlayIcon } from '@/components/icon/PlayIcon';
 import { StarIcon } from '@/components/icon/StarIcon';
-import { PlayButton } from '@/components/PlayButton';
 import { StarRating } from '@/components/StarRating';
-import { Label } from '@/components/ui/label';
-import { useReadFilm } from '@/core/film/film.query';
 
 export function FilmDetail({
   className,
-  film_id,
+  film,
 }: {
   readonly className?: string;
-  readonly film_id: string;
+  readonly film: {
+    id: string;
+    title: string;
+    release_date: string;
+    duration: number;
+    rating: { score: number; count: number };
+    description: string;
+    tags: string[];
+    country: string;
+    restrict_age: number;
+  };
 }) {
-  const { data: film } = useReadFilm(film_id);
-
-  if (!film) return null;
-
   return (
     <div
       className={cn(
@@ -34,7 +37,7 @@ export function FilmDetail({
     >
       <MinimalFilmCard
         hasPlayButton
-        film_id={film.id}
+        film={film}
         className='w-full md:w-auto'
         imageClass='max-h-[170px] w-auto md:max-w-[240px] md:max-h-full md:w-full'
       />
@@ -87,7 +90,7 @@ export function FilmDetail({
           </div>
         </div>
         <div className='flex flex-row gap-x-3 text-sm'>
-          <TrailerTrigger film_id={film.id}>
+          <TrailerTrigger film={film}>
             <div className='flex cursor-pointer flex-row items-center gap-x-2'>
               <div className='rounded-full border-2 border-momo p-0.5'>
                 <PlayIcon className='h-4 w-4' />

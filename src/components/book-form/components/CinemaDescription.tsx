@@ -1,21 +1,25 @@
 import Image from 'next/image';
+import { NOT_FOUND_PICTURE } from '@/constant/NotFoundPicture';
 
 import { cn } from '@/lib/utils';
 import { useReadCinemaProvider } from '@/core/cinema-provider/cinema-provider';
-import { useReadCinema } from '@/core/cinema/cinema.query';
 
 export function CinemaDescription({
-  cinema_id,
   className,
   variant = 'default',
+  cinema,
 }: {
-  readonly cinema_id: string;
   readonly className?: string;
   readonly variant?: 'default' | 'minimal';
+  readonly cinema: {
+    cinema_provider_id: string;
+    name: string;
+    address: string;
+  };
 }) {
-  const { data: cinema } = useReadCinema(cinema_id);
-  const { data: cinema_provider } = useReadCinemaProvider(cinema?.provider_id);
-  if (!cinema || !cinema_provider) return null;
+  const { data: cinema_provider } = useReadCinemaProvider(
+    cinema.cinema_provider_id
+  );
 
   return (
     <div
@@ -30,7 +34,7 @@ export function CinemaDescription({
     >
       <div className='flex h-9 w-9 items-center justify-center rounded-sm border border-gray-200'>
         <Image
-          src={cinema_provider.logo_url ?? '/cinema/logo/unknown.png'}
+          src={cinema_provider?.logo_url ?? NOT_FOUND_PICTURE.CINEMA_PROVIDER}
           alt='cinema-logo'
           width={36}
           height={36}

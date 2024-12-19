@@ -1,10 +1,10 @@
 export type TPerform = {
   id: string;
   film_id: string;
-  cinema_room_id: string;
   cinema_id: string;
-  start_time: Date;
-  end_time: Date;
+  cinema_room_id: string;
+  start_time: string;
+  end_time: string;
   translate_type: ETranslate;
   view_type: EView;
   price: string;

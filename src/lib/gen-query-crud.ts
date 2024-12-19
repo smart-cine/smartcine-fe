@@ -161,9 +161,10 @@ function genDefaultCrudApi<Item>(
     },
     async read(id: string, options: Record<string, any> = {}) {
       sweepUndefined(options);
+      const query = new URLSearchParams(options).toString();
       return (
         await customFetchJson<SuccessRes<Item>>(
-          `${url}/${id}${options ? `?${new URLSearchParams(options).toString()}` : ''}`
+          `${url}/${id}${query ? `?${query}` : ''}`
         )
       ).data;
     },

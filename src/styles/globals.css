@@ -14,6 +14,14 @@ img {
   -moz-user-select: none;
 }
 
+button {
+  user-select: none;
+}
+
+button[disabled] {
+  cursor: not-allowed !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

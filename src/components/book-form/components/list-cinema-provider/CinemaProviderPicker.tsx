@@ -1,26 +1,25 @@
 import Image from 'next/image';
+import { NOT_FOUND_PICTURE } from '@/constant/NotFoundPicture';
 
 import { cn } from '@/lib/utils';
-import { useReadCinemaProvider } from '@/core/cinema-provider/cinema-provider';
 
 import { useBookForm } from '../../hooks/useBookForm';
 
 export function CinemaProviderPicker({
   className,
-  cinema_provider_id,
+  cinema_provider,
 }: {
   readonly className?: string;
-  readonly cinema_provider_id: string;
+  readonly cinema_provider: {
+    id: string;
+    name: string;
+    logo_url: string;
+  };
 }) {
-  const { data: cinema_provider } = useReadCinemaProvider(cinema_provider_id);
   const isSelected = useBookForm(
-    (state) => state.selectedCinemaProviderId === cinema_provider_id
+    (state) => state.selectedCinemaProviderId === cinema_provider.id
   );
   const setCinemaProvider = useBookForm((state) => state.setCinemaProvider);
-
-  if (!cinema_provider) {
-    return null;
-  }
 
   return (
     <div
@@ -41,7 +40,7 @@ export function CinemaProviderPicker({
         )}
       >
         <Image
-          src={cinema_provider.logo_url ?? '/cinema-provider/logo/unknown.png'}
+          src={cinema_provider.logo_url ?? NOT_FOUND_PICTURE.CINEMA_PROVIDER}
           alt='cinema-logo'
           width={40}
           height={40}

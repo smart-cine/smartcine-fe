@@ -58,10 +58,7 @@ export default function FilmByIdReview() {
               ref={ref}
               className='top-20 mb-28 flex h-fit basis-1/4 gap-x-5 md:sticky md:flex-col'
             >
-              <MinimalFilmCard
-                className='mx-auto max-w-[150px]'
-                film_id={film.id}
-              />
+              <MinimalFilmCard className='mx-auto max-w-[150px]' film={film} />
               <div className='flex grow flex-col gap-y-2'>
                 <p className='text-left font-bold text-black md:text-center'>
                   {film.title}
@@ -90,10 +87,7 @@ export default function FilmByIdReview() {
               </div>
             </div>
             <div className='flex flex-col justify-center gap-y-5 md:max-w-[60%]'>
-              <FilmCardReview
-                film_id={film.id}
-                className='h-[220px] rounded-xl'
-              />
+              <FilmCardReview film={film} className='h-[220px] rounded-xl' />
               <p className='text-2xl font-bold'>
                 Review phim {film.title} trên SmartCine
               </p>
@@ -103,7 +97,7 @@ export default function FilmByIdReview() {
                   <StarIcon className='h-10 w-10' />
                   <div className='flex flex-row text-gray-600'>
                     <p className='text-4xl font-semibold'>
-                      {roundScore(film.rating.score)}
+                      {roundScore(film.rating.score * 10)}
                     </p>
                     <div className='relative top-2 flex min-h-full flex-row items-center gap-x-1 text-sm'>
                       <p className=''>/10</p>
@@ -117,12 +111,12 @@ export default function FilmByIdReview() {
                 {comments.map((comment) => (
                   // eslint-disable-next-line react/jsx-key
                   <>
-                    <Comment key={comment.id} id={comment.id} />
+                    <Comment key={comment.id} comment={comment} />
                     <hr />
                   </>
                 ))}
               </div>
-              <MinimalBookForm className='' film_id={film.id} />
+              <MinimalBookForm film={film} />
               <div className='py-12' />
             </div>
           </div>

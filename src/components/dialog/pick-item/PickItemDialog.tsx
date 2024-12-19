@@ -1,11 +1,10 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Decimal } from 'decimal.js';
 import { ArrowLeft } from 'lucide-react';
-import moment from 'moment';
 
 import { cn } from '@/lib/utils';
+import { useManagedState } from '@/hooks/useManageState';
 import { useShake } from '@/hooks/useShake';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,42 +16,48 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
-import { useReadCinemaRoom } from '@/core/cinema-room/cinema-room.query';
-import {
-  TCinemaRoom,
-  type TCinemaRoomSeat,
-} from '@/core/cinema-room/cinema-room.type';
-import { useReadFilm } from '@/core/film/film.query';
-import { type TFilm } from '@/core/film/film.type';
-import { useListItem } from '@/core/item/item.query';
-import { useCreatePayment } from '@/core/payment/payment.query';
-import { TWalletType } from '@/core/payment/payment.type';
-import { useReadPerform } from '@/core/perform/perform.query';
-import { type TPerform } from '@/core/perform/perform.type';
+import { type TItem } from '@/core/item/item.type';
 
 import { BillDialog } from '../bill/BillDialog';
 import { usePickSeat } from '../pick-seat/usePickSeat';
 import { usePickItem } from './hooks/usePickItem';
 
 export function PickItemDialog({
-  perform_id,
-  cinema_id,
   className,
   children,
+  items = [],
+  perform,
+  film,
+  open: externalOpen,
+  onOpenChange: externalOnOpenChange,
 }: {
-  readonly perform_id: string;
-  readonly cinema_id: string;
   readonly className?: string;
   readonly children: React.ReactNode;
+  readonly items: TItem[];
+  readonly perform: {
+    id: string;
+    cinema_id: string;
+    cinema_room_id: string;
+    start_time: string;
+    end_time: string;
+    price: string;
+    view_type: string;
+  };
+  readonly film: {
+    title: string;
+    restrict_age: number;
+    description: string;
+    tags: string[];
+  };
+  readonly open?: boolean;
+  readonly onOpenChange?: (open: boolean) => void;
 }) {
-  const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useManagedState(
+    externalOpen,
+    externalOnOpenChange
+  );
   const [isDirty, setIsDirty] = useState(false);
   const { ref: refShake, shake } = useShake();
-  const { data: items = [] } = useListItem({
-    cinema_id,
-  });
-  const { mutateAsync: mutateCreatePayment } = useCreatePayment();
   const addToCart = usePickItem((state) => state.addToCart);
   const removeFromCart = usePickItem((state) => state.removeFromCart);
   const getTotalMoney = usePickItem((state) => state.getTotalMoney);
@@ -67,16 +72,9 @@ export function PickItemDialog({
         setIsOpen(open);
       }}
     >
-      <DialogTrigger asChild>
-        <button
-          className={cn(
-            'whitespace-nowrap rounded-sm border px-4 py-1',
-            className
-          )}
-        >
-          {children}
-        </button>
-      </DialogTrigger>
+      <TriggerButton className={className} setDialogOpen={setIsOpen}>
+        {children}
+      </TriggerButton>
       <DialogContent
         ref={refShake}
         className='max-w-lg gap-y-0 overflow-hidden border-none p-0'
@@ -176,11 +174,41 @@ export function PickItemDialog({
               <div className='text-lg font-bold'>{vndFormat(totalMoney)}đ</div>
             </div>
 
-            <BillDialog perform_id={perform_id}>Tiếp tục</BillDialog>
+            <BillDialog perform={perform} film={film}>
+              Tiếp tục
+            </BillDialog>
           </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function TriggerButton({
+  className,
+  children,
+  setDialogOpen,
+}: {
+  readonly className?: string;
+  readonly children: React.ReactNode;
+  readonly setDialogOpen?: (open: boolean) => void;
+}) {
+  const pickedSeat = usePickSeat((state) => state.picked);
+
+  return (
+    <Button
+      variant='momo'
+      className={cn(
+        'self-end whitespace-nowrap rounded-sm border px-4 py-1',
+        className
+      )}
+      disabled={pickedSeat === 0}
+      onClick={() => {
+        setDialogOpen?.(true);
+      }}
+    >
+      {children}
+    </Button>
   );
 }
 

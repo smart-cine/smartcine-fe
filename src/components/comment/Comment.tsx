@@ -4,27 +4,29 @@ import ShowMoreText from 'react-show-more-text';
 
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useReadComment } from '@/core/comment/comment.query';
-import { useReadUser } from '@/core/user/user.query';
 
 import { CommentIcon } from '../icon/CommentIcon';
 import { StarIcon } from '../icon/StarIcon';
 
 export function Comment({
   className,
-  id,
+  comment,
 }: {
   readonly className?: string;
-  readonly id: string;
+  readonly comment: {
+    id: string;
+    body: string;
+    account: {
+      name: string;
+      avatar_url: string;
+    };
+    children: Array<{ id: string }>;
+  };
 }) {
-  const { data: comment } = useReadComment(id);
-  const { data: user } = useReadUser(comment?.account_id);
-  if (!comment || !user) return null;
-
   return (
     <div className={cn('flex flex-row gap-x-2', className)}>
       <Avatar className='h-9 w-9'>
-        <AvatarImage src={user.avatar_url} />
+        <AvatarImage src={comment.account.avatar_url} />
         <AvatarFallback>
           <Image
             src='/avatar.png'
@@ -36,7 +38,7 @@ export function Comment({
       </Avatar>
       <div className='flex flex-col gap-y-1'>
         <div className='flex flex-col text-sm'>
-          <div className='text-gray-800'>{user.name}</div>
+          <div className='text-gray-800'>{comment.account.name}</div>
           <div className='flex items-center gap-x-2 text-sm text-gray-400'>
             <div>hôm qua</div>
             <div className='flex items-center gap-x-1 text-momo'>
