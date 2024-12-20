@@ -1,6 +1,7 @@
 import { default as baseAxios, type RawAxiosRequestHeaders } from 'axios';
 
-import { env } from './env';
+// import { env } from './env';
+const { env } = process;
 
 const headers: RawAxiosRequestHeaders = {
   'Content-Type': 'application/json',

@@ -1,6 +1,8 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 
-import { env } from './env';
+// import { env } from './env';
+// TODO: sua lai cho nay
+const { env } = process;
 
 function handleUnAuthorized(error: any) {
   console.error(error);

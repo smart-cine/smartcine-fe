@@ -2,12 +2,13 @@ import { resolve } from 'url';
 
 import { type TErrorResponse } from '@/core/error/error.type';
 
-import { env } from './env';
+// import { env } from './env';
+const { env } = process;
 
 const baseUrl = addTrailingSlash(
   resolve(
-    addTrailingSlash(env.NEXT_PUBLIC_API_URL),
-    env.NEXT_PUBLIC_API_VERSION
+    addTrailingSlash(env.NEXT_PUBLIC_API_URL!),
+    env.NEXT_PUBLIC_API_VERSION!
   )
 );
 
