@@ -48,7 +48,7 @@ export function DefaultBookForm({
         </div>
         <MemoListCinemaProvider className='px-5 pb-2' />
       </div>
-      <div className='mainview flex min-h-full w-full flex-row'>
+      <div className='mainview flex w-full grow flex-row'>
         <div className='thanhsearch flex min-w-[33%] max-w-[33%] flex-col border-r'>
           <MemoCinemaSearch />
         </div>
