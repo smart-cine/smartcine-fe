@@ -13,10 +13,10 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - BABEL_ENV=${BABEL_ENV}
-      - API_URL=${API_URL}
-      - API_VERSION=${API_VERSION}
       - PORT=${PORT}
-      - API_TEST_TOKEN=${API_TEST_TOKEN}
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+      - NEXT_PUBLIC_API_VERSION=${NEXT_PUBLIC_API_VERSION}
+      - NEXT_PUBLIC_API_TEST_TOKEN=${NEXT_PUBLIC_API_TEST_TOKEN}
 networks:
   smartcine-network:
     external: true
