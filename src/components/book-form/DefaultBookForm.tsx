@@ -36,7 +36,7 @@ export function DefaultBookForm({
   return (
     <div
       className={cn(
-        'flex max-h-[700px] min-h-[700px] flex-col rounded-md border border-gray-200 shadow-md',
+        'flex max-h-[700px] min-h-[800px] flex-col rounded-md border border-gray-200 shadow-md',
         className
       )}
     >
@@ -48,17 +48,14 @@ export function DefaultBookForm({
         </div>
         <MemoListCinemaProvider className='px-5 pb-2' />
       </div>
-      <div className='mainview flex w-full grow flex-row'>
+      <div className='mainview flex w-full grow flex-row overflow-hidden'>
         <div className='thanhsearch flex min-w-[33%] max-w-[33%] flex-col border-r'>
           <MemoCinemaSearch />
         </div>
-        <div className='realmainview flex max-h-full w-full basis-2/3 flex-col overflow-auto'>
+        <div className='realmainview flex w-full basis-2/3 flex-col overflow-auto'>
           <div className='sticky top-0 z-10 bg-white'>
-            {cinema && cinema_provider && (
-              <CinemaDescription className='p-3' cinema={cinema} />
-            )}
+            {cinema && <CinemaDescription className='p-3' cinema={cinema} />}
             <MemoListDate />
-
             <div className='uudai border-t bg-gray-100 px-5 py-2 text-sm text-momo'>
               Đồng giá 79K/vé 2D khi thanh toán bằng Ví Trả Sau, áp dụng 1 vé/1
               khách hàng/1 tháng
