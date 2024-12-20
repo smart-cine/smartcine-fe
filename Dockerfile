@@ -9,7 +9,6 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json bun.lockb* ./
-COPY ./prisma/* ./prisma/
 RUN if [ -f bun.lockb ]; then bun install --frozen-lockfile && bun run prisma:generate; \
   else echo "Lockfile not found." && exit 1; \
   fi
