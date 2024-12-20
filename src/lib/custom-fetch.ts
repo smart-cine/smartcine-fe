@@ -17,7 +17,7 @@ const headers: HeadersInit = {
 
 if (process.env.NODE_ENV === 'development') {
   // headers.Authorization = `Bearer ${env.NEXT_PUBLIC_API_TEST_TOKEN}`;
-  headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFiMDRjOGQ0LTMyZTgtNDgzYi1hZDlmLTkzZDNmM2VhNjFlNyIsInJvbGUiOiJCVVNJTkVTUyIsImlhdCI6MTczNDYxMDMwOSwiZXhwIjoxNzM3MjAyMzA5fQ.N4Ie17t9NNsg1cCPUzqzSsl1AGpnzpnWPxh34VKp6WU`;
+  headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_API_TEST_TOKEN}`;
 }
 
 export async function customFetch(
