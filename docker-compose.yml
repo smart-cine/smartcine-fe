@@ -9,7 +9,14 @@ services:
       context: . # use the current directory as the build contexts
       dockerfile: Dockerfile
     ports:
-      - 9995:3000
+      - ${PORT}:${PORT}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - BABEL_ENV=${BABEL_ENV}
+      - API_URL=${API_URL}
+      - API_VERSION=${API_VERSION}
+      - PORT=${PORT}
+      - API_TEST_TOKEN=${API_TEST_TOKEN}
 networks:
   smartcine-network:
     external: true
